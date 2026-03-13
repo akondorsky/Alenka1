@@ -1,0 +1,242 @@
+unit RegTiAdd_U;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, ComCtrls, ExtCtrls,DB,ibx.IbQuery, Mask;
+
+type
+  TMyMaskEdit = class(TMaskEdit)
+    protected
+      procedure ValidateError;override;
+  end;
+type
+  TRegTiAdd_F = class(TForm)
+    Label1: TLabel;
+    E_Zayv: TEdit;
+    SaveBtn: TBitBtn;
+    CancBtn: TBitBtn;
+    Gb_Rekvizit: TGroupBox;
+    E_INN: TEdit;
+    E_Ogrn: TEdit;
+    E_KPP: TEdit;
+    Label9: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label2: TLabel;
+    E_Address: TEdit;
+    Gb_Bank: TGroupBox;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    E_BIK: TEdit;
+    E_CountKor: TEdit;
+    E_CountR: TEdit;
+    Label8: TLabel;
+    E_Bank: TEdit;
+    Rg_Type: TRadioGroup;
+    procedure FormShow(Sender: TObject);
+    procedure E_ZayvKeyPress(Sender: TObject; var Key: Char);
+    procedure E_INNKeyPress(Sender: TObject; var Key: Char);
+    procedure E_KPPKeyPress(Sender: TObject; var Key: Char);
+    procedure E_OgrnKeyPress(Sender: TObject; var Key: Char);
+    procedure SaveBtnClick(Sender: TObject);
+    procedure E_DiscountKeyPress(Sender: TObject; var Key: Char);
+    procedure E_HoldKeyPress(Sender: TObject; var Key: Char);
+    procedure E_INNExit(Sender: TObject);
+    procedure E_AddressKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+    id_price:Integer;
+    name_price:String;
+    E_Phone:TMyMaskEdit;
+    EditHolding_Flag:Boolean;
+    procedure GetValues;
+    procedure FindStdPrice;
+  public
+    { Public declarations }
+    function ZayvExist(FStr:String):Boolean;
+
+  end;
+
+var
+  RegTiAdd_F: TRegTiAdd_F;
+
+implementation
+uses dmunit, main;
+{$R *.dfm}
+
+procedure TRegTiAdd_F.GetValues;
+begin
+    E_Zayv.Clear;
+    E_Address.Clear;
+    E_INN.Clear;
+    E_KPP.Clear;
+    E_Ogrn.Clear;
+    E_Bank.Clear;
+    E_BIK.Clear;
+    E_CountR.Clear;
+    E_CountKor.Clear;
+    Rg_Type.ItemIndex:=0;
+end;
+
+procedure TRegTiAdd_F.FindStdPrice;
+begin
+end;
+
+procedure TRegTiAdd_F.FormShow(Sender: TObject);
+begin
+GetValues;
+CancBtn.SetFocus;
+end;
+
+procedure TRegTiAdd_F.E_ZayvKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+       begin
+         SelectNext(Sender as TWinControl, True, True);
+         Key := #0;
+       end;
+
+end;
+
+procedure TRegTiAdd_F.E_AddressKeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+       begin
+         SelectNext(Sender as TWinControl, True, True);
+         Key := #0;
+       end;
+
+end;
+
+procedure TRegTiAdd_F.E_INNKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+       begin
+         SelectNext(Sender as TWinControl, True, True);
+         Key := #0;
+       end;
+
+end;
+
+procedure TRegTiAdd_F.E_KPPKeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+       begin
+         SelectNext(Sender as TWinControl, True, True);
+         Key := #0;
+       end;
+
+end;
+
+procedure TRegTiAdd_F.E_OgrnKeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+       begin
+         SelectNext(Sender as TWinControl, True, True);
+         Key := #0;
+       end;
+
+end;
+
+procedure TRegTiAdd_F.SaveBtnClick(Sender: TObject);
+var
+  S:String;
+  Mes : String;
+begin
+  if Length(Trim(E_Zayv.Text))=0 then
+    begin
+      Application.MessageBox('Поле "Наименование организации" дожно быть заполнено.','Внимание',MB_ICONWARNING+MB_OK);
+      Exit;
+    end;
+
+try
+ try
+  s:='insert into  reg_ti (ZAYV,ADRESS,INN,KPP,OGRN,BANK,SCHET_R,KORSCH_R,BIK,TYPE) ' ;
+  s:=s+'  values (:p0,:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9) ';
+  DMOd.Qry_Add.Close;
+  DMOd.Qry_Add.Sql.Clear;
+  DMOd.Qry_Add.Sql.Add(s);
+  if not DMOd.Qry_Add.Transaction.InTransaction then DMOd.Qry_Add.Transaction.StartTransaction; //start tran
+  DMOd.Qry_Add.Params[0].AsString:=Trim(E_Zayv.Text);
+  DMOd.Qry_Add.Params[1].AsString:=Trim(E_Address.Text);
+  DMOd.Qry_Add.Params[2].AsString:=Trim(E_Inn.Text);
+  DMOd.Qry_Add.Params[3].AsString:=Trim(E_KPP.Text);
+  DMOd.Qry_Add.Params[4].AsString:=Trim(E_Ogrn.Text);
+  DMOd.Qry_Add.Params[5].AsString:=Trim(E_Bank.Text);
+  DMOd.Qry_Add.Params[6].AsString:=Trim(E_CountR.Text);
+  DMOd.Qry_Add.Params[7].AsString:=Trim(E_CountKor.Text);
+  DMOd.Qry_Add.Params[8].AsString:=Trim(E_BIK.Text);
+  if Rg_Type.ItemIndex = 0  then
+     DMOd.Qry_Add.Params[9].AsInteger:= 0
+    else
+     DMOd.Qry_Add.Params[9].AsInteger:= 1;
+  DMOd.Qry_Add.ExecQuery;
+  DMOd.Qry_Add.Transaction.Commit;
+  ModalResult:=mrOk;
+  DMOd.Qry_Regti.Close;
+  DMOd.Qry_Regti.Open;
+  Dmod.Qry_RegTi.Locate('ZAYV',E_Zayv.Text,[]);
+  except
+        on E: EdatabaseError do
+          begin
+           DMOd.Qry_Add.Transaction.Rollback;
+           ShowMessage(E.Message);
+           Exit;
+          end;
+ end;
+
+finally
+  if DMOd.Qry_Add.Transaction.InTransaction then DMOd.Qry_Add.Transaction.Rollback;
+end;
+end;
+
+
+function TRegTiAdd_F.ZayvExist(FStr: String): Boolean;
+begin
+
+end;
+
+procedure TRegTiAdd_F.E_DiscountKeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+       begin
+         SelectNext(Sender as TWinControl, True, True);
+         Key := #0;
+       end;
+
+end;
+
+procedure TRegTiAdd_F.E_HoldKeyPress(Sender: TObject; var Key: Char);
+begin
+       if Key = #13 then
+       begin
+         SelectNext(Sender as TWinControl, True, True);
+         Key := #0;
+       end;
+
+end;
+
+procedure TRegTiAdd_F.E_INNExit(Sender: TObject);
+var
+ Mes:String;
+begin
+ If Length (E_Inn.Text) < 10 then
+  begin
+   ShowMessage ('ИНН должен быть не менее 10 цифр!');
+   Exit;
+  end;
+ Mes:='Фирма с таким ИНН уже существует!';
+ if ZayvExist(E_Inn.Text) then Application.MessageBox(PChar(Mes),'Внимание',mb_IconWarning+mb_Ok);
+end;
+
+{ TMyMaskEdit }
+
+procedure TMyMaskEdit.ValidateError;
+begin
+  Application.MessageBox('Ошибка ввода. Нажмите Esc для отмены.','Внимание',mb_ok+MB_ICONERROR);
+end;
+
+end.

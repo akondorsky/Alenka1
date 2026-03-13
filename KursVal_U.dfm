@@ -1,0 +1,96 @@
+object KursVal_F: TKursVal_F
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = #1050#1091#1088#1089#1099' '#1074#1072#1083#1102#1090
+  ClientHeight = 409
+  ClientWidth = 242
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnClose = FormClose
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 242
+    Height = 29
+    ButtonHeight = 28
+    ButtonWidth = 28
+    Caption = 'ToolBar1'
+    Images = PagesDlg.IL_BtnsShip
+    TabOrder = 0
+    object Btn_Add: TToolButton
+      Left = 0
+      Top = 0
+      Hint = #1059#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1090#1077#1082#1091#1097#1080#1081' '#1082#1091#1088#1089
+      Caption = 'Btn_Add'
+      ImageIndex = 6
+      ParentShowHint = False
+      ShowHint = True
+      OnClick = Btn_AddClick
+    end
+  end
+  object Grid_KursVal: TDBGridEh
+    Left = 0
+    Top = 29
+    Width = 242
+    Height = 355
+    Align = alClient
+    DataSource = DMod.DS_KursVal
+    DynProps = <>
+    Flat = True
+    TabOrder = 1
+    TitleParams.RowLines = 2
+    Columns = <
+      item
+        CellButtons = <>
+        DynProps = <>
+        EditButtons = <>
+        FieldName = 'DT'
+        Footers = <>
+        Title.Alignment = taCenter
+        Title.Caption = #1044#1072#1090#1072
+        Width = 88
+      end
+      item
+        CellButtons = <>
+        DynProps = <>
+        EditButtons = <>
+        FieldName = 'KURSUSD'
+        Footers = <>
+        Title.Alignment = taCenter
+        Title.Caption = #1050#1091#1088#1089' USD'
+        Width = 122
+      end>
+    object RowDetailData: TRowDetailPanelControlEh
+    end
+  end
+  object DBNavigator1: TDBNavigator
+    Left = 0
+    Top = 384
+    Width = 242
+    Height = 25
+    DataSource = DMod.DS_KursVal
+    VisibleButtons = [nbDelete, nbEdit, nbPost, nbCancel]
+    Align = alBottom
+    Hints.Strings = (
+      #1042' '#1085#1072#1095#1072#1083#1086
+      #1053#1072#1079#1072#1076
+      #1042#1087#1077#1088#1077#1076
+      #1042' '#1082#1086#1085#1077#1094
+      #1057#1086#1093#1088#1072#1085#1080#1090#1100
+      #1054#1090#1084#1077#1085#1080#1090#1100
+      #1054#1073#1085#1086#1074#1080#1090#1100)
+    ParentShowHint = False
+    ShowHint = False
+    TabOrder = 2
+  end
+end

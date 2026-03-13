@@ -1,0 +1,141 @@
+unit Unit_login1;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Mask, StdCtrls, DBCtrlsEh,  ExtCtrls, DBCtrls, Grids,
+  DBGrids,  DBGridEh, DBLookupEh, Buttons, DB, ibx.IBCustomDataSet, ibx.IBQuery;
+
+type
+  TFormLogin = class(TForm)
+    Image1: TImage;
+    E_Pwd: TMaskEdit;
+
+    SaveBtn: TBitBtn;
+    CancBtn: TBitBtn;
+    Label1: TLabel;
+    Label2: TLabel;
+    E_Login: TComboBox;
+    qry: TIBQuery;
+    procedure E_LoginCloseUp(Sender: TObject);
+    procedure SaveBtnClick(Sender: TObject);
+    procedure E_PwdKeyPress(Sender: TObject; var Key: Char);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure CancBtnClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure E_LoginRightButtonClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormLogin: TFormLogin;
+  Close_Flag:Boolean;
+
+implementation
+uses dmunit, main, Unit_sprav_ship, Unit_users;
+{$R *.dfm}
+
+procedure TFormLogin.E_LoginCloseUp(Sender: TObject);
+begin
+E_Pwd.SetFocus;
+end;
+
+procedure TFormLogin.SaveBtnClick(Sender: TObject);
+begin
+  if qry.Active then qry.Close;
+  qry.SQL.Clear;
+  qry.SQL.Add('select * from users where LOG_NAME=:p0 and PWD_STRING=:p1');
+  qry.Params[0].AsString:=E_Login.Text;
+  qry.Params[1].AsString:=E_Pwd.Text;
+  qry.Open;
+
+  if  not qry.Fields[0].IsNull then
+    begin
+        User :=  qry.FieldByName('LOG_NAME').asString;
+        Role :=  qry.FieldByName('ROLE').asString;
+        Id_USER:=  qry.FieldByName('ID_NUM').asInteger;
+  //     PRICECALC:=DMOD.Qry_Settings.FieldByName('PRICECALC').AsInteger;
+  //          qry.Open;
+  //          KURSUSD:=qry.FieldByName('KURSUSD').AsCurrency;
+        FormLogin.Close;
+        Close_Flag:=False;
+        ModalResult:=mrOk;
+    end
+   else
+    begin
+        MessageDlg ('Неверный пароль или Имя пользователя', mtError, [mbOK], 0);
+        E_pwd.SetFocus;
+        ModalResult:=mrNone;
+        Exit;
+    end;
+
+end;
+
+procedure TFormLogin.FormShow(Sender: TObject);
+begin
+  Close_Flag:=True;
+  if not qry.Active then qry.Open;
+  while not qry.Eof do
+    begin
+      E_Login.Items.Add(qry.Fields[0].AsString);
+      qry.Next;
+    end;
+  if E_Login.Items.Count <> 0 then E_Login.ItemIndex:=0;
+  E_Login.SetFocus;
+end;
+
+
+procedure TFormLogin.E_PwdKeyPress(Sender: TObject; var Key: Char);
+begin
+     if Key = #13 then
+       begin
+         SelectNext(Sender as TWinControl, True, True);
+         Key := #0;
+       end;
+end;
+
+procedure TFormLogin.E_LoginRightButtonClick(Sender: TObject);
+begin
+   if FormUsers.ShowModal = mrOk then
+    begin
+      E_Login.Text:=FormUsers.DBGridEh1.DataSource.DataSet.FieldByName('LOG_NAME').AsString;
+    end;
+end;
+
+procedure TFormLogin.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+if Close_Flag then Application.Terminate;
+end;
+
+procedure TFormLogin.CancBtnClick(Sender: TObject);
+begin
+Application.Terminate;
+end;
+
+procedure TFormLogin.FormCreate(Sender: TObject);
+   var
+      frm: HRGN;
+        begin
+{          Try
+             DMod.Qry_Users.Open;
+           except
+            MessageDlg ('Ошибка базы данных', mtError, [mbOK], 0);
+            Application.Terminate;
+          end; //end try  }
+
+         frm := CreateRoundRectRgn(0, 0, Width-1, Height-1,12,12);
+         SetWindowRgn(Handle, frm, FALSE);
+
+         // Освобождение созданных регионов
+         DeleteObject(frm);
+       end;
+
+
+end.
+
+

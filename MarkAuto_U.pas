@@ -1,0 +1,51 @@
+unit MarkAuto_U;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DBGridEhGrouping, GridsEh, DBGridEh, ToolWin, ComCtrls, ActnList,
+  PlatformDefaultStyleActnCtrls, ActnMan, ToolCtrlsEh, DBGridEhToolCtrls,
+  DynVarsEh, DBAxisGridsEh, System.Actions, EhLibVCL;
+
+type
+  TMarkAuto_F = class(TForm)
+    DBGridEh1: TDBGridEh;
+    ToolBar1: TToolBar;
+    ActionManager1: TActionManager;
+    A_MarkAdd: TAction;
+    A_MarkEdit: TAction;
+    ToolButton1: TToolButton;
+    procedure A_MarkAddExecute(Sender: TObject);
+    procedure A_MarkEditExecute(Sender: TObject);
+    procedure DBGridEh1DblClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  MarkAuto_F: TMarkAuto_F;
+
+implementation
+
+{$R *.dfm}
+uses dmunit,main, MarkAutoAdd_U;
+
+procedure TMarkAuto_F.A_MarkAddExecute(Sender: TObject);
+begin
+ MarkAutoAdd_F.ShowModal;
+end;
+
+procedure TMarkAuto_F.A_MarkEditExecute(Sender: TObject);
+begin
+//
+end;
+
+procedure TMarkAuto_F.DBGridEh1DblClick(Sender: TObject);
+begin
+  ModalResult:=mrOk;
+end;
+
+end.

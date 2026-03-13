@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="4.11.4" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="По умолчанию" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="40798,428942581" ReportOptions.Description.Text="" ReportOptions.LastChange="40967,5342296412" ScriptLanguage="PascalScript" ScriptText.Text="begin&#13;&#10;&#13;&#10;end." PropData="044C65667403580303546F7002700844617461736574730101062E20446174615365743D226672785265705F4E6F6D2220446174615365744E616D653D226672785265705F4E6F6D220000095661726961626C65730101060B204E616D653D22204D79220001060B204E616D653D22645F31220001060B204E616D653D22645F32220000055374796C650100">
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxReportPage Name="Page1" PaperWidth="210" PaperHeight="297" PaperSize="9" LeftMargin="10" RightMargin="10" TopMargin="10" BottomMargin="10" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="">
+    <TfrxReportTitle Name="ReportTitle1" Height="56,69295" Left="0" Top="18,89765" Width="718,1107">
+      <TfrxMemoView Name="Memo1" Left="0" Top="26,55906" Width="718,1107" Height="18,89765" ShowHint="False" AutoWidth="True" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="1" HAlign="haCenter" ParentFont="False" Text="Перечень номенклатуры в магазине-складе"/>
+      <TfrxMemoView Name="Memo2" Left="606,62245" Top="0" Width="94,48825" Height="18,89765" ShowHint="False" AutoWidth="True" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" HAlign="haRight" ParentFont="False" Text="Сформировано [Date] [Time]"/>
+    </TfrxReportTitle>
+    <TfrxMasterData Name="MasterData1" Height="22,67718" Left="0" Top="196,53556" Width="718,1107" ColumnWidth="0" ColumnGap="0" DataSet="frxRep_Nom" DataSetName="frxRep_Nom" KeepHeader="True" RowCount="0" Stretched="True">
+      <TfrxMemoView Name="Memo6" Left="0" Top="0" Width="36,66141732" Height="22,67718" ShowHint="False" StretchMode="smMaxHeight" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="False" Text="[Line#]"/>
+      <TfrxMemoView Name="Memo8" Left="36,66141732" Top="0" Width="306,14193" Height="22,67718" ShowHint="False" StretchMode="smMaxHeight" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="0" Frame.Typ="15" ParentFont="False" Text="[frxRep_Nom.&#34;NAME&#34;]"/>
+      <TfrxMemoView Name="Memo9" Left="343,43321" Top="0" Width="94,48825" Height="22,67718" ShowHint="False" StretchMode="smMaxHeight" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="0" Frame.Typ="15" ParentFont="False" Text="[frxRep_Nom.&#34;MARKA&#34;]"/>
+      <TfrxMemoView Name="Memo10" Left="514,77165354" Top="0" Width="52,91342" Height="22,67718" ShowHint="False" StretchMode="smMaxHeight" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="False" Text="[frxRep_Nom.&#34;KOL&#34;]"/>
+      <TfrxMemoView Name="Memo11" Left="567,68503937" Top="0" Width="143,62214" Height="22,67718" ShowHint="False" StretchMode="smMaxHeight" DisplayFormat.FormatStr="%2.2n" DisplayFormat.Kind="fkNumeric" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haRight" ParentFont="False" Text="[frxRep_Nom.&#34;SUM_TOV&#34;]"/>
+      <TfrxMemoView Name="Memo12" Left="438,04724409" Top="0" Width="76,72439236" Height="22,67718" ShowHint="False" StretchMode="smMaxHeight" DisplayFormat.FormatStr="%2.2n" DisplayFormat.Kind="fkNumeric" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haRight" ParentFont="False" Text="[frxRep_Nom.&#34;PRICE&#34;]"/>
+    </TfrxMasterData>
+    <TfrxFooter Name="Footer1" Height="34,01577" Left="0" Top="241,88992" Width="718,1107">
+      <TfrxMemoView Name="Memo17" Left="0" Top="0" Width="567,685039370079" Height="34,0157480314961" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="1" Frame.Typ="15" HAlign="haRight" ParentFont="False" VAlign="vaCenter" Text="Итого на сумму:"/>
+      <TfrxMemoView Name="Memo18" Left="567,68503937" Top="0" Width="143,62214" Height="34,01577" ShowHint="False" StretchMode="smMaxHeight" DisplayFormat.FormatStr="%2.2m" DisplayFormat.Kind="fkNumeric" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="1" Frame.Typ="15" HAlign="haRight" ParentFont="False" VAlign="vaCenter" Text="[SUM(&#60;frxRep_Nom.&#34;SUM_TOV&#34;&#62;,MasterData1)]"/>
+    </TfrxFooter>
+    <TfrxPageHeader Name="PageHeader1" Height="37,7953" Left="0" Top="98,26778" Width="718,1107">
+      <TfrxMemoView Name="Memo19" Left="0" Top="0" Width="36,66141732" Height="37,7953" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="1" Frame.Typ="15" HAlign="haCenter" ParentFont="False" Text="№ п/п"/>
+      <TfrxMemoView Name="Memo20" Left="36,66141732" Top="0" Width="306,14193" Height="37,7953" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="1" Frame.Typ="15" HAlign="haCenter" ParentFont="False" Text="Наименование&#13;&#10;товара"/>
+      <TfrxMemoView Name="Memo21" Left="343,43321" Top="0" Width="94,48825" Height="37,7953" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="1" Frame.Typ="15" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="Код"/>
+      <TfrxMemoView Name="Memo23" Left="514,771653543307" Top="0" Width="52,91342" Height="37,7953" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="1" Frame.Typ="15" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="Кол-во"/>
+      <TfrxMemoView Name="Memo24" Left="567,68503937" Top="0" Width="143,62214" Height="37,7953" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="1" Frame.Typ="15" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="Сумма"/>
+      <TfrxMemoView Name="Memo25" Left="438,047244094488" Top="0" Width="76,72439236" Height="37,7953" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="1" Frame.Typ="15" HAlign="haCenter" ParentFont="False" VAlign="vaCenter" Text="Цена &#13;&#10;оптовая"/>
+    </TfrxPageHeader>
+    <TfrxPageFooter Name="PageFooter1" Height="18,89765" Left="0" Top="336,37817" Width="718,1107">
+      <TfrxMemoView Name="Memo3" Left="608,70903" Top="0" Width="30,23624" Height="18,89765" ShowHint="False" Text="Стр."/>
+      <TfrxMemoView Name="Memo4" Left="642,7248" Top="0" Width="18,89765" Height="18,89765" ShowHint="False" Text="[Page#]"/>
+      <TfrxMemoView Name="Memo5" Left="665,40198" Top="0" Width="18,89765" Height="18,89765" ShowHint="False" Text="из"/>
+      <TfrxMemoView Name="Memo7" Left="688,07916" Top="0" Width="26,45671" Height="18,89765" ShowHint="False" Text="[TotalPages#]"/>
+    </TfrxPageFooter>
+  </TfrxReportPage>
+</TfrxReport>

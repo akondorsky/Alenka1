@@ -1,0 +1,2156 @@
+unit Main;
+
+interface
+
+uses Windows, Classes, Graphics, Forms, Controls, StdCtrls,
+  Buttons, ComCtrls, ExtCtrls, DBCtrls, Grids, DBGrids,Dialogs, Menus, Mask,Db,
+  DBGridEhGrouping, GridsEh, DBGridEh, ImgList, PlatformDefaultStyleActnCtrls,
+  ActnList, ActnMan, frxClass, frxDBSet, frxGradient, PropFilerEh, PropStorageEh,
+  ToolWin,  frxExportPDF,sumprops, ToolCtrlsEh, DBGridEhToolCtrls, DynVarsEh,
+  DBAxisGridsEh ,DateUtils,ibx.IBSql,ibx.IbQuery,frxBarcode, System.Actions,
+  frxExportBaseDialog, System.ImageList, EhLibVCL;
+
+type
+  TPagesDlg = class(TForm)
+    Panel1: TPanel;
+    PopupMenu1: TPopupMenu;
+    Item_VZakaz: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    PopupMenu2: TPopupMenu;
+    N5: TMenuItem;
+    N6: TMenuItem;
+    Item_ZakazClear: TMenuItem;
+    N8: TMenuItem;
+    PMn_Zayav: TPopupMenu;
+    N9: TMenuItem;
+    PgCtrl_Main: TPageControl;
+    KatSheet: TTabSheet;
+    ZakSheet: TTabSheet;
+    Panel6: TPanel;
+    DBNavigator2: TDBNavigator;
+    Panel9: TPanel;
+    SheetSale: TTabSheet;
+    Panel11: TPanel;
+    Label6: TLabel;
+    Label7: TLabel;
+    ShowSalesBtn: TButton;
+    Panel12: TPanel;
+    Panel13: TPanel;
+    DateEdit1: TDateTimePicker;
+    DateEdit2: TDateTimePicker;
+    Grid_Sale: TDBGridEh;
+    Panel3: TPanel;
+    Panel7: TPanel;
+    RGrp_Find: TRadioGroup;
+    Panel5: TPanel;
+    Grid_Kat: TDBGridEh;
+    StatusBar1: TStatusBar;
+    Panel8: TPanel;
+    DBNavigator1: TDBNavigator;
+    SumTovBtn: TSpeedButton;
+    AdBtn: TSpeedButton;
+    IL_Katalog1: TImageList;
+    PopMn_Master: TPopupMenu;
+    N10: TMenuItem;
+    N11: TMenuItem;
+    IL_Master: TImageList;
+    AllrecBtn: TSpeedButton;
+    RefrBtn: TSpeedButton;
+    EditBtn: TSpeedButton;
+    E_FindBtn: TButtonedEdit;
+    IL_Btns: TImageList;
+    Panel15: TPanel;
+    DBMemo1: TDBMemo;
+    Grid_Zak: TDBGridEh;
+    FR1: TfrxReport;
+    frxRep_Zak: TfrxDBDataset;
+    frxRep_Ship: TfrxDBDataset;
+    frxGradientObject1: TfrxGradientObject;
+    Ref_ZakBtn: TSpeedButton;
+    PropStorageEh1: TPropStorageEh;
+    RegPropStorageManEh1: TRegPropStorageManEh;
+    TabShippers: TTabSheet;
+    Grid_Ship: TDBGridEh;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    IL_BtnsShip: TImageList;
+    ToolButton3: TToolButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    E_Ship: TButtonedEdit;
+    Label3: TLabel;
+    frxRep_sale: TfrxDBDataset;
+    DBNavigator3: TDBNavigator;
+    SpeedButton2: TSpeedButton;
+    RefSaleBtn: TSpeedButton;
+    ToolButton4: TToolButton;
+    ToolButton2: TToolButton;
+    Ch_Zak: TCheckBox;
+    SpeedButton1: TSpeedButton;
+    frxPDFExport1: TfrxPDFExport;
+    PrintNombtn: TSpeedButton;
+    frxRep_Nom: TfrxDBDataset;
+    N12: TMenuItem;
+    PopIt_CreateCashMemo: TMenuItem;
+    frxRepCash: TfrxDBDataset;
+    frxSettings: TfrxDBDataset;
+    PopMn_Cash: TPopupMenu;
+    N13: TMenuItem;
+    Splitter1: TSplitter;
+    Panel2: TPanel;
+    CategoryPanelGroup1: TCategoryPanelGroup;
+    CP_ActItems: TCategoryPanel;
+    Grid_ActItems: TDBGridEh;
+    CP_ActHead: TCategoryPanel;
+    Grid_ActHead: TDBGridEh;
+    N14: TMenuItem;
+    TabService: TTabSheet;
+    ToolBar2: TToolBar;
+    ToolButton5: TToolButton;
+    Panel10: TPanel;
+    ActionManager1: TActionManager;
+    A_OrderAdd: TAction;
+    ToolButton6: TToolButton;
+    A_SpravService: TAction;
+    PopMn_SpravService: TPopupMenu;
+    Spr_N1: TMenuItem;
+    Spr_N2: TMenuItem;
+    Spr_N3: TMenuItem;
+    Spr_N4: TMenuItem;
+    Splitter2: TSplitter;
+    Panel4: TPanel;
+    Panel14: TPanel;
+    Grid_Order: TDBGridEh;
+    Splitter3: TSplitter;
+    Panel16: TPanel;
+    Grid_Works: TDBGridEh;
+    Label4: TLabel;
+    frxDBOrder: TfrxDBDataset;
+    frxDBOrderAuto: TfrxDBDataset;
+    frxDBClientParts: TfrxDBDataset;
+    Panel17: TPanel;
+    Label5: TLabel;
+    Label8: TLabel;
+    Grid_Auto: TDBGridEh;
+    A_WorkComplAdd: TAction;
+    PopMn_WorkCompl: TPopupMenu;
+    N17: TMenuItem;
+    A_WorkComplEdit: TAction;
+    N18: TMenuItem;
+    ToolButton7: TToolButton;
+    A_PrintOrder: TAction;
+    PopMn_PrintOrder: TPopupMenu;
+    Pr_N1: TMenuItem;
+    Pr_N2: TMenuItem;
+    A_WorkCompDel: TAction;
+    N1: TMenuItem;
+    ToolButton8: TToolButton;
+    A_OrderEdit: TAction;
+    A_StatusWork: TAction;
+    A_StatusCompleted: TAction;
+    PopMn_Order: TPopupMenu;
+    N7: TMenuItem;
+    N15: TMenuItem;
+    frxDBWorksCompl: TfrxDBDataset;
+    PopMn_PartsZak: TPopupMenu;
+    A_PartZakAdd: TAction;
+    A_PartZakEdit: TAction;
+    A_Partzakdel: TAction;
+    WorkDate1: TDateTimePicker;
+    Label10: TLabel;
+    Label9: TLabel;
+    SetWorkInterval_Btn: TSpeedButton;
+    WorkDate2: TDateTimePicker;
+    Rg_order: TRadioGroup;
+    N16: TMenuItem;
+    N19: TMenuItem;
+    N20: TMenuItem;
+    N21: TMenuItem;
+    N22: TMenuItem;
+    EditIt: TMenuItem;
+    MainMenu1: TMainMenu;
+    Grid_Parts: TDBGridEh;
+    Splitter4: TSplitter;
+    Splitter5: TSplitter;
+    Splitter6: TSplitter;
+    Label11: TLabel;
+    A_ActWorksPrint: TAction;
+    N4: TMenuItem;
+    N23: TMenuItem;
+    N24: TMenuItem;
+    A_RepSum: TAction;
+    A_RepEmpl: TAction;
+    FR_ServiceReports: TfrxReport;
+    frx_RepEmplDetail: TfrxDBDataset;
+    MnSettings: TMenuItem;
+    MnVal: TMenuItem;
+    A_ValutaRatio: TAction;
+    MnPriceCalc: TMenuItem;
+    A_KatalogRecDel: TAction;
+    N25: TMenuItem;
+    A_AtolKKM: TAction;
+    N26: TMenuItem;
+    A_CashPrint: TAction;
+    N27: TMenuItem;
+    N28: TMenuItem;
+    frxDBLabel: TfrxDBDataset;
+    PopMn_Items: TPopupMenu;
+    N29: TMenuItem;
+    MainItem_Regti: TMenuItem;
+    N30: TMenuItem;
+    PopItem_cards: TMenuItem;
+    N31: TMenuItem;
+    PopMn_Rev: TMenuItem;
+    frxRepReviziya: TfrxDBDataset;
+    frxDBReviziaName: TfrxDBDataset;
+    PopMN_ReviziaName: TMenuItem;
+    PopMn_ReviziaShipper: TMenuItem;
+    ItLabelSize: TMenuItem;
+     procedure AdBtnClick(Sender: TObject);
+    procedure EdBtnClick(Sender: TObject);
+    procedure Item_VZakazClick(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure MaskEdit1Exit(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure N2Click(Sender: TObject);
+    procedure ValMaskChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure PopupMenu1Popup(Sender: TObject);
+    procedure N5Click(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure N9Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
+    procedure Grid_KatKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
+    procedure Grid_WorksDblClick(Sender: TObject);
+    procedure Ref_ZakBtnClick(Sender: TObject);
+    procedure RefrBtnClick(Sender: TObject);
+    procedure AllrecBtnClick(Sender: TObject);
+    procedure SumTovBtnClick(Sender: TObject);
+    procedure EditBtnClick(Sender: TObject);
+    procedure E_FindBtnRightButtonClick(Sender: TObject);
+    procedure Grid_KatDblClick(Sender: TObject);
+    procedure Grid_KatDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumnEh; State: TGridDrawState);
+    procedure N4Click(Sender: TObject);
+    procedure Item_ZakazClearClick(Sender: TObject);
+    procedure E_FindBtnKeyPress(Sender: TObject; var Key: Char);
+    procedure ShowSalesBtnClick(Sender: TObject);
+    procedure ToolButton1Click(Sender: TObject);
+    procedure ToolButton3Click(Sender: TObject);
+    procedure Grid_ShipDblClick(Sender: TObject);
+    procedure E_ShipRightButtonClick(Sender: TObject);
+    procedure FR1GetValue(const VarName: string; var Value: Variant);
+    procedure RefSaleBtnClick(Sender: TObject);
+    procedure ToolButton2Click(Sender: TObject);
+    procedure PrintNombtnClick(Sender: TObject);
+    procedure E_FindBtnEnter(Sender: TObject);
+    procedure FormPaint(Sender: TObject);
+    procedure PopIt_CreateCashMemoClick(Sender: TObject);
+    procedure N14Click(Sender: TObject);
+    procedure A_OrderAddExecute(Sender: TObject);
+    procedure ToolButton6Click(Sender: TObject);
+    procedure Spr_N1Click(Sender: TObject);
+    procedure A_SpravServiceExecute(Sender: TObject);
+    procedure Spr_N2Click(Sender: TObject);
+    procedure Spr_N3Click(Sender: TObject);
+    procedure Spr_N4Click(Sender: TObject);
+    procedure A_WorkComplAddExecute(Sender: TObject);
+    procedure A_WorkComplEditExecute(Sender: TObject);
+    procedure Pr_N1Click(Sender: TObject);
+    procedure A_WorkCompDelExecute(Sender: TObject);
+    procedure A_OrderEditExecute(Sender: TObject);
+    procedure A_StatusWorkExecute(Sender: TObject);
+    procedure A_StatusCompletedExecute(Sender: TObject);
+    procedure Grid_OrderDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumnEh; State: TGridDrawState);
+    procedure Pr_N2Click(Sender: TObject);
+    procedure A_PartZakAddExecute(Sender: TObject);
+    procedure SetWorkInterval_BtnClick(Sender: TObject);
+    procedure A_OrderEditUpdate(Sender: TObject);
+    procedure A_StatusCompletedUpdate(Sender: TObject);
+    procedure A_StatusWorkUpdate(Sender: TObject);
+    procedure A_WorkComplEditUpdate(Sender: TObject);
+    procedure A_WorkCompDelUpdate(Sender: TObject);
+    procedure A_WorkComplAddUpdate(Sender: TObject);
+    procedure A_PartZakAddUpdate(Sender: TObject);
+    procedure A_PartzakdelUpdate(Sender: TObject);
+    procedure A_PartzakdelExecute(Sender: TObject);
+    procedure A_PartZakEditUpdate(Sender: TObject);
+    procedure N21Click(Sender: TObject);
+    procedure N22Click(Sender: TObject);
+    procedure EditItClick(Sender: TObject);
+    procedure A_PartZakEditExecute(Sender: TObject);
+    procedure Grid_PartsDblClick(Sender: TObject);
+    procedure Grid_OrderDblClick(Sender: TObject);
+    procedure Grid_AutoDblClick(Sender: TObject);
+    procedure A_ActWorksPrintExecute(Sender: TObject);
+    procedure A_ActWorksPrintUpdate(Sender: TObject);
+    procedure A_RepSumExecute(Sender: TObject);
+    procedure A_RepEmplExecute(Sender: TObject);
+    procedure FR_ServiceReportsGetValue(const VarName: string;
+      var Value: Variant);
+    procedure A_ValutaRatioExecute(Sender: TObject);
+    procedure MnPriceCalcClick(Sender: TObject);
+    procedure A_KatalogRecDelExecute(Sender: TObject);
+    procedure A_KatalogRecDelUpdate(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure A_AtolKKMExecute(Sender: TObject);
+    procedure A_CashPrintExecute(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure N28Click(Sender: TObject);
+    procedure N29Click(Sender: TObject);
+    procedure PopItem_cardsClick(Sender: TObject);
+    procedure N30Click(Sender: TObject);
+    procedure PopMn_RevClick(Sender: TObject);
+    procedure PopMN_ReviziaNameClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure ItLabelSizeClick(Sender: TObject);
+
+  private
+    { Private declarations }
+    MasterQry:String;  // наименование мастер таблицы для номенклатуры
+    Ship_Id:Integer;
+
+    function Del_Space(S:String):String;
+    function DelLastSymbol(Text:String;S:String):String;
+    procedure DelCashMemo;
+    procedure OpenService;
+    procedure SetOrderFilter;
+    procedure CheckNameOfkatalog;
+    function CalcBarcodeEan13CheckSum(barcode: string): string;
+  public
+    { Public declarations }
+     FocusedControl:TControl;
+     procedure Refresh_Katalog;
+     procedure Refresh_Zakaz;
+     function GenBarCodeEan13:String;
+  end;
+
+const
+// роли
+  MAIN_SELLER:String = '0'; //админ - старший продавец
+  ORDINARY_SELLER:String = '1'; //обычный продавец
+
+var
+  PagesDlg: TPagesDlg;
+  R:TBookMark;
+  F:textFile;
+  InFile,InAlias,InCaption:String;
+  User,Role,RunMode:String;
+  CASH_PORT:String;
+  Id_user:Integer;
+  KURSUSD:Currency;
+  PRICECALC:Byte;// 0 - цена рублевая 1 - цена расчетная от курса доллара
+  DISCOUNT_CARD:Byte; // скидка по карте
+  ID_CARD:SmallInt;
+
+implementation
+Uses SysUtils,DMUnit, Add, Edit, Kol, Print_Sale, RepUnit, Kol2,
+  Unit_prihod, Unit_addship, Unit_edship, Unit_sprav_ship,unit_login1,
+  Unit_printnom, Client_U, Works_U, MarkAuto_U, Empl_U, OrderAdd_U,
+  WorkComplAdd_U, WorkComplEdit_U, OrderEdit_U, PartZakAdd_U, SelDb_U,
+  PartZakEdit_U, Seldate_U, KursVal_U, SetUsdPrice_U,myutils,Settings_U,KolRet_U,
+  Regti_U, SelectTypePay_U, Cards_U, Discount_U,AtolV10_U;
+{$R *.DFM}
+
+
+procedure TPagesDlg.AdBtnClick(Sender: TObject);
+begin
+  ADDForm.ShowModal;
+end;
+
+
+procedure TPagesDlg.EdBtnClick(Sender: TObject);
+begin
+EdForm.Show;
+end;
+
+
+
+procedure TPagesDlg.EditBtnClick(Sender: TObject);
+ var
+  Id_Rec,Answer:Integer;
+  Mes,S:String;
+begin
+  Id_Rec:=Grid_Kat.DataSource.DataSet.FieldByName('NN').asInteger;
+//  Id_Rec:=DBGridEh2.DataSource.DataSet.FieldByName('NN').asInteger;
+  S:='update katalog set tran=0 where nn = :p0';
+  DMod.Qry_Add.Close;
+  DMod.Qry_Add.SQL.Clear;
+  DMod.Qry_Add.SQL.Add(s);
+  Repeat
+     try
+       DMod.Refresh_Qkatalog;
+       IF not DMod.Qry_Add.Transaction.InTransaction  then DMod.Qry_Add.Transaction.StartTransaction; // стартуем транзакцию и блокируем запись
+       DMod.Qry_Add.Params[0].AsInteger:=Id_Rec;
+       DMod.Qry_Add.ExecQuery;
+       Answer:=IdOk;
+     except
+       Mes:='Сервер не может обработать данный запрос.'+#10#13;
+       Mes:=Mes+'Возможно данную запись редактирует другой пользователь.Повторите позже';
+       Application.MessageBox(Pchar(Mes),'Внимание!',Mb_IconWarning+Mb_Ok);
+       Answer:=idNo;
+       {       Answer:=Application.MessageBox(Pchar(Mes),'Внимание!',Mb_IconWarning+Mb_YesNo);
+        on E: EIBdatabeseError do
+         begin
+          ShowMessage(E.Message) ;
+         end;}
+     end;
+  Until (Answer=idOK) Or (Answer=idNo);
+ if Answer=idNo then
+   begin
+    IF DMod.Qry_Add.Transaction.InTransaction  then DMod.Qry_Add.Transaction.Rollback;
+    Exit;
+   end;
+ EdForm.ShowModal;
+end;
+
+procedure TPagesDlg.EditItClick(Sender: TObject);
+begin
+ EditBtnClick(EditBtn);
+end;
+
+procedure TPagesDlg.E_FindBtnEnter(Sender: TObject);
+begin
+  PagesDlg.FocusedControl:=Sender as TControl;
+end;
+
+procedure TPagesDlg.E_FindBtnKeyPress(Sender: TObject; var Key: Char);
+begin
+ if Key=#13 then E_FindBtnRightButtonClick(E_FindBtn);
+ 
+end;
+
+procedure TPagesDlg.E_FindBtnRightButtonClick(Sender: TObject);
+const
+  sql1:String = 'select a.*, ';
+  sql2:String = ' A.KOL*A.PRICE AS SUM_TOV,B.NAME AS SHIPPER FROM KATALOG A ';
+  sql3:String = ' left join shippers B ON a.ship_gr=b.id_num where ';
+var
+  end_sel,body_sel,s1:string;
+  List:TstringList;
+  i:Integer;
+begin
+try
+  List:=TStringList.Create;
+  case RGrp_Find.ItemIndex of
+    0:  begin
+           s1:='A.NAME';
+           body_sel := format ('  %s containing %s%s%s ',[s1,#39,trim(E_FindBtn.text),#39]);
+           end_sel :=  ' order by a.name,a.marka,a.barcode,b.name';
+        end;
+    1:  begin
+           s1:='A.MARKA';
+           end_sel := ' order by a.marka,a.name,a.barcode,b.name ';
+           body_sel := format ('  %s containing %s%s%s ',[s1,#39,trim(E_FindBtn.text),#39]);
+        end;
+    2:  begin
+           s1:='A.SHIP_GR';
+           body_sel := format ('  %s = %s ',[s1,IntToStr(Ship_Id)]);
+           end_sel := ' order by a.name,a.marka';
+        end;
+    3:  begin
+           s1:='A.BARCODE';
+           body_sel := format ('  %s containing %s%s%s ',[s1,#39,trim(E_FindBtn.text),#39]);
+           end_sel := ' order by a.barcode,a.marka,a.name,b.name ';
+        end;
+
+  end;
+
+ { case RG_type_find.ItemIndex of
+    0:  body_sel := format ('  %s = "%s"',[ s1,trim(E_FindBtn.text)]);
+    1:  body_sel := format ('  %s containing %s%s%s ',[s1,#39,trim(E_FindBtn.text),#39]);
+  end;}
+
+  List.clear;
+  List.Add(sql1+sql2+sql3);
+  List.Add(body_sel);
+  List.Add(end_sel);
+
+{       for i:=0 to List.Count - 1 do
+           Memo2.Lines.Add(List[i]);  }
+
+
+  DMod.Qkatalog.Close;
+  DMod.QKatalog.Sql.Clear;
+  for i:=0 to List.Count - 1 do
+      DMod.Qkatalog.SQL.Add(List[i]);
+  try
+    DMod.Qkatalog.Open;
+  except
+   on EdatabaseError do showmessage ('Ошибка базы данных. Возможно неправильно сформирован запрос');
+  end;
+
+finally
+  List.Free;
+end;
+
+end;
+
+
+procedure TPagesDlg.N14Click(Sender: TObject);
+begin
+ DelCashMemo;
+end;
+
+procedure TPagesDlg.Spr_N3Click(Sender: TObject);
+begin
+  MarkAuto_F.ShowModal;
+end;
+
+procedure TPagesDlg.Spr_N4Click(Sender: TObject);
+begin
+  Empl_F.ShowModal;
+end;
+
+procedure TPagesDlg.Spr_N1Click(Sender: TObject);
+begin
+ Client_F.ShowModal;
+end;
+
+procedure TPagesDlg.Item_VZakazClick(Sender: TObject);
+ var
+  Id_Rec,Answer:Integer;
+  Mes,S:String;
+begin
+  Id_Rec:=Grid_Kat.DataSource.DataSet.FieldByName('NN').asInteger;
+//  Id_Rec:=DBGridEh2.DataSource.DataSet.FieldByName('NN').asInteger;
+  S:='update katalog set tran=0 where nn = :p0';
+  DMod.Qry_Add.Close;
+  DMod.Qry_Add.SQL.Clear;
+  DMod.Qry_Add.SQL.Add(s);
+  Repeat
+     try
+       DMod.Refresh_Qkatalog;
+       IF not DMod.Qry_Add.Transaction.InTransaction  then DMod.Qry_Add.Transaction.StartTransaction; // стартуем транзакцию и блокируем запись
+       DMod.Qry_Add.Params[0].AsInteger:=Id_Rec;
+       DMod.Qry_Add.ExecQuery;
+       Answer:=IdOk;
+     except
+       Mes:='Сервер не может обработать данный запрос.'+#10#13;
+       Mes:=Mes+'Возможно данную запись редактирует другой пользователь.Повторите позже';
+       Application.MessageBox(Pchar(Mes),'Внимание!',Mb_IconWarning+Mb_Ok);
+       Answer:=idNo;
+       {       Answer:=Application.MessageBox(Pchar(Mes),'Внимание!',Mb_IconWarning+Mb_YesNo);
+        on E: EIBdatabeseError do
+         begin
+          ShowMessage(E.Message) ;
+         end;}
+     end;
+  Until (Answer=idOK) Or (Answer=idNo);
+ if Answer=idNo then
+   begin
+    IF DMod.Qry_Add.Transaction.InTransaction  then DMod.Qry_Add.Transaction.Rollback;
+    Exit;
+   end;
+ Kol_Form.ShowModal;
+end;
+
+procedure TPagesDlg.SpeedButton1Click(Sender: TObject);
+var
+  id:Integer;
+begin
+  if DMod.Qry_Shippers.Active then DMod.Qry_Shippers.Close;
+  DMod.Qry_Shippers.SQL.Clear;
+  if Dmod.Qry_RepZak.Active then  Dmod.Qry_RepZak.Close;
+  if not Ch_Zak.Checked then
+    begin
+      if Form_Ship.ShowModal <> mrOK then
+         begin
+            Application.MessageBox('Не выбран ни один поставщик!','Внимание',MB_ICONSTOP+MB_OK);
+            Exit;
+         end;
+      id:=Form_Ship.DBGridEh1.DataSource.DataSet.FieldByName('ID_NUM').AsInteger;
+      DMod.Qry_Shippers.SQL.Add(format('select * from shippers where id_num=%s',[IntToStr(id)]));
+    end
+   else
+    begin
+      DMod.Qry_Shippers.SQL.Add('select * from shippers order by name');
+    end;
+  DMod.Qry_Shippers.Open;
+  Dmod.Qry_RepZak.Open;
+  FR1.LoadFromFile('zakaz.fr3');
+  Fr1.ShowReport;
+  Dmod.Qry_RepZak.Close;
+end;
+
+procedure TPagesDlg.MaskEdit1Exit(Sender: TObject);
+var Fltr:String;
+begin
+{DMod.Query1.Close;
+DMod.Query1.Params[0].AsDateTime:=StrTodate(MaskEdit1.Text);
+DMod.Query1.Open;
+Fltr:=format('DataZayav=%s',[MaskEdit1.Text]);
+DMod.TSales.Filtered:=False;
+DMod.TSales.Filter:=Fltr;
+DMod.TSales.Filtered:=True;
+DMod.Query2.Params[0].AsdateTime:=StrTodate(MaskEdit1.Text);}
+end;
+
+procedure TPagesDlg.MnPriceCalcClick(Sender: TObject);
+var
+  r:Integer;
+begin
+// if SetUsdPrice_F.ShowModal = mrOk then
+//    begin
+//       r:=Dmod.QKatalog.FieldByName('NN').AsInteger;
+//       DMod.QKatalog.Close;
+//       DMod.QKatalog.Open;
+//       Dmod.QKatalog.Locate('NN',R,[]);
+////       PagesDlg.Ref_ZakBtnClick(PagesDlg.Ref_ZakBtn);
+//    end;
+
+end;
+
+procedure TPagesDlg.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  DMod.Closedatabases;
+end;
+
+procedure TPagesDlg.FormCreate(Sender: TObject);
+begin
+  FormatSettings.DecimalSeparator:='.';
+  MasterQry:='ship_gr'; // наименование поля связи по поставщикам
+  PgCtrl_Main.ActivePageIndex:=0;
+  PagesDlg.Panel14.Height:=PagesDlg.Height - Round(PagesDlg.Height/5);
+  //PagesDlg.Repaint;
+
+end;
+
+procedure TPagesDlg.FormPaint(Sender: TObject);
+begin
+ CP_ActItems.Height:=CategoryPanelGroup1.Height - CP_ActHead.Height;
+ Panel16.Height:=Panel10.Height- Round(0.7*Panel10.Height);
+end;
+
+procedure TPagesDlg.N21Click(Sender: TObject);
+begin
+  DMod.Qry_RepCash.Close;
+  DMod.Qry_RepCash.Params[0].AsInteger:=Grid_ActHead.DataSource.DataSet.FieldByName('ID').AsInteger;
+  Dmod.Qry_RepCash.Open;
+  FR1.LoadFromFile('cash_memo_short.fr3');
+  //Fr1.ShowReport;
+  Fr1.PrepareReport;
+  Fr1.ShowPreparedReport;
+end;
+
+procedure TPagesDlg.N22Click(Sender: TObject);
+begin
+  DMod.Qry_RepCash.Close;
+  DMod.Qry_RepCash.Params[0].AsInteger:=Grid_ActHead.DataSource.DataSet.FieldByName('ID').AsInteger;
+  Dmod.Qry_RepCash.Open;
+  FR1.LoadFromFile('cash_memo_warr.fr3');
+  Fr1.ShowReport;
+end;
+
+procedure TPagesDlg.N28Click(Sender: TObject);
+var
+ t: TfrxBarCodeView;
+ m: TfrxMemoView;
+ s,fname:string;
+ i:Integer;
+begin
+  s:= DMod.QKatalog.FieldByName('BARCODE').asstring ;
+  if Length(Trim(s)) = 0  then Exit;
+  Dmod.Refresh_Settings;
+  case Dmod.Qry_Settings.FieldByName('LABEL_SIZE').asinteger of
+    0:fname:= 'code13_58_40.fr3';
+    1:fname:= 'code13_43_25.fr3';
+    2:fname:= 'code13_58_30.fr3';
+    3:fname:= 'code13_40_40.fr3';
+    4:fname:= 'code13_33_26.fr3';
+    5:fname:= 'code13_45_30.fr3';
+  end;
+  i:=DMod.QKatalog.FieldByName('NN').AsInteger;
+  Dmod.Qry_RepLabel.Close;
+  Dmod.Qry_RepLabel.Params[0].AsInteger:=i;
+  Dmod.Qry_RepLabel.Open;
+  Fr1.LoadFromFile(fname);
+//  t := TfrxBarCodeView(Fr1.FindObject('BarCode1'));
+//  if t <> nil then
+//    t.Text := s;
+//  m := TfrxMemoView(Fr1.FindObject('Memo1'));
+//  if m <> nil then
+//    begin
+//      m.Memo.Clear;
+//      m.Memo.Add( DMod.QKatalog.FieldByName('NAME').asstring);
+//    end;
+// или так:
+// if t <> nil then
+//   t.Prop["Memo"] := "FastReport";
+  Fr1.PrepareReport;
+  Fr1.ShowPreparedReport;
+
+end;
+
+procedure TPagesDlg.N29Click(Sender: TObject);
+var
+  id:Integer;
+  name:String;
+  price:Double;
+begin
+if not Assigned(AtolV10_F)then
+  begin
+    Application.MessageBox('Касса не активна.Проверьте состояние кассы.','Внимание',MB_ICONSTOP+MB_OK);
+    Exit;
+  end;
+  name:=DMod.Qry_CashMemoItems.FieldByName('NAME').AsString;
+  price:=DMod.Qry_CashMemoItems.FieldByName('PRICE_SELL').AsFloat;
+  if KolRet_F.ShowModal = mrOk then
+   //AtolV10_F.PrintReturnCheck(name,StrToFloat(KolRet_F.Edit1.Text),price);
+end;
+
+procedure TPagesDlg.N2Click(Sender: TObject);
+ var
+  Id_Rec,Answer:Integer;
+  Mes,S:String;
+begin
+  if Grid_Kat.DataSource.DataSet.FieldByName('NN').IsNull then exit;
+  if Grid_Kat.DataSource.DataSet.FieldByName('Kol').asFloat = 0 then
+     begin
+       Application.MessageBox('Количество товара = 0.Продажа невозможна','Внимание',mb_iconstop+mb_ok);
+       exit;
+     end;
+  Id_Rec:=Grid_Kat.DataSource.DataSet.FieldByName('NN').asInteger;
+  S:='update katalog set tran=0 where nn = :p0';
+  DMod.Qry_Add.Close;
+  DMod.Qry_Add.SQL.Clear;
+  DMod.Qry_Add.SQL.Add(s);
+  Repeat
+     try
+       DMod.Refresh_Qkatalog;
+       IF not DMod.Qry_Add.Transaction.InTransaction  then DMod.Qry_Add.Transaction.StartTransaction; // стартуем транзакцию и блокируем запись
+       DMod.Qry_Add.Params[0].AsInteger:=Id_Rec;
+       DMod.Qry_Add.ExecQuery;
+       Answer:=IdOk;
+     except
+       Mes:='Сервер не может обработать данный запрос.'+#10#13;
+       Mes:=Mes+'Возможно данную запись редактирует другой пользователь.Повторите позже';
+       Application.MessageBox(Pchar(Mes),'Внимание!',Mb_IconWarning+Mb_Ok);
+       Answer:=idNo;
+       {       Answer:=Application.MessageBox(Pchar(Mes),'Внимание!',Mb_IconWarning+Mb_YesNo);
+        on E: EIBdatabeseError do
+         begin
+          ShowMessage(E.Message) ;
+         end;}
+     end;
+  Until (Answer=idOK) Or (Answer=idNo);
+ if Answer=idNo then
+   begin
+    IF DMod.Qry_Add.Transaction.InTransaction  then DMod.Qry_Add.Transaction.Rollback;
+    Exit;
+   end
+  else
+    Kol_Form2.ShowModal;
+end;
+
+procedure TPagesDlg.N30Click(Sender: TObject);
+begin
+  RegTi_F.ShowModal;
+end;
+
+procedure TPagesDlg.ItLabelSizeClick(Sender: TObject);
+begin
+  Settings_F.ShowModal;
+end;
+
+procedure TPagesDlg.PopMn_RevClick(Sender: TObject);
+begin
+  Dmod.Qry_Shippers.Close;
+  Dmod.Qry_Shippers.Sql.Clear;;
+  DMod.Qry_Shippers.SQL.Add('select * from shippers order by name');
+  DMod.Qry_Shippers.Open;
+  Dmod.Qry_Reviziya.Open;
+  FR1.LoadFromFile('reviziya.fr3');
+  Fr1.ShowReport;
+  Dmod.Qry_Reviziya.Close;
+end;
+
+procedure TPagesDlg.PopMN_ReviziaNameClick(Sender: TObject);
+begin
+  Dmod.Qry_ReviziaName.Open;
+  FR1.LoadFromFile('reviziya_name.fr3');
+  Fr1.ShowReport;
+  Dmod.Qry_ReviziaName.Close;
+end;
+
+procedure TPagesDlg.PopItem_cardsClick(Sender: TObject);
+begin
+  Cards_F.ShowModal;
+end;
+
+procedure TPagesDlg.N4Click(Sender: TObject);
+begin
+ EditBtnClick(EditBtn);
+end;
+
+procedure TPagesDlg.Grid_OrderDblClick(Sender: TObject);
+begin
+  A_OrderEdit.Execute;
+end;
+
+procedure TPagesDlg.Grid_OrderDrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumnEh; State: TGridDrawState);
+begin
+  if DMod.qry_order.FieldByName('STATUS').AsString = 'F' then
+   begin
+     Grid_Order.Canvas.Font.Color := clWhite; // Font color
+     Grid_Order.Canvas.Brush.Color := clGray; // Background color
+     Grid_Order.Canvas.FillRect(Rect);
+   end;
+   Grid_Order.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+end;
+
+procedure TPagesDlg.Grid_PartsDblClick(Sender: TObject);
+begin
+  A_PartZakEdit.Execute;
+end;
+
+procedure TPagesDlg.Grid_WorksDblClick(Sender: TObject);
+begin
+ A_WorkComplEdit.Execute;
+end;
+
+procedure TPagesDlg.DelCashMemo;
+var
+ id_rec:Integer;
+begin
+try
+      if  Application.MessageBox('Текущий товарный чек будет безвозвратно удален.Продолжить?',
+                                 'Внимание!',MB_ICONQUESTION+MB_YESNO ) <> IDYES then  Exit;
+
+ try
+    id_rec:=Grid_ActHead.DataSource.DataSet.FieldByName('ID').AsInteger;
+    DMod.ZakQry.Close;
+    DMod.ZakQry.SQL.Clear;
+    DMod.ZakQry.SQL.Add('delete from cash_memo where id = :p0 ');
+    if not DMod.ZakQry.Transaction.InTransaction then DMod.ZakQry.Transaction.StartTransaction;
+    DMod.ZakQry.params[0].AsInteger:=id_rec;
+    DMod.ZakQry.ExecQuery;
+ //end with
+    DMod.ZakQry.Transaction.Commit;
+    DMod.Qry_CashMemo.Close;
+    DMod.Qry_CashMemo.Open;
+
+  except
+    on E: EdatabaseError do
+      begin
+       DMod.ZakQry.Transaction.Rollback;
+       ShowMessage(E.Message);
+      end;
+  end;
+finally
+  if DMod.ZakQry.Transaction.InTransaction then DMod.ZakQry.Transaction.Rollback;
+end;
+
+end;
+
+function TPagesDlg.DelLastSymbol(Text, S: String): String;
+var
+ p,l:Integer;
+ tmp:String;
+begin
+  Result:=Text;
+  tmp:=ReverseString(Trim(Text));
+  p:=Pos(S,tmp);
+  if p = 1 then
+    begin
+      l:=Length(tmp);
+      tmp:=Copy(tmp,2,l-1);
+      Result:=ReverseString(tmp);
+    end;
+end;
+
+function TPagesDlg.Del_Space(S:String):String;
+var i:Integer;
+begin
+  while Pos(' ', S) > 0 do
+       begin
+        i:=Pos(' ', S);
+        Delete(s,i,1);
+       end;
+Result:=s;
+end;
+procedure TPagesDlg.ValMaskChange(Sender: TObject);
+begin
+//Kurs_Val:=StrToFloat(Del_Space(Valmask.Text));
+end;
+
+
+procedure TPagesDlg.FormShow(Sender: TObject);
+var
+ i:integer;
+begin
+ if FormLogin.ShowModal <> mrOK then
+   begin
+      Application.MessageBox('Выбрано завершение работы.Приложение будет закрыто.',
+                              'Внимание',MB_ICONSTOP+MB_OK);
+      Application.Terminate;
+   end;
+//DMod.OpenDatabases;
+PagesDlg.Caption:=DMod.DB_Description;
+StatusBar1.Panels[0].Text:=DMod.Db_Name;
+StatusBar1.Panels[1].Text:='Курс USD: '+FloatToStr(KURSUSD);
+DateEdit1.date:=Date;
+DateEdit2.date:=Date;
+ShowSalesBtnClick(ShowSalesBtn);
+if Role = MAIN_SELLER then
+  begin
+   SumTovBtnClick(SumTovBtn);
+   Item_ZakazClear.Enabled:=True;
+   AdBtn.Enabled:=True;
+   EditBtn.Enabled:=True;
+   EditIt.Enabled:=True;
+   MnPriceCalc.Enabled:=True;
+   MnVal.Enabled:=True;
+  end;
+if Role = ORDINARY_SELLER  then
+   begin
+    SumTovBtn.Enabled:=False;
+    for i := 0 to Grid_Kat.Columns.Count-1 do
+        begin
+          if Grid_Kat.Columns[i].FieldName='OPTPRICE' then
+             Grid_Kat.Columns[i].Visible:=False;
+          if Grid_Kat.Columns[i].FieldName='OPTPRICE_USD' then
+             Grid_Kat.Columns[i].Visible:=False;
+//          if Grid_Kat.Columns[i].FieldName='PRICE' then
+//             Grid_Kat.Columns[i].Visible:=False;
+
+        end;
+   end;
+WorkDate1.Date:=Date-1;
+WorkDate2.Date:=Date;
+if RunMode = 'service' then
+   begin
+     OpenService;
+     TabService.Enabled:=True;
+   end;
+RefrBtnClick(RefrBtn);
+end;
+
+procedure TPagesDlg.FR1GetValue(const VarName: string; var Value: Variant);
+var
+  s,s1:Currency;
+begin
+ if VarName='d_1' then Value :=FormatDateTime('DD.MM.YYYY',DateEdit1.DateTime) ;
+ if VarName='d_2' then Value :=FormatDateTime('DD.MM.YYYY',DateEdit2.DateTime) ;
+ if VarName='totalsum' then
+   begin
+     DMod.Query.Close;
+     DMod.Query.SQL.Clear;
+     DMod.Query.SQL.Add('select sum(kol*price) from cash_memo_items where id_parent=:p0');
+     DMod.Query.Params[0].AsInteger:=Grid_ActHead.DataSource.DataSet.FieldByName('ID').AsInteger;
+     DMod.Query.Open;
+     s:=Dmod.Query.Fields[0].AsCurrency;
+     Value:=s;
+   end;
+ if VarName = 'totalsum_prop'  then
+    begin
+     DMod.Query.Close;
+     DMod.Query.SQL.Clear;
+     DMod.Query.SQL.Add('select sum(kol*price) from cash_memo_items where id_parent=:p0');
+     DMod.Query.Params[0].AsInteger:=Grid_ActHead.DataSource.DataSet.FieldByName('ID').AsInteger;
+     DMod.Query.Open;
+     s:=Dmod.Query.Fields[0].AsCurrency;
+     Value:=MoneyToString(s,true,false) ;
+    end;
+ if VarName='seller' then Value:=User;
+ //if VarName='Itogo_prop' then Value:=MoneyToString(DMod.Qry_Order.FieldByName('ITOGO').AsFloat,true,false) ;
+ if VarName='Itogo_prop' then
+    begin
+     //найдем стоимость работ
+     DMod.Query.Close;
+     DMod.Query.SQL.Clear;
+     DMod.Query.SQL.Add('select sum(cost) from works where id_order=:p0');
+     DMod.Query.Params[0].AsInteger:=DMod.Qry_Order.FieldByName('ID').AsInteger;
+     DMod.Query.Open;
+     s:=Dmod.Query.Fields[0].AsCurrency;
+     //найдем стоимость з/частей
+     DMod.Query.Close;
+     DMod.Query.SQL.Clear;
+     DMod.Query.SQL.Add('select sum(kol*price) from client_parts where id_order=:p0');
+     DMod.Query.Params[0].AsString:=DMod.Qry_Order.FieldByName('CLIENT_PARTS_KEY').AsString;
+     DMod.Query.Open;
+     s1:=Dmod.Query.Fields[0].AsCurrency;
+     Dmod.Query.Close;
+     Value:=MoneyToString(s+s1,true,false) ;
+    end;
+end;
+
+procedure TPagesDlg.FR_ServiceReportsGetValue(const VarName: string;
+  var Value: Variant);
+var
+ works_total,parts_total,sum_total:Currency;
+ i:Integer;
+begin
+  if VarName='d_1' then Value := DateOf(SelDate_F.D1.Date);
+  if VarName='d_2' then Value := DateOf(SelDate_F.D2.Date);
+  if VarName='orders_total' then
+   begin
+     DMod.Query.Close;
+     DMod.Query.SQL.Clear;
+     DMod.Query.SQL.Add('select count(*) from zakaz_order where cast(dt_open as date) between :p0 and :p1 ');
+     DMod.Query.Params[0].AsDate:=DateOf(SelDate_F.D1.Date);
+     DMod.Query.Params[1].AsDate:=DateOf(SelDate_F.D2.Date);
+     DMod.Query.Open;
+     i:=Dmod.Query.Fields[0].AsInteger;
+     Dmod.Query.Close;
+     Value:=i;
+   end;
+  if VarName='orders_closed' then
+   begin
+     DMod.Query.Close;
+     DMod.Query.SQL.Clear;
+     DMod.Query.SQL.Add('select count(*) from zakaz_order where cast(dt_closed as date) between :p0 and :p1 and status =:p2');
+     DMod.Query.Params[0].AsDate:=DateOf(SelDate_F.D1.Date);
+     DMod.Query.Params[1].AsDate:=DateOf(SelDate_F.D2.Date);
+     DMod.Query.Params[2].AsString:='F';
+     DMod.Query.Open;
+     i:=Dmod.Query.Fields[0].AsInteger;
+     Dmod.Query.Close;
+     Value:=i;
+   end;
+  if VarName='works_total' then
+   begin
+     DMod.Query.Close;
+     DMod.Query.SQL.Clear;
+     DMod.Query.SQL.Add('select sum(b.cost) from zakaz_order a ');
+     Dmod.Query.SQL.Add(' left join works b on a.id = b.id_order ');
+     Dmod.Query.SQL.Add(' where a.status = :p0 and CAST(a.dt_closed as DATE) between :p1 and :p2 ' );
+     DMod.Query.Params[0].AsString:='F';
+     DMod.Query.Params[1].AsDate:=DateOf(SelDate_F.D1.Date);
+     DMod.Query.Params[2].AsDate:=DateOf(SelDate_F.D2.Date);
+     DMod.Query.Open;
+     works_total:=Dmod.Query.Fields[0].AsCurrency;
+     Dmod.Query.Close;
+     Value:=works_total;
+   end;
+
+  if VarName='parts_total' then
+   begin
+     DMod.Query.Close;
+     DMod.Query.SQL.Clear;
+     DMod.Query.SQL.Add('select sum(b.kol*b.price) from zakaz_order a ');
+     Dmod.Query.SQL.Add(' left join client_parts b on a.client_parts_key = b.id_order ');
+     Dmod.Query.SQL.Add(' where a.status = :p0 and CAST(a.dt_closed as DATE) between :p1 and :p2 ' );
+     DMod.Query.Params[0].AsString:='F';
+     DMod.Query.Params[1].AsDate:=DateOf(SelDate_F.D1.Date);
+     DMod.Query.Params[2].AsDate:=DateOf(SelDate_F.D2.Date);
+     DMod.Query.Open;
+     parts_total:=Dmod.Query.Fields[0].AsCurrency;
+     Dmod.Query.Close;
+     Value:=parts_total;
+   end;
+  if VarName='sum_total' then
+      begin
+         sum_total:= works_total + parts_total;
+         Value:=sum_total;
+      end;
+
+end;
+
+function TPagesDlg.GenBarCodeEan13: String;
+var
+ qry:TIbquery;
+ code:String;
+begin
+  qry := TIbquery.Create(Self);
+  try
+    qry.Database:=DMod.Db;
+    qry.SQL.add('select gen_id(ean13,1) from rdb$database');
+    qry.Open;
+    code:=qry.Fields[0].asstring;
+  finally
+    qry.Free;
+  end;
+  result:=code + CalcBarcodeEan13CheckSum(code);
+end;
+
+
+
+procedure TPagesDlg.Grid_AutoDblClick(Sender: TObject);
+begin
+  DMod.Qry_Client.Locate('ID',DMod.Qry_Order.FieldByName('CL_ID').AsInteger,[]);
+  Client_F.ShowModal;
+end;
+
+procedure TPagesDlg.Grid_KatDblClick(Sender: TObject);
+begin
+  if Role = MAIN_SELLER then  EditBtnClick(EditBtn);
+end;
+
+procedure TPagesDlg.Grid_KatDrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumnEh; State: TGridDrawState);
+begin
+{  if Grid_Kat.DataSource.DataSet.FieldByName('ZAK').AsFloat > 0 then
+   begin
+     Grid_Kat.Canvas.Font.Color := clRed; // Font color
+     Grid_Kat.Canvas.Brush.Color := clYellow; // Background color
+     Grid_Kat.Canvas.FillRect(Rect);
+   end;
+   Grid_Kat.DefaultDrawColumnCell(Rect, DataCol, Column, State);}
+
+end;
+
+procedure TPagesDlg.Grid_KatKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+if (Key=VK_ADD) then
+  begin
+   Item_VZakazClick(Item_VZakaz);
+  end;
+end;
+
+procedure TPagesDlg.Grid_ShipDblClick(Sender: TObject);
+begin
+ ToolButton3Click(ToolButton3);
+end;
+
+procedure TPagesDlg.PopIt_CreateCashMemoClick(Sender: TObject);
+var
+ nomer,id_rec:Integer;
+ s,Mes:String;
+ TempBookmark:TBookMark;
+ x:word;
+ d1:TdateTime;
+ price_sell:Double;
+begin
+try
+Grid_Sale.DataSource.DataSet.DisableControls;
+//проверим выбраны ли записи
+     with Grid_Sale.SelectedRows do
+      if Count = 0 then
+        begin
+          Application.MessageBox('Не выбрано ни одного товара.','Внимание!',mb_iconwarning+mb_ok );
+          Exit;
+        end;   //end with
+ try
+    //найдем номер тов. чека
+    Dmod.Query.Close;
+    Dmod.Query.SQL.Clear;
+    d1:=date;
+ //   s:=format('select count(*) as newnomer from cash_memo where data_sale  >= :p0 ',[#39,DateToStr(D1),#39]);
+    Dmod.query.SQL.Add('select count(*) from cash_memo where data_sale>=:p0 and data_sale < :p1  ');
+    DMod.Query.Params[0].asDate:=d1;
+    DMod.Query.Params[1].asDate:=d1+1 ;
+    Dmod.Query.Open;
+    nomer:=Dmod.Query.Fields[0].AsInteger;
+    nomer:=nomer+1;
+    //найдем ид. новой записи
+    Dmod.Query.Close;
+    Dmod.Query.SQL.Clear;
+    Dmod.query.SQL.Add('select gen_id(gen_id_cash_memo,1) from rdb$database ');
+    Dmod.Query.Open;
+    id_rec:=Dmod.Query.Fields[0].AsInteger;
+    Dmod.Query.close;
+    DMod.ZakQry.Close;
+    DMod.ZakQry.SQL.Clear;
+    DMod.ZakQry.SQL.Add('insert into cash_memo (id,nomer) values (:p0,:p1) ');
+    if not DMod.ZakQry.Transaction.InTransaction then DMod.ZakQry.Transaction.StartTransaction;
+    DMod.ZakQry.params[0].AsInteger:=id_rec;
+    DMod.ZakQry.params[1].AsInteger:=nomer;
+    DMod.ZakQry.ExecQuery;
+//находим скидку
+    Discount_F.ShowModal;
+    TempBookmark := Grid_sale.Datasource.Dataset.GetBookmark;
+     with Grid_sale.SelectedRows do
+      begin
+       for x := 0 to Count-1 do
+        begin
+          if IndexOf(Items[x]) > -1 then
+            begin
+              Grid_sale.Datasource.Dataset.Bookmark := Items[x];
+              DMod.ZakQry.Close;
+              DMod.ZakQry.SQL.Clear;
+              DMod.ZakQry.SQL.Add('insert into cash_memo_items (id_parent,name,kol,price,kod,id_cards,price_sell) values (:p0,:p1,:p2,:p3,:p4,:p5,:p6) ');
+              DMod.ZakQry.params[0].AsInteger:=id_rec;
+              DMod.ZakQry.params[1].AsString:=Grid_Sale.DataSource.DataSet.FieldByName('KRNAME').AsString;
+              DMod.ZakQry.params[2].AsDouble:=Grid_Sale.DataSource.DataSet.FieldByName('KOL').AsFloat;
+              DMod.ZakQry.params[3].AsDouble:=Grid_Sale.DataSource.DataSet.FieldByName('SALE_PRICE').AsFloat;
+              DMod.ZakQry.params[4].AsString:=Grid_Sale.DataSource.DataSet.FieldByName('MARKA').AsString;
+              DMod.ZakQry.params[5].AsInteger:=ID_CARD;
+              price_sell:=Grid_Sale.DataSource.DataSet.FieldByName('SALE_PRICE').AsFloat -
+                          (Grid_Sale.DataSource.DataSet.FieldByName('SALE_PRICE').AsFloat*DISCOUNT_CARD/100);
+              DMod.ZakQry.params[6].AsDouble:=price_sell;
+              DMod.ZakQry.ExecQuery;
+              if DISCOUNT_CARD > 0 then
+                begin
+                  DMod.ZakQry.Close;
+                  DMod.ZakQry.SQL.Clear;
+                  DMod.ZakQry.SQL.Add('update sales set sale_price = :p0 where n= :p1  ');
+                  Dmod.ZakQry.Params[0].AsDouble:=price_sell;
+                  Dmod.ZakQry.Params[1].AsInteger:=Grid_Sale.DataSource.DataSet.FieldByName('N').AsInteger;
+                  Dmod.ZakQry.ExecQuery;
+                end;
+            end;  //end if
+        end;   //end for
+     end;  //end with
+    DMod.ZakQry.Transaction.Commit;
+    DMod.Qry_CashMemo.Close;
+    DMod.Qry_CashMemo.Open;
+    DMod.Qry_CashMemoItems.Close;
+    DMod.Qry_CashMemoItems.Open;
+  except
+    on E: EdatabaseError do
+      begin
+       DMod.ZakQry.Transaction.Rollback;
+       ShowMessage(E.Message);
+      end;
+  end;
+finally
+  Grid_sale.DataSource.DataSet.GotoBookmark(TempBookmark);
+  Grid_sale.DataSource.DataSet.FreeBookmark(TempBookmark);
+  Grid_sale.SelectedRows.Clear;
+  Grid_sale.DataSource.DataSet.EnableControls;
+  if DMod.ZakQry.Transaction.InTransaction then DMod.ZakQry.Transaction.Rollback;
+end;
+
+end;
+
+procedure TPagesDlg.PopupMenu1Popup(Sender: TObject);
+begin
+{if DMod.TKatalogKol.Value > 0 then
+     n2.Enabled:=True
+   else
+     n2.Enabled:=False;}
+
+end;
+
+
+
+procedure TPagesDlg.PrintNombtnClick(Sender: TObject);
+begin
+  FormPrintNom.ShowModal;
+end;
+
+procedure TPagesDlg.Pr_N1Click(Sender: TObject);
+begin
+ if Dmod.Qry_Order.FieldByName('ID').isNull then exit;
+  FR1.LoadFromFile('order_in.fr3');
+  Fr1.ShowReport(true);
+end;
+
+procedure TPagesDlg.Pr_N2Click(Sender: TObject);
+begin
+//
+end;
+
+procedure TPagesDlg.RefrBtnClick(Sender: TObject);
+begin
+  Refresh_Katalog;
+end;
+
+procedure TPagesDlg.Refresh_Katalog;
+var
+  R:Integer;
+begin
+       R:=Grid_Kat.DataSource.DataSet.FieldByName('NN').AsInteger;
+       DMod.QKatalog.Close;
+       DMod.QKatalog.Open;
+       Dmod.QKatalog.Locate('NN',R,[]);
+end;
+
+procedure TPagesDlg.Refresh_Zakaz;
+var
+  R:Integer;
+begin
+       R:=Grid_Zak.DataSource.DataSet.FieldByName('NN').AsInteger;
+       DMod.TZakaz.Close;
+       DMod.Tzakaz.Open;
+       Dmod.TZakaz.Locate('NN',R,[]);
+end;
+
+procedure TPagesDlg.RefSaleBtnClick(Sender: TObject);
+begin
+ ShowSalesBtnClick(ShowSalesBtn);
+end;
+
+procedure TPagesDlg.N5Click(Sender: TObject);
+var
+   rsale,rkat,idtov:Integer;
+   k:Extended;
+begin
+   if (Application.MessageBox('Аннулировать текущую продажу ?','Подтверждение',MB_YESNO+MB_ICONQUESTION)= IDYES)   then
+     begin
+      try
+       rsale:=Grid_Sale.DataSource.DataSet.FieldByName('N').AsInteger;
+       idtov:=Grid_Sale.DataSource.DataSet.FieldByName('ID_TOV').AsInteger;
+       k:=Grid_Sale.DataSource.DataSet.FieldByName('KOL').AsExtended;
+       rkat:=Grid_Kat.DataSource.DataSet.FieldByName('NN').AsInteger;
+       if not Dmod.Qry_Add.Transaction.InTransaction then Dmod.Qry_Add.Transaction.StartTransaction;
+       DMod.Qry_Add.Sql.Clear;
+       DMod.Qry_Add.Sql.Add('update katalog');
+       DMod.Qry_Add.Sql.Add(' set kol = (kol+:p0) where nn= :p1 ');
+       DMod.Qry_Add.Params[0].AsDouble:=k;
+       DMod.Qry_Add.Params[1].AsInteger:=idtov;
+       DMod.Qry_Add.ExecQuery;
+       DMod.Qry_Add.Sql.Clear;
+       DMod.Qry_Add.Sql.Add('delete from sales where n=:p0 ');
+       DMod.Qry_Add.Params[0].AsInteger:= rsale;
+       DMod.Qry_Add.ExecQuery;
+       if Dmod.Qry_Add.Transaction.InTransaction then Dmod.Qry_Add.Transaction.Commit;
+       ModalResult:=mrOk;
+      except
+        on EdatabaseError do
+          begin
+            if Dmod.Qry_Add.Transaction.InTransaction then Dmod.Qry_Add.Transaction.Rollback;
+            Application.MessageBox('Ошибка базы данных. Возможно неправильно сформирован запрос',
+                                    'Внимание',mb_iconstop+mb_ok);
+          end;
+      end;
+
+   end;
+   DMod.SaleQry.Close;
+   DMod.SaleQry.Open;
+   DMod.QKatalog.Close;
+   DMod.QKatalog.Open;
+   Dmod.QKatalog.Locate('NN',rkat,[]);
+
+end;
+
+procedure TPagesDlg.Spr_N2Click(Sender: TObject);
+begin
+ Works_F.ShowModal;
+end;
+
+procedure TPagesDlg.Item_ZakazClearClick(Sender: TObject);
+var
+ Mes:String;
+ R:Integer;
+begin
+ Mes:='Все данные по заказу будут безвозвратно удалены.Продолжить?';
+ if Application.MessageBox(Pchar(Mes),'Внимание',mb_iconquestion+mb_yesno) = id_no then exit;
+   ModalResult:=mrNone;
+    R:=PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('NN').AsInteger;
+      try
+       if not Dmod.Qry_Add.Transaction.InTransaction then Dmod.Qry_Add.Transaction.StartTransaction;
+       DMod.Qry_Add.Sql.Clear;
+       DMod.Qry_Add.Sql.Add('update katalog set zak=0 ');
+       DMod.Qry_Add.ExecQuery;
+       if Dmod.Qry_Add.Transaction.InTransaction then Dmod.Qry_Add.Transaction.Commit;
+      except
+        if Dmod.Qry_Add.Transaction.InTransaction then Dmod.Qry_Add.Transaction.Rollback;
+        Application.MessageBox('Ошибка базы данных. Возможно неправильно сформирован запрос',
+                                'Внимание',mb_iconstop+mb_ok);
+      end;
+   DMod.QKatalog.Close;
+   DMod.QKatalog.Open;
+   Dmod.QKatalog.Locate('NN',R,[]);
+   PagesDlg.Ref_ZakBtnClick(PagesDlg.Ref_ZakBtn);
+end;
+
+procedure TPagesDlg.N9Click(Sender: TObject);
+ var
+  Id_Rec,Answer:Integer;
+  Mes,S:String;
+begin
+  Ref_ZakBtnClick(Ref_ZakBtn);
+  if Grid_Zak.DataSource.DataSet.FieldByName('ZAK').IsNull then Exit;
+  Id_Rec:=Grid_Zak.DataSource.DataSet.FieldByName('NN').asInteger;
+//  Id_Rec:=DBGridEh2.DataSource.DataSet.FieldByName('NN').asInteger;
+  S:='update katalog set tran=0 where nn = :p0';
+  DMod.Qry_Add.Close;
+  DMod.Qry_Add.SQL.Clear;
+  DMod.Qry_Add.SQL.Add(s);
+  Repeat
+     try
+       IF not DMod.Qry_Add.Transaction.InTransaction  then DMod.Qry_Add.Transaction.StartTransaction; // стартуем транзакцию и блокируем запись
+       DMod.Qry_Add.Params[0].AsInteger:=Id_Rec;
+       DMod.Qry_Add.ExecQuery;
+       Answer:=IdOk;
+     except
+       Mes:='Сервер не может обработать данный запрос.'+#10#13;
+       Mes:=Mes+'Возможно данную запись редактирует другой пользователь.Повторите позже';
+       Application.MessageBox(Pchar(Mes),'Внимание!',Mb_IconWarning+Mb_Ok);
+       Answer:=idNo;
+       {       Answer:=Application.MessageBox(Pchar(Mes),'Внимание!',Mb_IconWarning+Mb_YesNo);
+        on E: EIBdatabeseError do
+         begin
+          ShowMessage(E.Message) ;
+         end;}
+     end;
+  Until (Answer=idOK) Or (Answer=idNo);
+ if Answer=idNo then
+   begin
+    IF DMod.Qry_Add.Transaction.InTransaction  then DMod.Qry_Add.Transaction.Rollback;
+    Exit;
+   end;
+  FormPrihod.ShowModal;
+end;
+
+
+
+procedure TPagesDlg.OpenService;
+var
+ sqlorderbody,sqltrailer:String;
+begin
+  sqlorderbody:='  select a.*, cast(dt_open as date) as date_open, ';
+  sqlorderbody:=sqlorderbody+ format(' iif(b.CLIENTTYPE=%sP%s,B.LASTNAME||%s %s||B.FIRSTNAME||%s %s||B.MIDDLENAME , B.ORGANIZATION) as CLIENTNAME, ',[#39,#39,#39,#39,#39,#39]);
+  sqlorderbody:=sqlorderbody+ ' b.PHONEMOBILE,b.fulladdress, ';
+  sqlorderbody:=sqlorderbody+ format(' (c.LASTNAME||%s %s||c.FIRSTNAME) as EMPLOYEENAME_IN, ',[#39,#39]);
+  sqlorderbody:=sqlorderbody+ format(' c.LASTNAME, c.FIRSTNAME, c.MIDDLENAME, (d.LASTNAME||%s %s||d.FIRSTNAME||%s %s||d.MIDDLENAME) as EMPLOYEENAME_OUT ',[#39,#39,#39,#39]);
+//  sqlorderbody:=sqlorderbody+ ' d.LASTNAME as EMPL_OUT_FAM,d.FIRSTNAME as EMPL_OUT_NAME ';
+  sqlorderbody:=sqlorderbody+ ' from  ZAKAZ_ORDER a left join client b on a.cl_id=b.id  left join employee c on a.empl_in=c.id  left join employee d on a.empl_out=d.id  ';
+  sqltrailer:=' where cast(a.dt_open as date) between :p0 and :p1 and status=:p2  order by  a.id desc ';
+Dmod.Qry_Order.Close;
+Dmod.Qry_Order.SQL.Clear;
+Dmod.Qry_Order.SQL.Add( sqlorderbody + sqltrailer);
+Dmod.Qry_Order.Params[0].AsDate:=WorkDate1.Date;
+Dmod.Qry_Order.Params[1].AsDate:=WorkDate2.Date;
+Dmod.Qry_Order.Params[2].AsString:='W';
+Dmod.Qry_Order.Open;
+Dmod.Qry_Client.Open;
+Dmod.Qry_GroupWorks.Open;
+Dmod.Qry_Works.Open;
+Dmod.Qry_ClientAuto.Open;
+Dmod.Qry_MarkAuto.Open;
+Dmod.Qry_Employee.Open;
+Dmod.Qry_ClientParts.Open;
+Dmod.Qry_OrderAuto.Open;
+Dmod.Qry_WorksCompl.Open;
+
+end;
+
+procedure TPagesDlg.SpeedButton2Click(Sender: TObject);
+begin
+if Role = MAIN_SELLER then
+  begin
+    FR1.LoadFromFile('sales_adm.fr3');
+    Fr1.ShowReport;
+  end
+  else
+  begin
+    FR1.LoadFromFile('sales.fr3');
+    Fr1.ShowReport;
+  end;
+end;
+
+procedure TPagesDlg.SpeedButton3Click(Sender: TObject);
+begin
+DMod.SaleQry.Close;
+Dmod.SaleQry.SQL.Clear;
+Dmod.SaleQry.SQL.Add('select * from sales order by data_sale, krname');
+DMod.SaleQry.Open;
+end;
+
+procedure TPagesDlg.Ref_ZakBtnClick(Sender: TObject);
+begin
+  Refresh_Zakaz;
+end;
+
+procedure TPagesDlg.SumTovBtnClick(Sender: TObject);
+var
+ S,s1:Double;
+ Ds,Ds1:TDataSource;
+ Mf:String;
+begin
+S:=0;
+DMod.Query.Close;
+DMod.Query.SQL.Clear;
+Dmod.Query.SQL.Add('select sum(price*kol) from katalog');
+DMod.Query.Open;
+S:=DMod.Query.Fields[0].AsCurrency;
+DMod.Query.Close;
+DMod.Query.SQL.Clear;
+Dmod.Query.SQL.Add('select sum(optprice*kol) from katalog');
+DMod.Query.Open;
+S1:=DMod.Query.Fields[0].AsCurrency;
+DMod.Query.Close;
+//Slabel.Caption:=' = '+ FormatFloat('####.##',s)+' руб.';
+StatusBar1.Panels[2].Text:='Сумма товара в розн. ценах: '+FormatFloat('####.##',s)+
+                           ';  в оптов. ценах: '+FormatFloat('####.##',s1);
+Application.ProcessMessages;
+end;
+
+procedure TPagesDlg.ToolButton1Click(Sender: TObject);
+begin
+  Form_AddShip.ShowModal;
+end;
+
+procedure TPagesDlg.ToolButton2Click(Sender: TObject);
+var
+ rec:Integer;
+begin
+  Rec:=Grid_Ship.DataSource.DataSet.FieldByName('ID_NUM').AsInteger;
+  Grid_Ship.DataSource.DataSet.Close;
+  Grid_Ship.DataSource.DataSet.Open;
+  Grid_Ship.DataSource.DataSet.Locate('ID_NUM',rec,[]);
+end;
+
+procedure TPagesDlg.ToolButton3Click(Sender: TObject);
+begin
+ if Grid_Ship.DataSource.DataSet.FieldByName('ID_NUM').IsNull then Exit;
+ Form_EdShip.ShowModal;
+end;
+
+
+
+
+
+procedure TPagesDlg.ToolButton6Click(Sender: TObject);
+begin
+//
+end;
+
+procedure TPagesDlg.AllrecBtnClick(Sender: TObject);
+ const
+  start_sel1 = 'select a.*,';
+  start_sel2 = 'A.KOL*A.PRICE AS SUM_TOV,B.NAME AS SHIPPER from katalog  A left join shippers B ON a.ship_gr=b.id_num ';
+ var
+  end_sel:string;
+  List:TstringList;
+  i:Integer;
+  R:Integer;
+begin
+ try
+  List:=TStringList.Create;
+//  Memo2.Clear;
+//  body_sel:=format(' where %s=:id_num ',[MasterQry]);
+begin
+  case RGrp_Find.ItemIndex of
+    0:  begin
+           end_sel := ' order by a.name, a.marka';
+        end;
+    1:  begin
+           end_sel := ' order by a.marka, a.name';
+        end;
+  end;
+
+  List.clear;
+  List.Add(start_sel1);
+  List.Add(start_sel2);
+//  List.Add(body_sel);
+  List.Add(end_sel);
+
+
+ //      for i:=0 to List.Count - 1 do
+ //          Memo2.Lines.Add(List[i]);
+
+  R:=Grid_Kat.DataSource.DataSet.FieldByName('NN').AsInteger;
+  DMod.Qkatalog.Close;
+  DMod.QKatalog.Sql.Clear;
+  for i:=0 to List.Count - 1 do
+      DMod.Qkatalog.SQL.Add(List[i]);
+  try
+    begin
+       DMod.Qkatalog.Open;
+       DMod.QKatalog.Locate('NN',R,[]);
+    end;
+  except
+   on EdatabaseError do showmessage ('Ошибка базы данных. Возможно неправильно сформирован запрос');
+  end;
+end;
+ finally
+   List.Free;
+ end;
+end;
+
+
+
+procedure TPagesDlg.A_ActWorksPrintExecute(Sender: TObject);
+begin
+  if Dmod.Qry_Order.FieldByName('ID').isNull then Exit;
+  FR1.LoadFromFile('order_out.fr3');
+  Fr1.ShowReport(true);
+end;
+
+procedure TPagesDlg.A_ActWorksPrintUpdate(Sender: TObject);
+begin
+     if Dmod.Qry_Order.FieldByName('STATUS').AsString = 'F' then
+         (Sender as Taction).Enabled:=True
+        else
+         (Sender as Taction).Enabled:=False;
+end;
+
+procedure TPagesDlg.A_AtolKKMExecute(Sender: TObject);
+begin
+if not Assigned(AtolV10_F)then
+ begin
+   Application.CreateForm(TAtolV10_F, AtolV10_F);
+   AtolV10_F.ShowModal;
+ end
+   else
+   AtolV10_F.ShowModal;
+//   if FormAtol25f.WindowState = wsMinimized	then  ShowWindow(FormAtol25f.Handle, SW_RESTORE)
+//     else FormAtol25f.Show;
+end;
+
+procedure TPagesDlg.A_CashPrintExecute(Sender: TObject);
+var
+ Itogo :Currency;
+ qry:TIbQuery;
+ id,tp:Integer;
+ s:string;
+begin
+
+//
+//
+//if not Assigned(FormAtol25f)then
+//  begin
+//    Application.MessageBox('Касса не активна.Проверьте состояние кассы.','Внимание',MB_ICONSTOP+MB_OK);
+//    Exit;
+//  end;
+//
+//if DMod.Qry_CashMemo.FieldByName('ID').isNull then Exit;
+//if Dmod.Qry_CashMemoItems.IsEmpty then
+//   begin
+//     Application.MessageBox('Нет позиций для продажи.','Внимание',MB_ICONWARNING+MB_OK);
+//     Exit;
+//   end;
+
+
+
+//  Itogo:=Grid_BillItems.Columns[3].Footers[0].SumValue;
+SelectTypePay_F.ShowModal;
+tp:=SelectTypePay_F.TypePay;
+if tp < 0  then
+  begin
+    Application.MessageBox('Не выбран тип оплаты.Операция прервана.','Внимание',MB_OK+MB_ICONSTOP);
+    Exit;
+  end;
+
+try
+  (Sender as TAction).Enabled:=False;
+  id:=DMod.Qry_CashMemo.FieldByName('ID').AsInteger;
+  qry:=TibQuery.Create(Self);
+  qry.Database:=DMod.DB;
+  qry.SQL.Add(' select sum(kol*price_sell) from cash_memo_items where id_parent =:p0 ');
+  qry.Params[0].AsInteger:=id;
+  qry.Open;
+  Itogo:=qry.Fields[0].AsCurrency;
+  if Itogo =0 then
+    begin
+     Application.MessageBox('Cумма продажи = 0.','Внимание',MB_ICONSTOP+MB_OK);
+     Exit;
+    end;
+  qry.Close;
+  qry.sql.clear;
+  s:= format(' select name||%s/%s||kod as name,kol,price_sell as stoim from cash_memo_items where id_parent =:p0',[#39,#39] );
+  qry.SQL.Add(s);
+  qry.Params[0].AsInteger:=id;
+  qry.Open;
+//  AtolV10_F.PrintCheck(qry, Itogo, tp);
+ finally
+  qry.Free;
+  (Sender as TAction).Enabled:=True;
+ end;
+
+end;
+
+procedure TPagesDlg.A_KatalogRecDelExecute(Sender: TObject);
+var
+   R:Integer;
+begin
+    R:=PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('NN').AsInteger;
+    if (Application.MessageBox('Текущая запись будет удалена.Продолжить ?','Внимание',
+        MB_YESNO+MB_ICONWARNING)= IDNO)   then  Exit;
+    try
+       if not Dmod.Qry_Add.Transaction.InTransaction then Dmod.Qry_Add.Transaction.StartTransaction;
+       DMod.Qry_Add.Sql.Clear;
+       DMod.Qry_Add.Sql.Add('delete from katalog where nn = :p0 ');
+       DMod.Qry_Add.Params[0].Value:=R;
+       DMod.Qry_Add.ExecQuery;
+       if Dmod.Qry_Add.Transaction.InTransaction then Dmod.Qry_Add.Transaction.Commit;
+    except
+      on E:EdatabaseError do
+        begin
+          if Dmod.Qry_Add.Transaction.InTransaction then Dmod.Qry_Add.Transaction.Rollback;
+          Application.MessageBox(PChar(E.Message),
+                                  'Внимание ошибка.',mb_iconstop+mb_ok);
+        end;
+    end;
+
+   DMod.QKatalog.Close;
+   DMod.QKatalog.Open;
+   PagesDlg.Ref_ZakBtnClick(PagesDlg.Ref_ZakBtn);
+end;
+
+procedure TPagesDlg.A_KatalogRecDelUpdate(Sender: TObject);
+begin
+    if Role = MAIN_SELLER then
+         (Sender as Taction).Enabled:=True
+        else
+         (Sender as Taction).Enabled:=False;
+
+end;
+
+procedure TPagesDlg.A_OrderAddExecute(Sender: TObject);
+begin
+  OrderAdd_F.ShowModal;
+end;
+
+procedure TPagesDlg.A_OrderEditExecute(Sender: TObject);
+begin
+ OrderEdit_F.ShowModal;
+end;
+
+procedure TPagesDlg.A_OrderEditUpdate(Sender: TObject);
+begin
+  if Dmod.Qry_Order.Active then
+   begin
+     if Dmod.Qry_Order.FieldByName('ID').isNull then
+         (Sender as Taction).Enabled:=False
+        else
+         (Sender as Taction).Enabled:=True;
+   end;
+end;
+
+procedure TPagesDlg.A_PartZakAddExecute(Sender: TObject);
+begin
+ PartZakAdd_F.ShowModal;
+end;
+
+procedure TPagesDlg.A_PartZakAddUpdate(Sender: TObject);
+begin
+  if Dmod.Qry_Order.Active then
+    begin
+     if Dmod.Qry_Order.FieldByName('ID').isNull then
+         (Sender as Taction).Enabled:=False
+        else
+         (Sender as Taction).Enabled:=True;
+    end;
+end;
+
+procedure TPagesDlg.A_PartzakdelExecute(Sender: TObject);
+var
+ id_rec:Integer;
+begin
+if Application.MessageBox('Данные будут удалены.Продолжить?','Подтверждение',MB_ICONQUESTION+MB_YESNO) <> id_yes then Exit;
+
+try
+ try
+    id_rec:=DMod.Qry_ClientParts.FieldByName('ID').AsInteger;
+    if not DMod.Qry_Add.Transaction.InTransaction then DMod.Qry_Add.Transaction.StartTransaction;
+    //добавим запчасти
+    DMod.Qry_Add.Close;
+    DMod.Qry_Add.SQL.Clear;
+    DMod.Qry_Add.SQL.Add('delete from client_parts where id=:p0 ');
+    DMod.Qry_Add.Params[0].AsInteger:=id_rec;
+    DMod.Qry_Add.ExecQuery;
+    DMod.Qry_Add.Transaction.Commit;
+    DMod.Qry_ClientParts.Close;
+    DMod.Qry_ClientParts.Open;
+    DMod.Qry_ClientParts.Last;
+
+  except
+    on E: EdatabaseError do
+      begin
+       ShowMessage(E.Message);
+      end;
+  end;
+finally
+  if DMod.Qry_Add.Transaction.InTransaction then DMod.Qry_Add.Transaction.Rollback;
+end;
+end;
+
+procedure TPagesDlg.A_PartzakdelUpdate(Sender: TObject);
+begin
+if Dmod.Qry_ClientParts.Active then
+  begin
+     if Dmod.Qry_ClientParts.FieldByName('ID').isNull then
+         (Sender as Taction).Enabled:=False
+        else
+         (Sender as Taction).Enabled:=True;
+  end;
+end;
+
+procedure TPagesDlg.A_PartZakEditExecute(Sender: TObject);
+begin
+  PartZakEdit_F.ShowModal;
+end;
+
+procedure TPagesDlg.A_PartZakEditUpdate(Sender: TObject);
+begin
+if Dmod.Qry_ClientParts.Active then
+  begin
+     if Dmod.Qry_ClientParts.FieldByName('ID').isNull then
+         (Sender as Taction).Enabled:=False
+        else
+         (Sender as Taction).Enabled:=True;
+  end;
+end;
+
+procedure TPagesDlg.A_RepEmplExecute(Sender: TObject);
+begin
+ if SelDate_F.showModal <> mrOk then Exit;
+ Dmod.Qry_RepEmplDetail.Close;
+ Dmod.Qry_RepEmplDetail.Params[0].AsDate:=DateOf(SelDate_F.D1.Date);
+ Dmod.Qry_RepEmplDetail.Params[1].AsDate:=DateOf(SelDate_F.D2.Date);
+ Dmod.Qry_RepEmplDetail.Open;
+ if FR_ServiceReports.LoadFromFile('rep_employee.fr3') then
+    begin
+      FR_ServiceReports.PrepareReport(True);
+      FR_ServiceReports.ShowPreparedReport;
+    end
+end;
+
+procedure TPagesDlg.A_RepSumExecute(Sender: TObject);
+begin
+ if SelDate_F.showModal <> mrOk then Exit;
+ if FR_ServiceReports.LoadFromFile('rep_sum.fr3') then
+    begin
+      FR_ServiceReports.PrepareReport(True);
+      FR_ServiceReports.ShowPreparedReport;
+    end;
+end;
+
+procedure TPagesDlg.A_SpravServiceExecute(Sender: TObject);
+begin
+//
+end;
+
+procedure TPagesDlg.A_StatusCompletedExecute(Sender: TObject);
+var
+ rec,empl:Integer;
+ itogo:double;
+begin
+  Application.MessageBox('Для закрытия заказ-наряда выберите работника','Подтверждение',MB_OK+MB_ICONINFORMATION) ;
+  if Empl_F.ShowModal <> mrOk then
+     begin
+       Application.MessageBox('Работник, закрывший заказ-наряд не выбран.Продолжение невозможно.','Внимание',MB_OK+MB_ICONSTOP);
+       Exit;
+     end
+    else
+     empl:=Dmod.Qry_Employee.FieldByName('ID').AsInteger;
+
+try
+ try
+    rec:=Dmod.Qry_Order.FieldByName('ID').AsInteger;
+    Dmod.Query.Close;
+    Dmod.Query.Sql.Clear;
+    DMod.Query.SQL.Add(' select sum(cost) from works where id_order=:p0 '  );
+    Dmod.Query.Params[0].AsInteger:=rec;
+    Dmod.Query.Open;
+    itogo:=Dmod.Query.Fields[0].AsFloat;
+    if itogo = 0 then
+      begin
+        Application.MessageBox('Сумма работ равна 0.Продолжение невозможно.','Внимание',MB_OK+MB_ICONSTOP);
+        Exit;
+      end;
+    if not DMod.Qry_Add.Transaction.InTransaction then DMod.Qry_Add.Transaction.StartTransaction;
+    DMod.Qry_Add.Close;
+    DMod.Qry_Add.SQL.Clear;
+    DMod.Qry_Add.SQL.Add('update zakaz_order set status=:p0,dt_closed=:p1,empl_out=:p2,itogo=:p3 where id=:p4 ');
+    Dmod.Qry_Add.Params[0].AsString:='F'; // order fininshed
+    Dmod.Qry_Add.Params[1].AsDateTime:=now;
+    DMod.Qry_Add.Params[2].AsInteger:=empl;
+    DMod.Qry_Add.Params[3].AsDouble:=itogo;
+    DMod.Qry_Add.Params[4].AsInteger:=rec;
+    DMod.Qry_Add.ExecQuery;
+    DMod.Qry_Add.Transaction.Commit;
+    DMod.Qry_Order.Close;
+    DMod.Qry_order.Open;
+    Dmod.Qry_Order.Locate('ID',rec,[]);
+    Pr_N2Click(Pr_N2);
+    if Application.MessageBox('Распечатать акт выполненных работ?','Внимание',MB_YESNO+MB_ICONQUESTION) = ID_YES  then
+       begin
+          A_ActWorksPrint.Execute;
+       end;
+  except
+    on E: EdatabaseError do
+      begin
+       ShowMessage(E.Message);
+      end;
+  end;
+finally
+  if DMod.Qry_Add.Transaction.InTransaction then DMod.Qry_Add.Transaction.Rollback;
+end;
+end;
+
+procedure TPagesDlg.A_StatusCompletedUpdate(Sender: TObject);
+begin
+  if Dmod.Qry_Order.Active then
+    begin
+      if Dmod.Qry_Order.FieldByName('STATUS').AsString = 'F' then
+        (sender as Taction).Enabled:=False
+        else
+        (sender as Taction).Enabled:=True;
+    end;
+end;
+
+procedure TPagesDlg.A_StatusWorkExecute(Sender: TObject);
+var
+ rec:Integer;
+begin
+  if Application.MessageBox('Заказ-наряд будет переведен в статус "Незакрытый".Продолжить?','Подтверждение',MB_YESNO+MB_ICONINFORMATION) <> ID_YES then Exit ;
+try
+ try
+    rec:=Dmod.Qry_Order.FieldByName('ID').AsInteger;
+    if not DMod.Qry_Add.Transaction.InTransaction then DMod.Qry_Add.Transaction.StartTransaction;
+    DMod.Qry_Add.Close;
+    DMod.Qry_Add.SQL.Clear;
+    DMod.Qry_Add.SQL.Add('update zakaz_order set status=:p0, dt_closed = null where id=:p1 ');
+    Dmod.Qry_Add.Params[0].AsString:='W'; // order fininshed
+    DMod.Qry_Add.Params[1].AsInteger:=rec;
+    DMod.Qry_Add.ExecQuery;
+    DMod.Qry_Add.Transaction.Commit;
+    DMod.Qry_Order.Close;
+    DMod.Qry_order.Open;
+    Dmod.Qry_Order.Locate('ID',rec,[]);
+  except
+    on E: EdatabaseError do
+      begin
+       ShowMessage(E.Message);
+      end;
+  end;
+finally
+  if DMod.Qry_Add.Transaction.InTransaction then DMod.Qry_Add.Transaction.Rollback;
+end;
+end;
+
+procedure TPagesDlg.A_StatusWorkUpdate(Sender: TObject);
+begin
+    if Dmod.Qry_Order.Active then
+     begin
+      if Dmod.Qry_Order.FieldByName('STATUS').AsString = 'W' then
+        (sender as Taction).Enabled:=False
+        else
+        (sender as Taction).Enabled:=True;
+     end;
+end;
+
+procedure TPagesDlg.A_ValutaRatioExecute(Sender: TObject);
+begin
+ KursVal_F.ShowModal;
+end;
+
+procedure TPagesDlg.A_WorkCompDelExecute(Sender: TObject);
+var
+ rec:integer;
+begin
+if Application.MessageBox('Работа будет удалена.Продолжить?','Подтвердите',MB_ICONQUESTION+MB_YESNO) <>ID_YES then Exit;
+
+try
+ try
+    rec:=Dmod.Qry_WorksCompl.FieldByName('ID').AsInteger;
+    if not DMod.Qry_Add.Transaction.InTransaction then DMod.Qry_Add.Transaction.StartTransaction;
+    DMod.Qry_Add.Close;
+    DMod.Qry_Add.SQL.Clear;
+    DMod.Qry_Add.SQL.Add('delete from works where id=:p0 ');
+    DMod.Qry_Add.Params[0].AsInteger:=rec;
+    DMod.Qry_Add.ExecQuery;
+    DMod.Qry_Add.Transaction.Commit;
+    DMod.Qry_WorksCompl.Close;
+    DMod.Qry_WorksCompl.Open;
+  except
+    on E: EdatabaseError do
+      begin
+       ShowMessage(E.Message);
+      end;
+  end;
+finally
+  if DMod.Qry_Add.Transaction.InTransaction then DMod.Qry_Add.Transaction.Rollback;
+end;
+end;
+
+procedure TPagesDlg.A_WorkCompDelUpdate(Sender: TObject);
+begin
+  if Grid_Works.DataSource.DataSet.Active then
+   begin
+      if Grid_Works.DataSource.DataSet.FieldByName('ID').IsNull  then
+        (sender as Taction).Enabled:=False
+        else
+        (sender as Taction).Enabled:=True;
+   end;
+end;
+
+procedure TPagesDlg.A_WorkComplAddExecute(Sender: TObject);
+begin
+  WorkComplAdd_F.ShowModal;
+end;
+
+procedure TPagesDlg.A_WorkComplAddUpdate(Sender: TObject);
+begin
+ if Grid_Order.DataSource.DataSet.Active then
+  begin
+    if Grid_Order.DataSource.DataSet.FieldByName('ID').IsNull  then
+      (sender as Taction).Enabled:=False
+      else
+      (sender as Taction).Enabled:=True;
+  end;
+end;
+
+procedure TPagesDlg.A_WorkComplEditExecute(Sender: TObject);
+begin
+  WorkComplEdit_F.ShowModal;
+end;
+
+procedure TPagesDlg.A_WorkComplEditUpdate(Sender: TObject);
+begin
+  if Grid_Works.DataSource.DataSet.Active then
+   begin
+    if Grid_Works.DataSource.DataSet.FieldByName('ID').IsNull  then
+      (sender as Taction).Enabled:=False
+      else
+      (sender as Taction).Enabled:=True;
+   end;
+end;
+
+procedure TPagesDlg.BitBtn1Click(Sender: TObject);
+begin
+  Dmod.OpenDatabases;
+end;
+
+procedure TPagesDlg.Button1Click(Sender: TObject);
+begin
+
+  //CheckNameOfkatalog;
+end;
+
+procedure TPagesDlg.Button2Click(Sender: TObject);
+var
+ t: TfrxBarCodeView;
+ m: TfrxMemoView;
+begin
+  Fr1.LoadFromFile('code13_58_40.fr3');
+  t := TfrxBarCodeView(Fr1.FindObject('BarCode1'));
+  if t <> nil then
+    t.Text := DMod.QKatalog.FieldByName('BARCODE').asstring;
+  m := TfrxMemoView(Fr1.FindObject('Memo1'));
+  if m <> nil then
+    begin
+      m.Memo.Clear;
+      m.Memo.Add( DMod.QKatalog.FieldByName('NAME').asstring);
+    end;
+// или так:
+// if t <> nil then
+//   t.Prop["Memo"] := "FastReport";
+  Fr1.PrepareReport;
+  Fr1.ShowPreparedReport;
+end;
+
+
+
+
+
+ //Функция берет на вход 12 символов -цифр и вычисляет 13 контрольную цифру по алгоритму EAN-13
+function TPagesDlg.CalcBarcodeEan13CheckSum(barcode: string): string;
+var
+ sum,factor,dig1:int64;
+ k:Integer;
+begin
+  sum := 0;
+  Factor := 3;
+  try
+  for k := length(barcode) downto 1 do
+  begin
+   dig1 := strToInt(copy(barcode, k, 1));
+    sum := sum + (dig1 * Factor);
+    Factor := 4 - Factor;
+  end;
+  except
+   sum:=-1;
+  end;
+  sum := (sum mod 10);
+  if sum <> 0 then
+   sum := 10 - sum;
+  result:=intToStr(sum);
+end;
+
+procedure TPagesDlg.CheckNameOfkatalog;
+var
+  sql:TIBSQL;
+  name:string;
+  i:Integer;
+begin
+  sql := TIBSQL.Create(Self);
+  try
+    sql.Database:=DMod.DB;
+    sql.Transaction:=Dmod.IBTW1;
+    sql.SQL.Add('update katalog set name=:p0 where nn=:p1');
+    if not DMOD.QKatalog.Active then DMod.QKatalog.Open;
+    Dmod.QKatalog.First;
+    while not Dmod.QKatalog.Eof do
+      begin
+        name:=DMod.QKatalog.FieldByName('NAME').AsString;
+        i:=DMod.QKatalog.FieldByName('NN').AsInteger;
+        name:= DelLastSymbol(name,'*');
+        sql.Transaction.StartTransaction;
+        sql.Params[0].AsString:=name;
+        sql.Params[1].AsInteger:=i;
+        sql.ExecQuery;
+        sql.Transaction.Commit;
+        Dmod.QKatalog.Next;
+      end;
+  finally
+    sql.Free;
+  end;
+
+
+
+
+end;
+
+procedure TPagesDlg.SetOrderFilter;
+var
+ sqlorderbody,sqltrailer:String;
+begin
+  sqlorderbody:='  select a.*, cast(dt_open as date) as date_open, ';
+  sqlorderbody:=sqlorderbody+ format(' iif(b.CLIENTTYPE=%sP%s,B.LASTNAME||%s %s||B.FIRSTNAME||%s %s||B.MIDDLENAME , B.ORGANIZATION) as CLIENTNAME, ',[#39,#39,#39,#39,#39,#39]);
+  sqlorderbody:=sqlorderbody+ ' b.PHONEMOBILE,b.fulladdress, ';
+  sqlorderbody:=sqlorderbody+ format(' (c.LASTNAME||%s %s||c.FIRSTNAME) as EMPLOYEENAME_IN, ',[#39,#39]);
+  sqlorderbody:=sqlorderbody+ format(' c.LASTNAME, c.FIRSTNAME, c.MIDDLENAME, (d.LASTNAME||%s %s||d.FIRSTNAME||%s %s||d.MIDDLENAME) as EMPLOYEENAME_OUT ',[#39,#39,#39,#39]);
+//  sqlorderbody:=sqlorderbody+ ' d.LASTNAME as EMPL_OUT_FAM,d.FIRSTNAME as EMPL_OUT_NAME ';
+  sqlorderbody:=sqlorderbody+ ' from  ZAKAZ_ORDER a left join client b on a.cl_id=b.id  left join employee c on a.empl_in=c.id  left join employee d on a.empl_out=d.id  ';
+case Rg_order.ItemIndex of
+  0,1:sqltrailer:=' where cast(a.dt_open as date) between :p0 and :p1 and status=:p2  order by  a.id desc ';
+  2:sqltrailer:=' where cast(a.dt_open as date) between :p0 and :p1 order by  a.id desc ';
+end;
+
+Dmod.Qry_Order.Close;
+Dmod.Qry_Order.SQL.Clear;
+Dmod.Qry_Order.SQL.Add( sqlorderbody + sqltrailer);
+DMod.Qry_Order.Close;
+DMod.Qry_Order.Params[0].AsDate:=WorkDate1.Date;
+DMod.Qry_Order.Params[1].AsDate:=WorkDate2.Date;
+case Rg_order.ItemIndex of
+  0:DMod.Qry_Order.Params[2].AsString:='W';
+  1:DMod.Qry_Order.Params[2].AsString:='F';
+end;
+DMod.Qry_Order.Open;
+end;
+
+procedure TPagesDlg.SetWorkInterval_BtnClick(Sender: TObject);
+begin
+ SetOrderFilter;
+end;
+
+procedure TPagesDlg.ShowSalesBtnClick(Sender: TObject);
+var
+ s:string;
+begin
+DMod.SaleQry.Close;
+Dmod.SaleQry.SQL.Clear;
+DMod.SaleQry.SQL.Add(' select KOL, MARKA, KRNAME, N, OPTPRICE, PRICE,');
+DMod.SaleQry.SQL.Add('KOL*SALE_PRICE AS SUM_TOV,ID_TOV,SALE_PRICE,DATA_SALE, KOL*OPTPRICE as SUM_OPT, ');
+DMod.SaleQry.SQL.Add('(KOL*SALE_PRICE)-(KOL*OPTPRICE) as INCOM FROM SALES ');
+s:=format(' where data_sale >= %s and data_sale < %s ',[#39+DateToStr(DateEdit1.Date)+#39,#39+DateToStr(DateEdit2.Date+1)+#39] );
+DMod.SaleQry.SQL.Add(s);
+DMod.SaleQry.SQL.Add(' order by  n desc');
+
+//Memo1.Lines.Clear;
+//Memo1.Lines:=DMod.SaleQry.SQL;
+//DMod.SaleQry.Params[0].asdateTime :=DateEdit1.Date;
+//DMod.SaleQry.Params[1].asDateTime :=DateEdit2.Date+1;
+Dmod.SaleQry.Open;
+end;
+
+procedure TPagesDlg.E_ShipRightButtonClick(Sender: TObject);
+begin
+  if not DMod.Sprav_Ship.Active then   DMod.Sprav_Ship.Open;;
+  if Form_Ship.ShowModal = mrOk then
+    begin
+      E_Ship.Text:=Form_Ship.DBGridEh1.DataSource.DataSet.FieldByName('NAME').AsString;
+      Ship_Id:=Form_Ship.DBGridEh1.DataSource.DataSet.FieldByName('ID_NUM').AsInteger;
+      DMod.Sprav_Ship.Close;
+    end;
+
+end;
+
+end.
+
+
+

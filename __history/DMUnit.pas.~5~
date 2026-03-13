@@ -1,0 +1,340 @@
+unit DMUnit;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Db, ibx.IBDatabase, ibx.IBCustomDataSet, ibx.IBQuery, ibx.IBSQL, ibx.IBEvents,
+  MemTableDataEh, MemTableEh, ibx.IBTable;
+
+type
+  TDMod = class(TDataModule)
+    DSKatalog: TDataSource;
+    DSZakaz: TDataSource;
+    DataSource1: TDataSource;
+    DSales: TDataSource;
+    DSum_sale: TDataSource;
+    DSQry2: TDataSource;
+    DSKat_Auto: TDataSource;
+    DB: TIBDatabase;
+    IBTR1: TIBTransaction;
+    IBTW1: TIBTransaction;
+    TZakaz: TIBQuery;
+    Query1: TIBQuery;
+    Query2: TIBQuery;
+    QKatalog: TIBQuery;
+    TKat_Auto: TIBQuery;
+    SaleQry: TIBQuery;
+    ZakQry: TIBSQL;
+    Query: TIBQuery;
+    Qry_Add: TIBSQL;
+    Del_saleQry: TIBSQL;
+    Sum_Sales: TIBQuery;
+    IBQuery1: TIBQuery;
+    Qry_Shippers: TIBQuery;
+    Qry_TovGroups: TIBQuery;
+    DS_Shippers: TDataSource;
+    DS_TovGroups: TDataSource;
+    Qry_ShippersID_NUM: TIntegerField;
+    Qry_ShippersNAME: TIBStringField;
+    Qry_TovGroupsID_NUM: TIntegerField;
+    Qry_TovGroupsNAME: TIBStringField;
+    Qry_ShippersPICT: TIntegerField;
+    Qry_TovGroupsPICT: TIntegerField;
+    Sprav_Ship: TIBQuery;
+    IntegerField1: TIntegerField;
+    IBStringField1: TIBStringField;
+    IntegerField2: TIntegerField;
+    Ds_SpravShip: TDataSource;
+    Sprav_TovGr: TIBQuery;
+    IntegerField3: TIntegerField;
+    IBStringField2: TIBStringField;
+    IntegerField4: TIntegerField;
+    Ds_Sprav_TovGr: TDataSource;
+    Qry_RepZak: TIBQuery;
+    Qry_ShippersLAW_NAME: TIBStringField;
+    Qry_ShippersADDRESS: TIBStringField;
+    Qry_ShippersPHONE: TIBStringField;
+    Sprav_ShipLAW_NAME: TIBStringField;
+    Sprav_ShipADDRESS: TIBStringField;
+    Sprav_ShipPHONE: TIBStringField;
+    Qry_users: TIBQuery;
+    DS_QryUsers: TDataSource;
+    QryRepNom: TIBQuery;
+    DSRepNom: TDataSource;
+    IBEvents1: TIBEvents;
+    DS_CashMemo: TDataSource;
+    Qry_CashMemo: TIBQuery;
+    DS_cashMemoItems: TDataSource;
+    Qry_CashMemoItems: TIBQuery;
+    Qry_RepCash: TIBQuery;
+    Qry_Settings: TIBQuery;
+    Qry_Order: TIBQuery;
+    DS_Order: TDataSource;
+    Qry_Client: TIBQuery;
+    Ds_Client: TDataSource;
+    Qry_GroupWorks: TIBQuery;
+    DS_GroupWorks: TDataSource;
+    Qry_Works: TIBQuery;
+    DS_Works: TDataSource;
+    Qry_ClientAuto: TIBQuery;
+    DS_ClientAuto: TDataSource;
+    Qry_MarkAuto: TIBQuery;
+    Ds_MarkAuto: TDataSource;
+    Qry_Employee: TIBQuery;
+    Ds_Employee: TDataSource;
+    Qry_ClientParts: TIBQuery;
+    DS_ClientParts: TDataSource;
+    Qry_OrderID: TIntegerField;
+    Qry_OrderDT_OPEN: TDateTimeField;
+    Qry_OrderDT_CLOSED: TDateTimeField;
+    Qry_OrderCL_ID: TIntegerField;
+    Qry_OrderEMPL_IN: TIntegerField;
+    Qry_OrderEMPL_OUT: TIntegerField;
+    Qry_OrderPLAT_ID: TIntegerField;
+    Qry_OrderTS_ID: TIntegerField;
+    Qry_OrderPRE_CALC: TIBBCDField;
+    Qry_OrderPRE_WORKS: TBlobField;
+    Qry_OrderNOTE: TBlobField;
+    Qry_OrderITOGO: TIBBCDField;
+    Qry_OrderCHECK_PAY: TIBStringField;
+    Qry_OrderCONDITION: TIBStringField;
+    Qry_OrderPACKAGE: TIBStringField;
+    Qry_OrderN_ORDER: TIBStringField;
+    Qry_OrderVID_REP: TIBStringField;
+    Qry_OrderROUNDTRIP: TIntegerField;
+    Qry_OrderCLIENT_PARTS_KEY: TIBStringField;
+    Qry_OrderDATE_OPEN: TDateField;
+    Qry_OrderCLIENTNAME: TIBStringField;
+    Qry_OrderPHONEMOBILE: TIBStringField;
+    Qry_OrderREASON: TBlobField;
+    Qry_OrderAuto: TIBQuery;
+    DS_OrderAuto: TDataSource;
+    Qry_WorksCompl: TIBQuery;
+    DS_WorksCompl: TDataSource;
+    Qry_OrderEMPLOYEENAME_IN: TIBStringField;
+    Qry_OrderCRASHES: TBlobField;
+    Qry_OrderLASTNAME: TIBStringField;
+    Qry_OrderFIRSTNAME: TIBStringField;
+    Qry_OrderMIDDLENAME: TIBStringField;
+    Qry_OrderVID_PL: TIBStringField;
+    Qry_OrderSTATUS: TIBStringField;
+    Qry_OrderEMPLOYEENAME_OUT: TIBStringField;
+    Qry_OrderFULLADDRESS: TIBStringField;
+    Qry_RepEmplDetail: TIBQuery;
+    Qry_OrderNOTE_RECOM: TBlobField;
+    Qry_KursVal: TIBQuery;
+    DS_KursVal: TDataSource;
+    T_KursVal: TIBTable;
+    T_KursValID_NUM: TIntegerField;
+    T_KursValKURSUSD: TFloatField;
+    T_KursValKURSEUR: TFloatField;
+    T_KursValDT: TDateField;
+    QKatalogNN: TIntegerField;
+    QKatalogNAME: TIBStringField;
+    QKatalogOPTPRICE: TFloatField;
+    QKatalogPRIM: TWideMemoField;
+    QKatalogKOL: TFloatField;
+    QKatalogPRICE: TFloatField;
+    QKatalogZAK: TFloatField;
+    QKatalogTMP: TFloatField;
+    QKatalogTOV_GR: TIntegerField;
+    QKatalogSHIP_GR: TIntegerField;
+    QKatalogTRAN: TIntegerField;
+    QKatalogOPTPRICE_USD: TFloatField;
+    QKatalogSUM_TOV: TFloatField;
+    QKatalogSHIPPER: TIBStringField;
+    QKatalogPRICE_CALC: TCurrencyField;
+    QKatalogPRICE_USD: TFloatField;
+    QKatalogBARCODE: TIBStringField;
+    QKatalogMARKA: TIBStringField;
+    Qry_RepLabel: TIBQuery;
+    Qry_RegTi: TIBQuery;
+    Ds_RegTi: TDataSource;
+    Qry_Cards: TIBQuery;
+    Ds_Cards: TDataSource;
+    Qry_Reviziya: TIBQuery;
+    Qry_ReviziaName: TIBQuery;
+    procedure DModCreate(Sender: TObject);
+    procedure DataSource1DataChange(Sender: TObject; Field: TField);
+    procedure DSKatalogDataChange(Sender: TObject; Field: TField);
+    procedure IBEvents1EventAlert(Sender: TObject; EventName: string;
+      EventCount: Integer; var CancelAlerts: Boolean);
+    procedure T_KursValNewRecord(DataSet: TDataSet);
+    procedure QKatalogCalcFields(DataSet: TDataSet);
+  private
+    { Private declarations }
+    function ConnectToDatabase: Boolean;
+  public
+    { Public declarations }
+    Db_Name:String;
+    DB_Description:String;
+    procedure OpenDatabases;
+    procedure Closedatabases;
+    procedure Refresh_Qkatalog;
+    procedure Refresh_Settings;
+    procedure Refresh_RegTi;
+  end;
+
+var
+  DMod: TDMod;
+
+implementation
+
+uses Main,Global_U;
+
+{$R *.DFM}
+
+procedure TDMod.OpenDatabases;
+begin
+if not QKatalog.Active then DMod.QKatalog.Open;
+if not TZakaz.Active then DMod.TZakaz.Open;
+Qry_Shippers.Open;
+Qry_TovGroups.Open;
+//Query2.Open;
+Qry_users.Open;
+Qry_CashMemo.Open;
+Qry_CashMemoItems.Open;
+Qry_Settings.Open;
+end;
+
+procedure TDMod.QKatalogCalcFields(DataSet: TDataSet);
+begin
+  QKatalogPRICE_CALC.AsCurrency:=QKatalogPRICE_USD.AsCurrency * KURSUSD;
+end;
+
+procedure TDMod.Refresh_Qkatalog;
+var
+  R:Integer;
+begin
+R:=PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('NN').AsInteger;
+DMod.QKatalog.Close;
+DMod.QKatalog.Open;
+if not DMod.QKatalog.Locate('NN',R,[]) then DMod.QKatalog.Locate('NN',R+1,[]);
+end;
+
+procedure TDMod.Refresh_RegTi;
+var
+  R:Integer;
+begin
+R:=Dmod.Qry_RegTi.FieldByName('ID').AsInteger;
+DMod.Qry_RegTi.Close;
+DMod.Qry_RegTi.Open;
+DMod.Qry_RegTi.Locate('ID',R,[]);
+end;
+
+procedure TDMod.Refresh_Settings;
+begin
+ Qry_Settings.Close;
+ Qry_Settings.Open;
+end;
+
+procedure TDMod.T_KursValNewRecord(DataSet: TDataSet);
+var
+ qry:TIBQuery;
+begin
+  qry := TIBQuery.Create(Self);
+  try
+    qry.Database:=DB;
+    qry.SQL.Add('select gen_id(gen_id_kursval,1) from rdb$database');
+    qry.Open;
+    T_KursValID_NUM.AsInteger:=qry.Fields[0].AsInteger;
+  finally
+    qry.Free;
+  end;
+end;
+
+procedure TDMod.DModCreate(Sender: TObject);
+ var
+  F:TextFile;
+  FileName:String;
+begin
+  FileName:='connectstring.ini';
+  AssignFile(F,FileName);
+  Reset(F);
+  ReadLn(F,DB_Name);  // читаем путь к файлу БД
+  ReadLn(F,DB_Description);  // читаем описание БД
+  ReadLn(F,CASH_PORT);  // COM-port KKM
+  Readln(F,RunMode);  //  проверяем режим запуска для сервиса
+  CloseFile(F);
+  _ConnectionFlag:=ConnectToDatabase;
+end;
+
+procedure TDMod.Closedatabases;
+begin
+Db.CloseDataSets;
+Db.Close;
+end;
+
+function TDMod.ConnectToDatabase: Boolean;
+var
+  F:TextFile;
+  DB_Name,FileName:String;
+begin
+  Result:=False;
+  FileName:='connectstring.ini';
+  AssignFile(F,FileName);
+  Reset(F);
+  ReadLn(F,DB_Name);
+//  ReadLn(F,RemoteFlag);
+  CloseFile(F);
+ if DB.Connected then DB.Close;
+// ShowMessage('Is connected');
+ DB.DatabaseName:='';
+ DB.DatabaseName:=Trim(Db_Name);
+// ShowMessage('Set db_name');
+ try
+  DB.Open;
+  OpenDatabases;
+ except
+   on E:Exception do ShowMessage(E.Message);
+ end;
+ Result:=DB.Connected;
+end;
+
+procedure TDMod.DataSource1DataChange(Sender: TObject; Field: TField);
+begin
+Query1.Close;
+Query1.Open;
+end;
+
+procedure TDMod.DSKatalogDataChange(Sender: TObject; Field: TField);
+begin
+ PagesDlg.SumTovBtnClick(PagesDlg.SumTovBtn);
+end;
+
+procedure TDMod.IBEvents1EventAlert(Sender: TObject; EventName: string;
+  EventCount: Integer; var CancelAlerts: Boolean);
+begin
+//
+//if (EventName='KATALOG_INSERTED') or (EventName='KATALOG_UPDATED') or (EventName='KATALOG_DELETED') then
+//  begin
+//   try
+//     PagesDlg.Grid_Kat.DataSource.DataSet.DisableControls;
+//     PagesDlg.Refresh_Katalog;
+//    finally
+//     PagesDlg.Grid_Kat.DataSource.DataSet.EnableControls;
+//    end;
+//    try
+//     PagesDlg.Grid_Zak.DataSource.DataSet.DisableControls;
+//     PagesDlg.Refresh_Zakaz;
+//   finally
+//     PagesDlg.Grid_Zak.DataSource.DataSet.EnableControls;
+//   end;
+//
+//  end;
+//if (EventName='SALES_INSERTED') or (EventName='SALES_UPDATED') or (EventName='SALES_DELETED') then
+//  begin
+//   try
+//    PagesDlg.Grid_Sale.DataSource.DataSet.DisableControls;
+//    PagesDlg.ShowSalesBtnClick(PagesDlg.ShowSalesBtn);
+//   finally
+//    PagesDlg.Grid_Sale.DataSource.DataSet.EnableControls;
+//   end;
+//
+//  end;
+//
+
+end;
+
+end.

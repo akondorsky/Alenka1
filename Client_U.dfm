@@ -1,0 +1,272 @@
+object Client_F: TClient_F
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = #1047#1072#1082#1072#1079#1095#1080#1082#1080
+  ClientHeight = 465
+  ClientWidth = 834
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Splitter1: TSplitter
+    Left = 185
+    Top = 24
+    Height = 441
+    ExplicitLeft = 216
+    ExplicitTop = 72
+    ExplicitHeight = 100
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 834
+    Height = 24
+    AutoSize = True
+    ButtonHeight = 24
+    ButtonWidth = 24
+    Caption = 'ToolBar1'
+    DrawingStyle = dsGradient
+    Images = PagesDlg.IL_BtnsShip
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 0
+      Top = 0
+      Action = A_ClientAdd
+    end
+    object ToolButton3: TToolButton
+      Left = 24
+      Top = 0
+      Action = A_ClientEdit
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 24
+    Width = 185
+    Height = 441
+    Align = alLeft
+    TabOrder = 1
+    object Rg_TypeCl: TRadioGroup
+      Left = 8
+      Top = 24
+      Width = 171
+      Height = 65
+      Caption = #1058#1080#1087' '#1079#1072#1082#1072#1079#1095#1080#1082#1072
+      ItemIndex = 0
+      Items.Strings = (
+        #1060#1080#1079#1080#1095#1077#1089#1082#1086#1077' '#1083#1080#1094#1086
+        #1070#1088#1080#1076#1080#1095#1077#1089#1082#1086#1077' '#1083#1080#1094#1086)
+      TabOrder = 0
+      OnClick = Rg_TypeClClick
+    end
+  end
+  object Panel2: TPanel
+    Left = 188
+    Top = 24
+    Width = 646
+    Height = 441
+    Align = alClient
+    Caption = 'Panel2'
+    TabOrder = 2
+    object Splitter2: TSplitter
+      Left = 1
+      Top = 329
+      Width = 644
+      Height = 3
+      Cursor = crVSplit
+      Align = alTop
+      ExplicitTop = 265
+      ExplicitWidth = 210
+    end
+    object DBGridEh1: TDBGridEh
+      Left = 1
+      Top = 1
+      Width = 644
+      Height = 328
+      Align = alTop
+      DataSource = DMod.Ds_Client
+      DynProps = <>
+      Flat = True
+      FooterParams.Color = clWindow
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+      ReadOnly = True
+      TabOrder = 0
+      TitleParams.RowLines = 2
+      OnDblClick = DBGridEh1DblClick
+      Columns = <
+        item
+          CellButtons = <>
+          DynProps = <>
+          EditButtons = <>
+          FieldName = 'LASTNAME'
+          Footers = <>
+          Title.Alignment = taCenter
+          Title.Caption = #1060#1072#1084#1080#1083#1080#1103
+          Width = 85
+        end
+        item
+          CellButtons = <>
+          DynProps = <>
+          EditButtons = <>
+          FieldName = 'ORGANIZATION'
+          Footers = <>
+          Title.Alignment = taCenter
+          Title.Caption = #1054#1088#1075#1072#1085#1080#1079#1072#1094#1080#1103
+          Width = 118
+        end
+        item
+          CellButtons = <>
+          DynProps = <>
+          EditButtons = <>
+          FieldName = 'PHONEMOBILE'
+          Footers = <>
+          Title.Alignment = taCenter
+          Title.Caption = #1050#1086#1085#1090'. '#1090#1077#1083#1077#1092#1086#1085
+          Width = 114
+        end
+        item
+          CellButtons = <>
+          DynProps = <>
+          EditButtons = <>
+          FieldName = 'FULLADDRESS'
+          Footers = <>
+          Title.Alignment = taCenter
+          Title.Caption = #1055#1086#1083#1085#1099#1081' '#1072#1076#1088#1077#1089
+          Width = 282
+        end>
+      object RowDetailData: TRowDetailPanelControlEh
+      end
+    end
+    object DBGridEh2: TDBGridEh
+      Left = 1
+      Top = 357
+      Width = 644
+      Height = 83
+      Align = alClient
+      DataSource = DMod.DS_ClientAuto
+      DynProps = <>
+      Flat = True
+      FooterParams.Color = clWindow
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+      ReadOnly = True
+      TabOrder = 1
+      TitleParams.RowLines = 2
+      Columns = <
+        item
+          CellButtons = <>
+          DynProps = <>
+          EditButtons = <>
+          FieldName = 'MARKA'
+          Footers = <>
+          Title.Alignment = taCenter
+          Title.Caption = #1052#1072#1088#1082#1072' '#1072'/'#1084
+          Width = 79
+        end
+        item
+          CellButtons = <>
+          DynProps = <>
+          EditButtons = <>
+          FieldName = 'MODEL'
+          Footers = <>
+          Title.Alignment = taCenter
+          Title.Caption = #1052#1086#1076#1077#1083#1100' '#1072'/'#1084
+          Width = 110
+        end
+        item
+          CellButtons = <>
+          DynProps = <>
+          EditButtons = <>
+          FieldName = 'REGNO'
+          Footers = <>
+          Title.Alignment = taCenter
+          Title.Caption = #1056#1077#1075'. '#1085#1086#1084#1077#1088
+        end
+        item
+          CellButtons = <>
+          DynProps = <>
+          EditButtons = <>
+          FieldName = 'YEARPRODUCTION'
+          Footers = <>
+          Title.Alignment = taCenter
+          Title.Caption = #1043#1086#1076' '#1074#1099#1087#1091#1089#1082#1072
+        end
+        item
+          CellButtons = <>
+          DynProps = <>
+          EditButtons = <>
+          FieldName = 'VIN'
+          Footers = <>
+          Title.Alignment = taCenter
+          Width = 208
+        end>
+      object RowDetailData: TRowDetailPanelControlEh
+      end
+    end
+    object ToolBar2: TToolBar
+      Left = 1
+      Top = 332
+      Width = 644
+      Height = 25
+      ButtonHeight = 24
+      ButtonWidth = 24
+      Caption = 'ToolBar2'
+      Images = PagesDlg.IL_BtnsShip
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 2
+      object ToolButton2: TToolButton
+        Left = 0
+        Top = 0
+        Action = A_AutoAdd
+      end
+      object ToolButton4: TToolButton
+        Left = 24
+        Top = 0
+        Action = A_AutoEdit
+      end
+    end
+  end
+  object ActionManager1: TActionManager
+    Images = PagesDlg.IL_BtnsShip
+    Left = 32
+    Top = 240
+    StyleName = 'Platform Default'
+    object A_ClientAdd: TAction
+      Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1079#1072#1082#1072#1079#1095#1080#1082#1072
+      Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1079#1072#1082#1072#1079#1095#1080#1082#1072
+      ImageIndex = 0
+      OnExecute = A_ClientAddExecute
+    end
+    object A_AutoAdd: TAction
+      Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1072#1074#1090#1086#1084#1086#1073#1080#1083#1100
+      Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1072#1074#1090#1086#1084#1086#1073#1080#1083#1100
+      ImageIndex = 0
+      OnExecute = A_AutoAddExecute
+    end
+    object A_ClientFilter: TAction
+      Caption = 'A_ClientFilter'
+      OnExecute = A_ClientFilterExecute
+    end
+    object A_ClientEdit: TAction
+      Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100' '#1082#1083#1080#1077#1085#1090#1072
+      Hint = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100' '#1082#1083#1080#1077#1085#1090#1072
+      ImageIndex = 1
+      OnExecute = A_ClientEditExecute
+    end
+    object A_AutoEdit: TAction
+      Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100' '#1072#1074#1090#1086#1084#1086#1073#1080#1083#1100
+      Hint = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100' '#1072#1074#1090#1086#1084#1086#1073#1080#1083#1100
+      ImageIndex = 1
+      OnExecute = A_AutoEditExecute
+    end
+  end
+end

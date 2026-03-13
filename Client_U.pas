@@ -1,0 +1,112 @@
+unit Client_U;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DBGridEhGrouping, PlatformDefaultStyleActnCtrls, ActnList, ActnMan,
+  GridsEh, DBGridEh, ExtCtrls, ToolWin, ComCtrls, StdCtrls, ToolCtrlsEh,
+  DBGridEhToolCtrls, DynVarsEh, DBAxisGridsEh, System.Actions, EhLibVCL;
+
+type
+  TClient_F = class(TForm)
+    ToolBar1: TToolBar;
+    Panel1: TPanel;
+    ActionManager1: TActionManager;
+    A_ClientAdd: TAction;
+    ToolButton1: TToolButton;
+    Panel2: TPanel;
+    DBGridEh1: TDBGridEh;
+    Splitter1: TSplitter;
+    Splitter2: TSplitter;
+    DBGridEh2: TDBGridEh;
+    ToolBar2: TToolBar;
+    A_AutoAdd: TAction;
+    ToolButton2: TToolButton;
+    A_ClientFilter: TAction;
+    Rg_TypeCl: TRadioGroup;
+    A_ClientEdit: TAction;
+    ToolButton3: TToolButton;
+    A_AutoEdit: TAction;
+    ToolButton4: TToolButton;
+    procedure A_ClientAddExecute(Sender: TObject);
+    procedure A_AutoAddExecute(Sender: TObject);
+    procedure A_ClientFilterExecute(Sender: TObject);
+    procedure Rg_TypeClClick(Sender: TObject);
+    procedure DBGridEh1DblClick(Sender: TObject);
+    procedure A_ClientEditExecute(Sender: TObject);
+    procedure A_AutoEditExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Client_F: TClient_F;
+
+implementation
+
+{$R *.dfm}
+uses dmunit,main, ClientAdd_U, AutoAdd_U, ClientEdit_U, AutoEdit_U;
+
+procedure TClient_F.A_AutoAddExecute(Sender: TObject);
+begin
+ AutoAdd_F.ShowModal;
+end;
+
+procedure TClient_F.A_AutoEditExecute(Sender: TObject);
+begin
+  AutoEdit_F.ShowModal;
+end;
+
+procedure TClient_F.A_ClientAddExecute(Sender: TObject);
+begin
+ ClientAdd_F.ShowModal;
+end;
+
+procedure TClient_F.A_ClientEditExecute(Sender: TObject);
+begin
+  ClientEdit_F.ShowModal;
+end;
+
+procedure TClient_F.A_ClientFilterExecute(Sender: TObject);
+var
+ s:String;
+ rec:Integer;
+begin
+ rec:=Dmod.Qry_Client.FieldByName('ID').AsInteger;
+ case Rg_TypeCl.ItemIndex  of
+  0: begin
+       s:= 'select *  from CLIENT ';
+       s:=s+format(' where clienttype=%sP%s ',[#39,#39]);
+       s:=s+' order by lastname,firstname ';
+     end;
+  1: begin
+       s:= 'select *  from CLIENT ';
+       s:=s+format(' where clienttype=%sL%s ',[#39,#39]);
+       s:=s+' order by organization ';
+     end;
+ end; //case
+  Dmod.Qry_Client.Close;
+  Dmod.Qry_client.Sql.Clear;
+  Dmod.Qry_Client.SQL.Add(s);
+  Dmod.Qry_Client.Open;
+  Dmod.Qry_Client.Locate('ID',rec,[]);
+ end;
+
+
+procedure TClient_F.DBGridEh1DblClick(Sender: TObject);
+begin
+  if not Dmod.Qry_Client.FieldByName('ID').IsNull then ModalResult:=mrOk else ModalResult:=mrNone;
+  
+end;
+
+procedure TClient_F.Rg_TypeClClick(Sender: TObject);
+begin
+  A_ClientFilter.Execute;
+end;
+
+
+
+end.

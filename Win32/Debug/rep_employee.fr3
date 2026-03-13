@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="4.11.4" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="По умолчанию" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="41637,6794677431" ReportOptions.Description.Text="" ReportOptions.LastChange="41637,7170449306" ScriptLanguage="PascalScript" ScriptText.Text="&#13;&#10;begin&#13;&#10;&#13;&#10;end." PropData="044C65667403700103546F7003B0000844617461736574730101063C20446174615365743D226672785F526570456D706C44657461696C2220446174615365744E616D653D226672785F526570456D706C44657461696C220000095661726961626C65730101060B204E616D653D22204D79220001060B204E616D653D22645F31220001060B204E616D653D22645F32220000055374796C650100">
+  <TfrxDataPage Name="Data" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxReportPage Name="Page1" PaperWidth="210" PaperHeight="297" PaperSize="9" LeftMargin="10" RightMargin="10" TopMargin="10" BottomMargin="10" ColumnWidth="0" ColumnPositions.Text="" HGuides.Text="" VGuides.Text="">
+    <TfrxReportTitle Name="ReportTitle1" Height="22,67718" Left="0" Top="18,89765" Width="718,1107">
+      <TfrxMemoView Name="Memo2" Left="3,77953" Top="0" Width="710,55164" Height="18,89765" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" HAlign="haCenter" ParentFont="False" Text="Отчет по мастерам автосервиса с [d_1] по [d_2]"/>
+    </TfrxReportTitle>
+    <TfrxGroupHeader Name="GroupHeader1" Height="41,57483" Left="0" Top="102,04731" Width="718,1107" Condition="frx_RepEmplDetail.&#34;EMPLOYEE&#34;">
+      <TfrxGradientView Name="Gradient1" Left="0" Top="0" Width="605,858267716535" Height="22,67718" GroupIndex="1" ShowHint="False" Style="gsHorizontal" Color="12632256"/>
+      <TfrxMemoView Name="Memo3" Left="71,81107" Top="0" Width="423,30736" Height="18,89765" ShowHint="False" Text="[frx_RepEmplDetail.&#34;EMPLOYEE&#34;]"/>
+      <TfrxMemoView Name="Memo7" Left="3,77953" Top="0" Width="64,25201" Height="18,89765" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" ParentFont="False" Text="Мастер:"/>
+      <TfrxMemoView Name="Memo9" Left="37,7953" Top="22,67718" Width="45,35436" Height="18,89765" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="False" Text="№ п/п"/>
+      <TfrxMemoView Name="Memo10" Left="83,14966" Top="22,67718" Width="105,82684" Height="18,89765" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="False" Text="№ заказ-наряда"/>
+      <TfrxMemoView Name="Memo11" Left="188,9765" Top="22,67718" Width="302,3624" Height="18,89765" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="False" Text="Наименование работы"/>
+      <TfrxMemoView Name="Memo12" Left="491,3389" Top="22,67718" Width="113,3859" Height="18,89765" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="False" Text="Стоимость, руб."/>
+    </TfrxGroupHeader>
+    <TfrxMasterData Name="MasterData1" Height="18,89765" Left="0" Top="166,29932" Width="718,1107" ColumnWidth="0" ColumnGap="0" DataSet="frx_RepEmplDetail" DataSetName="frx_RepEmplDetail" RowCount="0">
+      <TfrxMemoView Name="Memo1" Left="188,9765" Top="0" Width="302,3624" Height="18,89765" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" ParentFont="False" Text="[frx_RepEmplDetail.&#34;NAME&#34;]"/>
+      <TfrxMemoView Name="Memo4" Left="83,14966" Top="0" Width="105,82684" Height="18,89765" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="False" Text="[frx_RepEmplDetail.&#34;N_ORDER&#34;]"/>
+      <TfrxMemoView Name="Memo5" Left="491,3389" Top="0" Width="113,3859" Height="18,89765" ShowHint="False" DisplayFormat.FormatStr="%2.2n" DisplayFormat.Kind="fkNumeric" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haRight" ParentFont="False" Text="[frx_RepEmplDetail.&#34;COST&#34;]"/>
+      <TfrxMemoView Name="Memo8" Left="37,7953" Top="0" Width="45,35436" Height="18,89765" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="0" Frame.Typ="15" HAlign="haCenter" ParentFont="False" Text="[Line#]"/>
+    </TfrxMasterData>
+    <TfrxGroupFooter Name="GroupFooter1" Height="18,89765" Left="0" Top="207,87415" Width="718,1107">
+      <TfrxMemoView Name="Memo6" Left="491,3389" Top="0" Width="113,3859" Height="18,89765" ShowHint="False" DisplayFormat.FormatStr="%2.2n" DisplayFormat.Kind="fkNumeric" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="1" Frame.Typ="15" HAlign="haRight" ParentFont="False" Text="[SUM(&#60;frx_RepEmplDetail.&#34;COST&#34;&#62;,MasterData1)]"/>
+      <TfrxMemoView Name="Memo13" Left="37,7953" Top="0" Width="453,5436" Height="18,89765" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="1" Frame.Typ="15" HAlign="haRight" ParentFont="False" Text="Итого по мастеру  "/>
+    </TfrxGroupFooter>
+    <TfrxFooter Name="Footer1" Height="18,89765" Left="0" Top="249,44898" Width="718,1107">
+      <TfrxMemoView Name="Memo14" Left="37,7953" Top="0" Width="453,5436" Height="18,89765" ShowHint="False" Font.Charset="1" Font.Color="0" Font.Height="-16" Font.Name="Arial" Font.Style="1" Frame.Typ="15" HAlign="haRight" ParentFont="False" VAlign="vaCenter" Text="Общая сумма работ  "/>
+      <TfrxMemoView Name="Memo15" Left="491,3389" Top="0" Width="113,3859" Height="18,89765" ShowHint="False" DisplayFormat.FormatStr="%2.2n" DisplayFormat.Kind="fkNumeric" Font.Charset="1" Font.Color="0" Font.Height="-16" Font.Name="Arial" Font.Style="1" Frame.Typ="15" HAlign="haRight" ParentFont="False" VAlign="vaCenter" Text="[SUM(&#60;frx_RepEmplDetail.&#34;COST&#34;&#62;,MasterData1,2)]"/>
+    </TfrxFooter>
+  </TfrxReportPage>
+</TfrxReport>

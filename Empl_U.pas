@@ -1,0 +1,52 @@
+unit Empl_U;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DBGridEhGrouping, GridsEh, DBGridEh, ToolWin, ComCtrls, ActnList,
+  PlatformDefaultStyleActnCtrls, ActnMan, ToolCtrlsEh, DBGridEhToolCtrls,
+  DynVarsEh, DBAxisGridsEh, System.Actions, EhLibVCL;
+
+type
+  TEmpl_F = class(TForm)
+    ToolBar1: TToolBar;
+    DBGridEh1: TDBGridEh;
+    ActionManager1: TActionManager;
+    A_EmplAdd: TAction;
+    A_EmplEdit: TAction;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    procedure A_EmplAddExecute(Sender: TObject);
+    procedure A_EmplEditExecute(Sender: TObject);
+    procedure DBGridEh1DblClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Empl_F: TEmpl_F;
+
+implementation
+
+{$R *.dfm}
+  uses dmunit,main, EmplAdd_U, EmplEdit_U;
+
+procedure TEmpl_F.A_EmplAddExecute(Sender: TObject);
+begin
+  EmplAdd_F.ShowModal;
+end;
+
+procedure TEmpl_F.A_EmplEditExecute(Sender: TObject);
+begin
+  EmplEdit_F.ShowModal;
+end;
+
+procedure TEmpl_F.DBGridEh1DblClick(Sender: TObject);
+begin
+  ModalResult:=mrOk;
+end;
+
+end.

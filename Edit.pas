@@ -1,0 +1,307 @@
+unit Edit;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, Buttons, DBCtrls, Mask, DB,ibx.IbBlob, ImgList, ExtCtrls, DBCtrlsEh,Variants,
+  System.ImageList;
+
+type
+  TEdForm = class(TForm)
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    Label6: TLabel;
+    E_Name: TEdit;
+    E_kod: TEdit;
+    E_Price: TEdit;
+    E_OptPrice: TEdit;
+    E_Kol: TEdit;
+    Memo1: TMemo;
+    Label7: TLabel;
+    Label8: TLabel;
+    E_Ship: TButtonedEdit;
+    Il_SpravBtn: TImageList;
+    E_TovGr: TButtonedEdit;
+    Label9: TLabel;
+    Label10: TLabel;
+    E_OptPriceUsd: TDBNumberEditEh;
+    E_PriceUsd: TDBNumberEditEh;
+    Label11: TLabel;
+    E_BarCode: TButtonedEdit;
+    procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure DBEdit1Exit(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure E_PriceChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure E_OptPriceChange(Sender: TObject);
+    procedure E_KolChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure E_ShipRightButtonClick(Sender: TObject);
+    procedure E_TovGrRightButtonClick(Sender: TObject);
+    procedure E_BarCodeRightButtonClick(Sender: TObject);
+    procedure E_BarCodeExit(Sender: TObject);
+  private
+    { Private declarations }
+    Ship_Id:Integer;
+    TovGr_Id:Integer;
+    procedure GetValues;
+  public
+    { Public declarations }
+  end;
+
+var
+  EdForm: TEdForm;
+
+implementation
+ Uses DMUnit,main,unit_sprav_ship,unit_sprav_tovgr;
+{$R *.DFM}
+
+
+procedure TEdForm.BitBtn1Click(Sender: TObject);
+var
+   R:Integer;
+begin
+  ModalResult:=mrNone;
+    R:=PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('NN').AsInteger;
+//    R:=PagesDlg.DbGridEh2.DataSource.DataSet.FieldByName('NN').AsInteger;
+   if (Application.MessageBox('Занести данные в базу данных ?','Подтверждение занесения в базу данных',MB_YESNO+MB_ICONQUESTION)= IDYES)   then
+     begin
+      try
+       if not Dmod.Qry_Add.Transaction.InTransaction then Dmod.Qry_Add.Transaction.StartTransaction;
+       DMod.Qry_Add.Sql.Clear;
+       DMod.Qry_Add.Sql.Add('update katalog set ');
+       DMod.Qry_Add.Sql.Add('name=:p0,marka=:p1,price=:p2,optprice=:p3,kol=:p4,prim=:p5, ');
+       DMod.Qry_Add.Sql.Add('ship_gr=:p6,optprice_usd=:p7,price_usd=:p8, barcode=:p9  where nn=:p10 ');
+       DMod.Qry_Add.Params[0].Value:=E_Name.Text;
+       DMod.Qry_Add.Params[1].Value:=E_Kod.Text;
+       if Length(Trim(E_Price.Text)) <> 0 then
+                 DMod.Qry_Add.Params[2].Value:=StrToFloat(Trim(E_Price.Text))
+           else
+                 DMod.Qry_Add.Params[2].Value:=0;
+       if Length(Trim(E_OptPrice.Text)) <> 0 then
+                 DMod.Qry_Add.Params[3].Value:=StrToFloat(Trim(E_OptPrice.Text))
+           else
+                 DMod.Qry_Add.Params[3].Value:=0;
+       if Length(Trim(E_Kol.Text)) <> 0 then
+                 DMod.Qry_Add.Params[4].Value:=StrToFloat(Trim(E_Kol.Text))
+           else
+                 DMod.Qry_Add.Params[4].Value:=0;
+      DMod.Qry_Add.Params[5].Value:=Memo1.Text;
+      DMod.Qry_Add.Params[6].AsInteger:=Ship_Id;
+      DMod.Qry_Add.Params[7].Value:=E_OptPriceUsd.Value;
+      DMod.Qry_Add.Params[8].Value:=E_PriceUsd.Value;
+      if (Length(Trim(E_Barcode.Text))) > 0 then
+        Dmod.Qry_Add.Params[9].AsString:=E_BarCode.Text
+       else
+        Dmod.Qry_Add.Params[9].AsVariant:= Null;
+      DMod.Qry_Add.Params[10].Value:=R;
+
+      DMod.Qry_Add.ExecQuery;
+      if Dmod.Qry_Add.Transaction.InTransaction then Dmod.Qry_Add.Transaction.Commit;
+      ModalResult:=mrOk;
+    except
+      on EdatabaseError do
+        begin
+          if Dmod.Qry_Add.Transaction.InTransaction then Dmod.Qry_Add.Transaction.Rollback;
+          Application.MessageBox('Ошибка базы данных. Возможно неправильно сформирован запрос',
+                                  'Внимание',mb_iconstop+mb_ok);
+        end;
+    end;
+
+   end;
+ if ModalResult = mrOk then
+    begin
+       DMod.QKatalog.Close;
+       DMod.QKatalog.Open;
+       Dmod.QKatalog.Locate('NN',R,[]);
+       PagesDlg.Ref_ZakBtnClick(PagesDlg.Ref_ZakBtn);
+    end;
+
+end;
+
+procedure TEdForm.BitBtn2Click(Sender: TObject);
+begin
+  if DMod.Qry_Add.Transaction.InTransaction then DMod.Qry_Add.Transaction.Rollback;
+  ModalResult:=mrCancel;
+  EdForm.Close;
+end;
+
+
+procedure TEdForm.DBEdit1Exit(Sender: TObject);
+begin
+//DMod.TKatalogName.Value:=Trim(DMod.TKatalogName.Value);
+end;
+
+procedure TEdForm.E_BarCodeExit(Sender: TObject);
+begin
+  if Length(trim(E_BarCode.Text)) = 0 then Exit;
+  if Length(trim(E_BarCode.Text)) <> 13 then
+    begin
+      E_BarCode.Clear;
+      E_BarCode.Text:=PagesDlg.GenBarCodeEan13;
+    end;
+
+
+end;
+
+procedure TEdForm.E_BarCodeRightButtonClick(Sender: TObject);
+begin
+  if (Length(Trim(E_BarCode.Text)) > 0) then
+      begin
+        if Application.MessageBox('Поле Штрихкод уже содержит значение.Изменить штрихкод?','Внимание',MB_ICONQUESTION+MB_YESNO) <> IDYES then Exit;
+      end;
+  E_BarCode.Text:=PagesDlg.GenBarCodeEan13;
+end;
+
+procedure TEdForm.E_KolChange(Sender: TObject);
+var
+i : integer;
+c : char;
+s : string;
+begin
+// результирующая строка:
+s := '';
+// проходим по всем символам исходной строки:
+for i:=1 to Length((Sender as Tedit).Text) do
+  begin
+    // берем текущий символ:
+    c :=(Sender as Tedit).Text[i];
+    // Проверяем его на принадлежность к цифрам:
+    if (c >= '0') and (c <= '9') then s := s + c;
+    // Или знакам 'точка' или 'запятая':
+    if c = FormatSettings.DecimalSeparator then s := s + c;
+  end;
+// Присваеваем полю результирующую строку:
+(Sender as Tedit).Text := s;
+(Sender as Tedit).SelStart:=Length(s);
+(Sender as Tedit).SelLength:=0;
+end;
+
+procedure TEdForm.E_OptPriceChange(Sender: TObject);
+var
+i : integer;
+c : char;
+s : string;
+begin
+// результирующая строка:
+s := '';
+// проходим по всем символам исходной строки:
+for i:=1 to Length((Sender as Tedit).Text) do
+  begin
+    // берем текущий символ:
+    c :=(Sender as Tedit).Text[i];
+    // Проверяем его на принадлежность к цифрам:
+    if (c >= '0') and (c <= '9') then s := s + c;
+    // Или знакам 'точка' или 'запятая':
+    if c = FormatSettings.DecimalSeparator then s := s + c;
+  end;
+// Присваеваем полю результирующую строку:
+(Sender as Tedit).Text := s;
+(Sender as Tedit).SelStart:=Length(s);
+(Sender as Tedit).SelLength:=0;
+end;
+
+procedure TEdForm.E_PriceChange(Sender: TObject);
+var
+i : integer;
+c : char;
+s : string;
+begin
+// результирующая строка:
+s := '';
+// проходим по всем символам исходной строки:
+for i:=1 to Length((Sender as Tedit).Text) do
+  begin
+    // берем текущий символ:
+    c :=(Sender as Tedit).Text[i];
+    // Проверяем его на принадлежность к цифрам:
+    if (c >= '0') and (c <= '9') then s := s + c;
+    // Или знакам 'точка' или 'запятая':
+    if c = FormatSettings.DecimalSeparator then s := s + c;
+  end;
+// Присваеваем полю результирующую строку:
+(Sender as Tedit).Text := s;
+(Sender as Tedit).SelStart:=Length(s);
+(Sender as Tedit).SelLength:=0;
+end;
+
+procedure TEdForm.E_ShipRightButtonClick(Sender: TObject);
+begin
+  if Form_Ship.ShowModal = mrOk then
+    begin
+      E_Ship.Text:=Form_Ship.DBGridEh1.DataSource.DataSet.FieldByName('NAME').AsString;
+      Ship_Id:=Form_Ship.DBGridEh1.DataSource.DataSet.FieldByName('ID_NUM').AsInteger;
+    end;
+end;
+
+procedure TEdForm.E_TovGrRightButtonClick(Sender: TObject);
+begin
+  if Form_TovGr.ShowModal = mrOk then
+    begin
+      E_TovGr.Text:=Form_TovGr.DBGridEh1.DataSource.DataSet.FieldByName('NAME').AsString;
+      TovGr_Id:=Form_TovGr.DBGridEh1.DataSource.DataSet.FieldByName('ID_NUM').AsInteger;
+    end;
+end;
+
+procedure TEdForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   IF DMod.Qry_Add.Transaction.InTransaction  then DMod.Qry_Add.Transaction.Rollback;
+   DMod.Sprav_Ship.Close;
+   DMod.Sprav_TovGr.Close;
+end;
+
+procedure TEdForm.FormCreate(Sender: TObject);
+begin
+ E_Price.Hint:='Только цифры и разделитель - '+FormatSettings.DecimalSeparator;
+ E_OptPrice.Hint:='Только цифры и разделитель - '+FormatSettings.DecimalSeparator;
+ E_Kol.Hint:='Только цифры и разделитель - '+FormatSettings.DecimalSeparator;
+end;
+
+procedure TEdForm.FormShow(Sender: TObject);
+begin
+ GetValues;
+ E_Name.SetFocus;
+end;
+
+procedure TEdForm.GetValues;
+begin
+   E_Name.text:=PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('NAME').AsString;
+   E_Kod.text:=PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('MARKA').AsString;
+   E_Price.text:=FloatToStr(PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('PRICE').AsCurrency);
+   E_OptPrice.text:=FloatToStr(PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('OPTPRICE').AsCurrency);
+   E_Kol.text:=FloatToStr(PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('KOL').AsFloat);
+   E_OptPriceUsd.Value :=PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('OPTPRICE_USD').Value;
+   E_PriceUsd.Value :=PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('PRICE_USD').Value;
+   Memo1.Text:=PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('PRIM').asString;
+   E_BarCode.text:=PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('BARCODE').AsString;
+{   E_Name.text:=PagesDlg.DbGridEh2.DataSource.DataSet.FieldByName('NAME').AsString;
+   E_Kod.text:=PagesDlg.DbGridEh2.DataSource.DataSet.FieldByName('MARKA').AsString;
+   E_Price.text:=FloatToStr(PagesDlg.DbGridEh2.DataSource.DataSet.FieldByName('PRICE').AsCurrency);
+   E_OptPrice.text:=FloatToStr(PagesDlg.DbGridEh2.DataSource.DataSet.FieldByName('OPTPRICE').AsCurrency);
+   E_Kol.text:=FloatToStr(PagesDlg.DbGridEh2.DataSource.DataSet.FieldByName('KOL').AsFloat);
+   Memo1.Text:=PagesDlg.DbGridEh2.DataSource.DataSet.FieldByName('PRIM').asString; }
+   Ship_Id:=PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('Ship_gr').AsInteger;
+//   TovGr_Id:=PagesDlg.Grid_Kat.DataSource.DataSet.FieldByName('Tov_gr').AsInteger;
+   if DMod.Sprav_Ship.Active then DMod.Sprav_Ship.Close;
+   DMod.Sprav_Ship.Open;
+   if DMod.Sprav_Ship.Locate('ID_NUM',Ship_Id,[])then
+        E_ship.Text:= DMod.Sprav_Ship.FieldByName('NAME').AsString
+       else
+        E_ship.Text:='';
+{   if DMod.Sprav_TovGr.Active then DMod.Sprav_TovGr.Close;
+   DMod.Sprav_TovGr.Open;
+   if DMod.Sprav_TovGr.Locate('ID_NUM',TovGr_Id,[]) then
+        E_TovGr.Text:= DMod.Sprav_TovGr.FieldByName('NAME').AsString
+       else
+        E_TovGr.Text:= '';}
+end;
+
+end.
+

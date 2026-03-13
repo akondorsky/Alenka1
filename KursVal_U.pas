@@ -1,0 +1,52 @@
+unit KursVal_U;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ToolWin, ComCtrls, DBGridEhGrouping, ToolCtrlsEh, DBGridEhToolCtrls,
+  DynVarsEh, GridsEh, DBAxisGridsEh, DBGridEh, ExtCtrls, DBCtrls, EhLibVCL;
+
+type
+  TKursVal_F = class(TForm)
+    ToolBar1: TToolBar;
+    Btn_Add: TToolButton;
+    Grid_KursVal: TDBGridEh;
+    DBNavigator1: TDBNavigator;
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Btn_AddClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  KursVal_F: TKursVal_F;
+
+implementation
+
+{$R *.dfm}
+uses Main,DMUnit;
+
+procedure TKursVal_F.Btn_AddClick(Sender: TObject);
+begin
+  KURSUSD:=Grid_KursVal.DataSource.DataSet.FieldByName('KURSUSD').AsCurrency;
+  PagesDlg.StatusBar1.Panels[1].Text:='Курс USD: '+FloatToStr(KURSUSD);
+  PagesDlg.RefrBtnClick(PagesDlg.RefrBtn);
+  KursVal_F.Close;
+end;
+
+procedure TKursVal_F.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+    if DMod.T_KursVal.Active then DMod.T_KursVal.Close;
+end;
+
+procedure TKursVal_F.FormShow(Sender: TObject);
+begin
+  if not DMod.T_KursVal.Active then DMod.T_KursVal.Open;
+
+end;
+
+end.
