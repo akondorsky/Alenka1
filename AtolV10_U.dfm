@@ -102,9 +102,6 @@ object AtolV10_F: TAtolV10_F
       object N11: TMenuItem
         Action = A_KkmConnect
       end
-      object N21: TMenuItem
-        Caption = '2'
-      end
     end
   end
   object ActionList1: TActionList

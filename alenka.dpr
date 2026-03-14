@@ -73,8 +73,6 @@ begin
   SplashForm.Update;
   Application.CreateForm(TPagesDlg, PagesDlg);
   Application.CreateForm(TDMod, DMod);
-  Application.CreateForm(TSettings_F, Settings_F);
-  Application.CreateForm(TAtolV10_F, AtolV10_F);
   //  if not _ConnectionFlag then
 //    begin
 //      Application.MessageBox('Подключение не удалось.Запуск программы невозможен.','Внимание',MB_ICONERROR + mb_Ok);

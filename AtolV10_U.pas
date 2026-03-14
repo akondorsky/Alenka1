@@ -19,7 +19,6 @@ type
     MainMenu1: TMainMenu;
     N1: TMenuItem;
     N11: TMenuItem;
-    N21: TMenuItem;
     ActionList1: TActionList;
     A_KkmConnect: TAction;
     procedure A_KkmConnectExecute(Sender: TObject);

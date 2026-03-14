@@ -1571,8 +1571,9 @@ if not Assigned(AtolV10_F)then
  begin
    Application.CreateForm(TAtolV10_F, AtolV10_F);
    AtolV10_F.ShowModal;
- end;
-// else
+ end
+   else
+   AtolV10_F.ShowModal;
 //   if FormAtol25f.WindowState = wsMinimized	then  ShowWindow(FormAtol25f.Handle, SW_RESTORE)
 //     else FormAtol25f.Show;
 end;
