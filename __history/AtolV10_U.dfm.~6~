@@ -1,0 +1,124 @@
+object AtolV10_F: TAtolV10_F
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = #1050#1072#1089#1089#1072
+  ClientHeight = 188
+  ClientWidth = 379
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  Menu = MainMenu1
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 8
+    Top = 3
+    Width = 106
+    Height = 16
+    Caption = #1057#1086#1089#1090#1086#1103#1085#1080#1077' '#1050#1050#1052': '
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Lbl_Condition: TLabel
+    Left = 120
+    Top = 3
+    Width = 161
+    Height = 16
+    Caption = #1050#1072#1089#1089#1072' '#1085#1077' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1072
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label3: TLabel
+    Left = 62
+    Top = 25
+    Width = 45
+    Height = 16
+    Caption = #1057#1084#1077#1085#1072':'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Lbl_Shift: TLabel
+    Left = 114
+    Top = 25
+    Width = 247
+    Height = 64
+    AutoSize = False
+    Caption = #1047#1072#1082#1088#1099#1090#1072
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    WordWrap = True
+  end
+  object GroupBox2: TGroupBox
+    Left = 8
+    Top = 101
+    Width = 363
+    Height = 65
+    Caption = #1054#1090#1095#1077#1090#1099' '
+    TabOrder = 0
+    object XReportButton: TButton
+      Left = 184
+      Top = 24
+      Width = 113
+      Height = 25
+      Caption = 'X-'#1054#1090#1095#1077#1090
+      TabOrder = 0
+      OnClick = XReportButtonClick
+    end
+    object ZReportButton: TButton
+      Left = 9
+      Top = 24
+      Width = 152
+      Height = 25
+      Caption = 'Z-'#1054#1090#1095#1077#1090'('#1079#1072#1082#1088#1099#1090#1080#1077' '#1089#1084#1077#1085#1099')'
+      TabOrder = 1
+      OnClick = ZReportButtonClick
+    end
+  end
+  object MainMenu1: TMainMenu
+    Left = 16
+    Top = 24
+    object N1: TMenuItem
+      Caption = #1050#1072#1089#1089#1072
+      object N11: TMenuItem
+        Action = A_KkmConnect
+      end
+      object N2: TMenuItem
+        Action = A_Condition
+      end
+    end
+  end
+  object ActionList1: TActionList
+    Left = 56
+    Top = 40
+    object A_KkmConnect: TAction
+      Caption = #1055#1086#1076#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1082' '#1082#1072#1089#1089#1077
+      OnExecute = A_KkmConnectExecute
+    end
+    object A_Condition: TAction
+      Caption = #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1089#1086#1089#1090#1086#1103#1085#1080#1077
+    end
+  end
+end

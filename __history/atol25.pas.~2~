@@ -1,0 +1,889 @@
+unit atol25;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls,  ComCtrls, DB, ibx.IBCustomDataSet, ibx.IBDatabase,DateUtils,
+  Mask,  Grids, DBGridEh, ibx.IBSQL, PrViewEh,
+  PrnDbgeh, Menus,  ImgList, DBGridEhGrouping, GridsEh,
+  ToolCtrlsEh, DBGridEhToolCtrls, DynVarsEh, DBAxisGridsEh,DbCtrlsEh,
+  ibx.IbQuery, ActnList, Buttons, PropFilerEh, PropStorageEh,Math,ComObj,Variants,
+  System.Actions;
+
+
+type
+  TFormatol25f = class(TForm)
+    InfoLabel: TLabel;
+    GroupBox2: TGroupBox;
+    XReportButton: TButton;
+    ZReportButton: TButton;
+    MainMenu1: TMainMenu;
+    ActionList1: TActionList;
+    A_KkmEnable: TAction;
+    N2: TMenuItem;
+    PopMn_ConnectKKM: TMenuItem;
+    Label1: TLabel;
+    A_KKMDisabled: TAction;
+    PopMn_DisconnectKKM: TMenuItem;
+    Label2: TLabel;
+    N5: TMenuItem;
+    A_OpenSession: TAction;
+    PopMn_OpenDay: TMenuItem;
+    It_KKMCondition: TMenuItem;
+    A_DelItem: TAction;
+    N7: TMenuItem;
+    N9: TMenuItem;
+    PopMn_TestMode: TMenuItem;
+    PopMn_WorkMode: TMenuItem;
+    ChTest: TCheckBox;
+    PopMn_ReturnSell: TMenuItem;
+    Label3: TLabel;
+    Label4: TLabel;
+
+
+    procedure ZReportButtonClick(Sender: TObject);
+    procedure XReportButtonClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure A_KkmEnableExecute(Sender: TObject);
+    procedure A_KKMDisabledExecute(Sender: TObject);
+
+    procedure A_OpenSessionExecute(Sender: TObject);
+    procedure It_KKMConditionClick(Sender: TObject);
+
+    procedure PopMn_TestModeClick(Sender: TObject);
+    procedure PopMn_WorkModeClick(Sender: TObject);
+    procedure PopMn_ReturnSellClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+
+
+  private
+
+  public
+    function PrintCheck(qry:TIBQuery;Sum:Extended;TypeP:Integer):Integer;
+    function PrintReturnCheck(Name:String;Kol,Price:Extended):Integer;
+  end;
+
+var
+  Formatol25f: TFormatol25f;
+
+implementation
+
+uses main, FprnM1C_TLB ;
+
+var
+ atol25f : TFprnM45;
+ //atol25f: OleVariant;
+{$R *.DFM}
+
+
+procedure ShowKKMCondition;
+var
+ status:Integer;
+begin
+    status:= atol25f.GetStatus;
+    if status =0  then
+        Formatol25f.Label2.Caption:='Соединение установлено.'
+      else
+        begin
+
+          Formatol25f.Label2.Caption:='Ошибка соединения с ККМ';
+          Exit;
+        end;
+
+    if atol25f.DeviceEnabled  then
+        Formatol25f.Label2.Caption:='Соединение установлено.'
+      else
+        Formatol25f.Label2.Caption:='НЕ ПОДКЛЮЧЕНА !!!!';
+    if atol25f.SessionOpened  then
+        Formatol25f.Label4.Caption:='Открыта. № смены: '+ IntToStr(atol25f.Session+1)
+      else
+        Formatol25f.Label4.Caption:='ЗАКРЫТА !!!!';
+     Application.ProcessMessages;
+
+end;
+
+function TFormatol25f.PrintCheck(qry:TIBQuery;Sum:Extended;TypeP:Integer):Integer;
+var
+ i:Integer;
+begin
+ Result:=1;
+ if Sum = 0  then Exit;
+ i:=1;
+//проверяем доступность кассы
+//if not atol25f.DeviceEnabled  then OpenSessionBtnClick(OpenSessionBtn);
+
+if not Formatol25f.ChTest.Checked then
+   if not atol25f.DeviceEnabled then atol25f.DeviceEnabled:=True;
+if atol25f.TextWrap = 0  then  atol25f.TextWrap:=1;
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+// ---------- Чек прихода без отправки электронного чека покупателю ---------- //
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+//////шапка
+//atol25f.Caption:='Полное наименование:';
+//atol25f.PrintString;
+//atol25f.Caption:=Edit2.Text;
+//atol25f.PrintString;
+
+
+
+// Mode - Режим:
+// 	0 - Выбора
+// 	1 - Регистрации
+// 	2 - Отчётов без гашения
+// 	3 - Отчётов с гашением
+atol25f.Mode := 1;
+atol25f.SetMode ;
+
+atol25f.NewDocument ;
+
+// Записать должность и ФИО кассира
+//atol25f.AttrNumber := 1021;
+//atol25f.AttrValue := "Старший кассир Иванов И.И.";
+//atol25f.WriteAttribute ;
+
+// CheckType - Тип чека:
+// 	1 - Приход
+// 	2 - Возврат прихода
+// 	4 - Расход
+// 	5 - Возврат расхода
+// 	7 - Коррекция прихода
+// 	9 - Коррекция расхода
+atol25f.CheckType := 1;
+// CheckMode - Режим формирования чека:
+// 	0 - только в электронном виде без печати на чековой ленте
+// 	1 - печатать на чековой ленте
+atol25f.CheckMode := 1;
+atol25f.OpenCheck ;
+//atol25f.AttrNumber := 1055;
+//// Применяемая система налогооблажения в чеке:
+//// 	ОСН - 1
+//// 	УСН доход - 2
+//// 	УСН доход-расход - 4
+//// 	ЕНВД - 8
+//// 	ЕСН - 16
+//// 	ПСН - 32
+//atol25f.AttrValue := 2;
+//atol25f.WriteAttribute ;
+
+//////////////////
+//24.06.2017 11:55:10.442 0000000000 Посылка пакета: C1 01 0B 00 00 56 01 00 00 00 30
+//                        0000000203 Received async answer: 55 00 00
+//                        0000028517 Driver.Set_Name Тестовая продажа
+//                        0000004914 Driver.Set_Caption Строка для печати
+//                        0000003947 Driver.Set_Percents 3
+//                        0000007582 Driver.Set_Summ 0
+//                        0000022542 Driver.Set_Price 5.5
+//                        0000037456 Driver.Set_Summ 12.89
+//                        0000008330 Driver.Set_DiscountType 0
+//24.06.2017 11:57:16.642 0000013120 Driver.Registration
+
+
+ // Войти в режим регистрации Драйвер.Password = 30; Драйвер.Mode = 1; Драйвер.SetMode();
+ // Регистрация Драйвер.Name = “Чипсы”;
+ // Название товара Драйвер.Price = 12.34;
+  // Цена товара Драйвер.Quantity = 1.234;
+   // Количество товара Драйвер.Department = 2;
+    // Секция Драйвер.Registration();
+    // Зарегистрировать продажу
+    // Оплата чека Драйвер.Summ = 10.00;
+    // Сумма оплаты Драйвер.TypeClose = 0;
+    // Тип оплаты «НАЛИЧНЫМИ» Драйвер.Payment(); Драйвер.Summ = 10.00;
+    // Сумма оплаты Драйвер.TypeClose = 1;
+    // Тип оплаты 1 Драйвер.Payment();
+
+qry.First;
+while not qry.Eof do
+begin
+// Регистрация товара или услуги
+//////шапка
+    atol25f.Caption:= IntToStr(i)+'.';
+    atol25f.PrintString;
+    atol25f.Name := qry.FieldByName('NAME').AsString;
+    atol25f.Price := qry.FieldByName('STOIM').AsCurrency;
+    atol25f.Quantity:=qry.FieldByName('KOL').AsFloat;
+    atol25f.Department := 0;
+    if atol25f.Registration <> 0 then
+     begin
+       ShowMessage(atol25f.ResultDescription) ;
+       atol25f.CancelCheck;
+       Exit;
+     end;
+    i:=i+1;
+    qry.Next;
+end;
+
+atol25f.Summ:=Sum;
+atol25f.DiscountType:=0;
+atol25f.DiscountValue:=0;
+// Оплата и закрытие чека
+// TypeClose - Тип оплаты:
+// 	0 - Наличными
+// 	1 - Электронными средствами платежа
+atol25f.TypeClose := TypeP;
+// TaxTypeNumber - Номер налога:
+// 	0 - Налог из секции
+// 	1 - НДС 0%
+// 	2 - НДС 10%
+// 	3 - НДС 18%
+// 	4 - НДС не облагается
+// 	5 - НДС с расчётной ставкой 10%
+// 	6 - НДС с расчётной ставкой 18%
+atol25f.TaxTypeNumber := 4;
+if atol25f.Payment <> 0 then
+ begin
+   ShowMessage(atol25f.ResultDescription) ;
+   atol25f.CancelCheck;
+   Exit;
+ end;
+
+ if Formatol25f.ChTest.Checked then
+    atol25f.CancelCheck
+   else
+    atol25f.CloseCheck ;
+
+// // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+
+Application.MessageBox('Все операции успешно выполнены.', PChar(Application.title), MB_ICONINFORMATION + MB_OK);
+Result:=0;
+
+end;
+
+function TFormatol25f.PrintReturnCheck(Name: String; Kol,
+  Price: Extended): Integer;
+begin
+ Result:=1;
+//проверяем доступность кассы
+//if not atol25f.DeviceEnabled  then OpenSessionBtnClick(OpenSessionBtn);
+
+if not Formatol25f.ChTest.Checked then
+   if not atol25f.DeviceEnabled then atol25f.DeviceEnabled:=True;
+if atol25f.TextWrap = 0  then  atol25f.TextWrap:=1;
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+// ---------- Чек прихода без отправки электронного чека покупателю ---------- //
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+//////шапка
+//atol25f.Caption:='Полное наименование:';
+//atol25f.PrintString;
+//atol25f.Caption:=Edit2.Text;
+//atol25f.PrintString;
+
+
+
+// Mode - Режим:
+// 	0 - Выбора
+// 	1 - Регистрации
+// 	2 - Отчётов без гашения
+// 	3 - Отчётов с гашением
+atol25f.Mode := 1;
+atol25f.SetMode ;
+
+atol25f.NewDocument ;
+
+// Записать должность и ФИО кассира
+//atol25f.AttrNumber := 1021;
+//atol25f.AttrValue := "Старший кассир Иванов И.И.";
+//atol25f.WriteAttribute ;
+
+// CheckType - Тип чека:
+// 	1 - Приход
+// 	2 - Возврат прихода
+// 	4 - Расход
+// 	5 - Возврат расхода
+// 	7 - Коррекция прихода
+// 	9 - Коррекция расхода
+atol25f.CheckType := 2;
+// CheckMode - Режим формирования чека:
+// 	0 - только в электронном виде без печати на чековой ленте
+// 	1 - печатать на чековой ленте
+atol25f.CheckMode := 1;
+atol25f.OpenCheck ;
+
+// Регистрация товара или услуги
+//////шапка
+  atol25f.Name := Name;
+  atol25f.Price := Price;
+  atol25f.Quantity:=Kol;
+  atol25f.Department := 0;
+  if atol25f.Registration <> 0 then
+   begin
+     ShowMessage(atol25f.ResultDescription) ;
+     atol25f.CancelCheck;
+     Exit;
+   end;
+
+atol25f.Summ:=Price*Kol;
+atol25f.DiscountType:=0;
+atol25f.DiscountValue:=0;
+// Оплата и закрытие чека
+// TypeClose - Тип оплаты:
+// 	0 - Наличными
+// 	1 - Электронными средствами платежа
+atol25f.TypeClose := 0;
+// TaxTypeNumber - Номер налога:
+// 	0 - Налог из секции
+// 	1 - НДС 0%
+// 	2 - НДС 10%
+// 	3 - НДС 18%
+// 	4 - НДС не облагается
+// 	5 - НДС с расчётной ставкой 10%
+// 	6 - НДС с расчётной ставкой 18%
+atol25f.TaxTypeNumber := 4;
+if atol25f.Payment <> 0 then
+ begin
+   ShowMessage(atol25f.ResultDescription) ;
+   atol25f.CancelCheck;
+   Exit;
+ end;
+
+ if Formatol25f.ChTest.Checked then
+    atol25f.CancelCheck
+   else
+    atol25f.CloseCheck ;
+
+// // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+Application.MessageBox('Все операции успешно выполнены.', PChar(Application.title), MB_ICONINFORMATION + MB_OK);
+Result:=0;
+end;
+
+procedure Atoll_On;
+var
+ r:Integer;
+begin
+{  atol25f.PortNumber:=CASH_PORT;
+  atol25f.BaudRate:=18;
+  atol25f.UseAccessPassword:=True;
+  atol25f.WriteLogFile:=0;
+  atol25f.DefaultPassword:='30';
+  atol25f.DeviceEnabled:=True;
+  r:=  atol25f.ResultCode  ;
+  if r <> 0 then
+    begin
+      ShowMessage('Устройство не включено.Обратитесь к администратору');
+      Exit;
+    end;
+  // получаем состояние ККМ
+  ShowKKMCondition;}
+  r:=-9999;
+  atol25f.PortNumber:=CASH_PORT;
+  r:=atol25f.GetStatus;
+  atol25f.BaudRate:=18;
+  r:=atol25f.GetStatus;
+  atol25f.Model:=61; //atol 30-f
+  r:=atol25f.GetStatus;
+  atol25f.UseAccessPassword:=True;
+  atol25f.DefaultPassword:='30';
+  atol25f.WriteLogFile:=1;
+  atol25f.DeviceEnabled:=True;
+  // получаем состояние ККМ
+  r:=atol25f.GetStatus;
+  if r <> 0 then
+    begin
+      ShowMessage('Ошибка подключения');
+      Exit;
+    end;
+  ShowKKMCondition;
+  if not atol25f.SessionOpened  then
+    begin
+     Formatol25f.A_OpenSession.Execute;
+     ShowKKMCondition;
+    end;
+end;
+
+procedure Atoll_Off;
+begin
+  if  Assigned(atol25f) then
+  begin
+    atol25f.DeviceEnabled:=False;
+    ShowKKMCondition;
+  end;
+
+end;
+
+procedure Atol_XReport;
+begin
+ if not atol25f.DeviceEnabled then Atoll_On;
+// X - отчет
+  // входим в режим отчетов без гашения
+  atol25f.Mode := 2;
+  if atol25f.SetMode = 0 then
+    begin
+      atol25f.ReportType := 2;
+      if atol25f.Report <> 0 then
+        begin
+          ShowMessage('Ошибка X-отчета '+ atol25f.ResultDescription);
+          Exit;
+        end
+    end;
+  //Atoll_Off;
+end;
+
+procedure ZReport;
+var
+ r:Integer;
+begin
+r:=   atol25f.GetStatus  ;
+if r  <> 0 then exit;
+if not atol25f.SessionOpened then
+   begin
+    Application.MessageBox('Смена закрыта!','Внимание',MB_ICONSTOP + MB_OK);
+    Exit;
+   end;
+// если есть открытый чек, то отменяем его
+  if atol25f.CheckState <> 0 then
+    if atol25f.CancelCheck <> 0 then
+      begin
+       ShowMessage('Есть открытый чек '+ atol25f.ResultDescription);
+       Exit;
+      end;
+
+//  снимаем Z-отчет
+    // устанавливаем пароль системного администратора ККМ
+    atol25f.Password := '30';
+    // входим в режим отчетов с гашением
+    atol25f.Mode := 3;
+    if atol25f.NewDocument <> 0 then
+      begin
+        ShowMessage(atol25f.ResultDescription);
+        Exit;
+      end;
+    if atol25f.SetMode <> 0 then
+      begin
+        ShowMessage(atol25f.ResultDescription);
+        Exit;
+      end;
+    // снимаем отчет
+    atol25f.ReportType := 1;
+    if atol25f.Report <> 0 then
+      begin
+        ShowMessage(atol25f.ResultDescription);
+        Exit;
+      end;
+    ShowKKMCondition;
+end;
+
+
+{procedure TFormatol25f.FiscalSaleButtonClick(Sender: TObject);
+var
+ Msg,s1,sqltext:String;
+ Itogo, sum_spis :Currency;
+ qry:TIbQuery;
+ flag:Boolean;
+ r,i,l:Integer;
+ A : Array of Integer;
+begin
+
+if DBGridEh2.DataSource.DataSet.IsEmpty then
+   begin
+     Application.MessageBox('Нет позиций для продажи.','Внимание',MB_ICONWARNING+MB_OK);
+     Exit;
+   end;
+ begin
+ try
+  Itogo:=DBGridEh2.Columns[5].Footers[0].SumValue;
+  if Itogo =0 then
+    begin
+     Application.MessageBox('Cумма продажи = 0.','Внимание',MB_ICONSTOP+MB_OK);
+     Exit;
+    end;
+  (sender as TButton).Enabled:=False;
+  qry:=TibQuery.Create(Self);
+  qry.Database:=DM.DB;
+
+  //проверим есть ли в чеке различные id_plat и id_account
+  DM.Refresh_BillItems;
+  DM.Qry_BillItems.FetchAll;
+  DM.Qry_BillItems.First;
+  r:=DM.Qry_BillItems.RecordCount;
+  if r  > 1  then
+  begin
+      SetLength(A,r);
+      i:=0;
+      while not DM.Qry_BillItems.Eof do
+        begin
+          A[i]:=DM.Qry_BillItems.FieldByName('ID_ACCOUNT').AsInteger;
+          i:=i+1;
+          DM.Qry_BillItems.Next;
+        end;
+   if ArrayHasRepeat(A,r) <> 0 then
+       begin
+           Application.MessageBox('В чеке  различные идентификаторы платежа.','Внимание',MB_ICONSTOP+MB_OK);
+           Exit;
+       end;
+    A:=nil;
+    SetLength(A,r);
+    DM.Qry_BillItems.First;
+    i:=0;
+    while not DM.Qry_BillItems.Eof do
+      begin
+        A[i]:=DM.Qry_BillItems.FieldByName('ID_PLAT').AsInteger;
+        i:=i+1;
+        DM.Qry_BillItems.Next;
+      end;
+   if ArrayHasRepeat(A,r) <> 0 then
+   begin
+       Application.MessageBox('В чеке  различные плательщики.','Внимание',MB_ICONSTOP+MB_OK);
+       Exit;
+   end;
+
+  end;
+
+    qry.Close;
+    qry.SQL.Clear;
+    qry.SQL.Add(' select gen_id(NEWID_FISCAL_BILL,1) from rdb$database ');
+    qry.Open;
+    N_Bill:=qry.Fields[0].AsInteger;
+    IdAccount:= DM.Qry_BillItems.FieldByName('ID_ACCOUNT').AsInteger;
+    PlatNum :=DM.Qry_BillItems.FieldByName('ID_PLAT').AsInteger;
+
+
+  DM.Sql.Close;
+  DM.Sql.SQL.Clear;
+  s1:='insert into cl_accounts (DT,N_DOC,MONEY,KOD_VID,KOD_DOC,ID,ZAYV,FISCAL_FLAG )' ;
+  s1:=s1+ ' values (:p0, :p1,:p2,:p3,:p4,:p5,:p6,:p7 )';
+  DM.Sql.Close;
+  DM.Sql.SQL.Clear;
+  DM.Sql.SQL.Add(s1);
+  if not DM.Sql.Transaction.InTransaction then DM.Sql.Transaction.StartTransaction;
+try
+    DM.Sql.Params[0].AsDateTime:=Now;
+    DM.Sql.Params[1].AsString:=intToStr(N_Bill);
+    DM.Sql.Params[2].AsCurrency:=Itogo;
+    DM.Sql.Params[3].AsInteger:=1; //пополнение
+    DM.Sql.Params[4].AsInteger:=2; //кассовый чек
+    DM.Sql.Params[5].AsInteger:= IdAccount;
+    DM.Sql.Params[6].AsInteger:=PlatNum;
+    DM.Sql.Params[7].Value:='Y'; //фискальный документ
+    DM.Sql.ExecQuery;
+
+    if PrintCheck(DM.Qry_BillItems, StrToFloat(E_Sum.Text)) = 0 then
+       begin
+          //списываем долги если есть
+         qry.Close;
+         qry.SQL.Clear;
+         qry.SQL.Add(' select count(id) from reasondolg where id_plat=:p0 and iif(delete_flag > 0,1,0) <> 1 and dolg_rest > 0');
+         qry.Params[0].AsInteger:= PlatNum;
+         qry.Open;
+         if qry.Fields[0].AsInteger > 0 then
+           begin
+            qry.Close;
+            qry.SQL.Clear;
+            qry.SQL.Add('select id,dolg_rest from reasondolg where id_plat=:p0 and iif(delete_flag > 0,1,0) <> 1 and dolg_rest > 0 order by dt_is,id');
+            qry.Params[0].AsInteger:= PlatNum;
+            qry.Open;
+            DM.Sql.Close;
+            DM.Sql.SQL.Clear;
+            DM.Sql.SQL.Add('insert into dolg_writeoff(id_dolg,id_account,summa) values(:p0,:p1,:p2) ');
+            while (not qry.Eof) and (Itogo > 0)  do
+              begin
+                if Itogo >= qry.FieldByName('dolg_rest').AsFloat then
+                  begin
+                   sum_spis:= qry.FieldByName('dolg_rest').AsFloat;
+                   Itogo:= Itogo - sum_spis;
+                  end
+                else
+                  begin
+                   sum_spis:= Itogo;
+                   Itogo:= Itogo - sum_spis;
+                  end;
+                if DM.Sql.Open then DM.Sql.Close;
+                DM.Sql.Params[0].AsInteger:=qry.FieldByName('id').AsInteger;
+                DM.Sql.Params[1].AsInteger:=IdAccount;
+                DM.Sql.Params[2].AsFloat:=sum_spis;
+                DM.Sql.ExecQuery;
+                qry.Next;
+              end;
+           end;
+           // Cставим флаг оплаты в bills
+          DM.Sql.Close;
+          DM.Sql.SQL.Clear;
+          s1:='update bills set pay_flag=:p0 where id_account = :p1' ;
+          DM.Sql.Close;
+          DM.Sql.SQL.Clear;
+          DM.Sql.SQL.Add(s1);
+          DM.Sql.Params[0].AsInteger:=1;
+          DM.Sql.Params[1].AsInteger:=IdAccount;
+          DM.Sql.ExecQuery;
+
+      ///////////////////////////////////////////////
+          DM.Sql.Transaction.Commit;
+          DM.Qry_ClAc.Close;
+          DM.Qry_ClAc.open;
+          DM.Qry_ClAc.Locate('Id',IdAccount,[]);
+       end
+      else
+          DM.Sql.Transaction.Rollback;
+  except
+   on E:Exception do
+    begin
+       MessageBox(Application.Handle, PChar(E.Message + #13#10 + Dm.Sql.SQL.Text),
+         PChar(Application.Name), MB_ICONERROR);
+    end;
+  end;
+
+ finally
+    qry.Free;
+   (sender as TButton).Enabled:=True;
+   E_Sum.Value:=0;
+   DM.Qry_Bills.Close;
+   DM.Qry_Bills.Open;
+   DM.Refresh_BillItems;
+ end;
+end;
+
+end;}
+
+procedure TFormatol25f.It_KKMConditionClick(Sender: TObject);
+var
+  status:Integer;
+begin
+ status:=atol25f.GetStatus;
+if status <> 0 then Atoll_On
+ else
+  ShowKKMCondition;
+end;
+
+procedure TFormatol25f.PopMn_TestModeClick(Sender: TObject);
+begin
+  ChTest.Checked := True;
+end;
+
+procedure TFormatol25f.PopMn_WorkModeClick(Sender: TObject);
+begin
+  ChTest.Checked := False;
+end;
+
+procedure TFormatol25f.PopMn_ReturnSellClick(Sender: TObject);
+var
+  qry:TIbQuery;
+  id:Integer;
+begin
+{ //возврат продажи
+  if DBGridEh1.DataSource.DataSet.FieldByName('id').IsNull then Exit;
+  id:=DBGridEh1.DataSource.DataSet.FieldByName('id').AsInteger;
+  qry := TIBQuery.Create(Self);
+  try
+     qry.Database:=DM.DB;
+     qry.sql.Add('select krname,kol,stoim from bills where id_account=:p0 ');
+     qry.Params[0].AsInteger:=id;
+     qry.Open;
+//     while not qry.Eof do
+//      begin
+//        ShowMessage(qry.Fields[0].AsString + '; '+ qry.Fields[1].AsString + '; '+qry.Fields[2].AsString + '; ');
+//        qry.Next;
+//      end;
+//проверяем доступность кассы
+//if not atol25f.DeviceEnabled  then OpenSessionBtnClick(OpenSessionBtn);
+
+if not Formatol25f.ChTest.Checked then
+   if not atol25f.DeviceEnabled then atol25f.DeviceEnabled:=True;
+if atol25f.TextWrap = 0  then  atol25f.TextWrap:=1;
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+// ---------- Чек прихода без отправки электронного чека покупателю ---------- //
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+//////шапка
+//atol25f.Caption:='Полное наименование:';
+//atol25f.PrintString;
+//atol25f.Caption:=Edit2.Text;
+//atol25f.PrintString;
+
+
+
+// Mode - Режим:
+// 	0 - Выбора
+// 	1 - Регистрации
+// 	2 - Отчётов без гашения
+// 	3 - Отчётов с гашением
+atol25f.Mode := 1;
+atol25f.SetMode ;
+
+atol25f.NewDocument ;
+
+// Записать должность и ФИО кассира
+//atol25f.AttrNumber := 1021;
+//atol25f.AttrValue := "Старший кассир Иванов И.И.";
+//atol25f.WriteAttribute ;
+
+// CheckType - Тип чека:
+// 	1 - Приход
+// 	2 - Возврат прихода
+// 	4 - Расход
+// 	5 - Возврат расхода
+// 	7 - Коррекция прихода
+// 	9 - Коррекция расхода
+atol25f.CheckType := 2;
+// CheckMode - Режим формирования чека:
+// 	0 - только в электронном виде без печати на чековой ленте
+// 	1 - печатать на чековой ленте
+atol25f.CheckMode := 1;
+atol25f.OpenCheck ;
+//atol25f.AttrNumber := 1055;
+//// Применяемая система налогооблажения в чеке:
+//// 	ОСН - 1
+//// 	УСН доход - 2
+//// 	УСН доход-расход - 4
+//// 	ЕНВД - 8
+//// 	ЕСН - 16
+//// 	ПСН - 32
+//atol25f.AttrValue := 2;
+//atol25f.WriteAttribute ;
+
+//////////////////
+//24.06.2017 11:55:10.442 0000000000 Посылка пакета: C1 01 0B 00 00 56 01 00 00 00 30
+//                        0000000203 Received async answer: 55 00 00
+//                        0000028517 Driver.Set_Name Тестовая продажа
+//                        0000004914 Driver.Set_Caption Строка для печати
+//                        0000003947 Driver.Set_Percents 3
+//                        0000007582 Driver.Set_Summ 0
+//                        0000022542 Driver.Set_Price 5.5
+//                        0000037456 Driver.Set_Summ 12.89
+//                        0000008330 Driver.Set_DiscountType 0
+//24.06.2017 11:57:16.642 0000013120 Driver.Registration
+
+
+ // Войти в режим регистрации Драйвер.Password = 30; Драйвер.Mode = 1; Драйвер.SetMode();
+ // Регистрация Драйвер.Name = “Чипсы”;
+ // Название товара Драйвер.Price = 12.34;
+  // Цена товара Драйвер.Quantity = 1.234;
+   // Количество товара Драйвер.Department = 2;
+    // Секция Драйвер.Registration();
+    // Зарегистрировать продажу
+    // Оплата чека Драйвер.Summ = 10.00;
+    // Сумма оплаты Драйвер.TypeClose = 0;
+    // Тип оплаты «НАЛИЧНЫМИ» Драйвер.Payment(); Драйвер.Summ = 10.00;
+    // Сумма оплаты Драйвер.TypeClose = 1;
+    // Тип оплаты 1 Драйвер.Payment();
+
+while not qry.Eof do
+begin
+    atol25f.Name := qry.FieldByName('KRNAME').AsString;
+    atol25f.Price := qry.FieldByName('STOIM').AsCurrency;
+    atol25f.Quantity:=qry.FieldByName('KOL').AsFloat;
+    atol25f.Department := 0;
+    if atol25f.Return <> 0 then
+     begin
+       ShowMessage(atol25f.ResultDescription) ;
+       atol25f.CancelCheck;
+       Exit;
+     end;
+    qry.Next;
+end;
+
+atol25f.Summ:=DBGridEh1.DataSource.DataSet.FieldByName('MONEY').AsCurrency;
+atol25f.DiscountType:=0;
+atol25f.DiscountValue:=0;
+// Оплата и закрытие чека
+// TypeClose - Тип оплаты:
+// 	0 - Наличными
+// 	1 - Электронными средствами платежа
+atol25f.TypeClose := 0;
+// TaxTypeNumber - Номер налога:
+// 	0 - Налог из секции
+// 	1 - НДС 0%
+// 	2 - НДС 10%
+// 	3 - НДС 18%
+// 	4 - НДС не облагается
+// 	5 - НДС с расчётной ставкой 10%
+// 	6 - НДС с расчётной ставкой 18%
+atol25f.TaxTypeNumber := 4;
+if atol25f.Payment <> 0 then
+ begin
+   ShowMessage(atol25f.ResultDescription) ;
+   atol25f.CancelCheck;
+   Exit;
+ end
+else
+  atol25f.CloseCheck;
+// // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+Application.MessageBox('Все операции успешно выполнены.', PChar(Application.title), MB_ICONINFORMATION + MB_OK);
+
+  finally
+    qry.Free;
+  end;
+  }
+end;
+
+
+procedure TFormatol25f.A_KKMDisabledExecute(Sender: TObject);
+begin
+  Atoll_Off;
+end;
+
+procedure TFormatol25f.A_KkmEnableExecute(Sender: TObject);
+begin
+Atoll_On;
+end;
+
+procedure TFormatol25f.A_OpenSessionExecute(Sender: TObject);
+var
+ r:Integer;
+begin
+ if not atol25f.DeviceEnabled then Atoll_On;
+ if atol25f.DeviceEnabled then
+  begin
+  if atol25f.SessionOpened then Exit;
+  atol25f.Mode:=1;
+  atol25f.Password:='30';
+  atol25f.SetMode;
+  atol25f.GetCurrentMode();
+  r:=atol25f.Mode;
+  r:=atol25f.AdvancedMode;
+  r:=atol25f.GetStatus();
+  r:= atol25f.OpenSession;
+  if r <> 0 then
+   begin
+     ShowMessage('Ошибка открытия смены '+ atol25f.ResultDescription);
+   end;
+  end;
+  ShowKKMCondition;
+end;
+
+
+
+procedure TFormatol25f.Button1Click(Sender: TObject);
+begin
+  if assigned(atol25f) then atol25f.ShowProperties;
+end;
+
+procedure TFormatol25f.ZReportButtonClick(Sender: TObject);
+begin
+  ZReport;
+end;
+
+procedure TFormatol25f.XReportButtonClick(Sender: TObject);
+begin
+  Atol_XReport;
+end;
+
+
+
+
+procedure TFormatol25f.FormCreate(Sender: TObject);
+begin
+// создаем объект общего драйвера ККМ
+// если объект создать не удается генерируется исключение, по которому завершается работа приложения
+  try
+    atol25f := TFprnM45.Create(Nil);
+    atol25f.ApplicationHandle := Application.Handle; // необходимо для корректного отображения окон драйвера в контексте приложения
+    atol25f.WriteLogFile:=1;
+  except
+    Application.MessageBox('Не удалось создать объект общего драйвера ККМ!', PChar(Application.Title), MB_ICONERROR + MB_OK);
+    Application.Terminate;
+  end;
+end;
+
+procedure TFormatol25f.FormDestroy(Sender: TObject);
+begin
+  if assigned(atol25f) then atol25f.Free;
+
+end;
+
+end.
+
