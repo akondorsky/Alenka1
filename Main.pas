@@ -690,17 +690,18 @@ procedure TPagesDlg.N29Click(Sender: TObject);
 var
   id:Integer;
   name:String;
-  price:Double;
+  price,kol:Double;
 begin
-if not Assigned(AtolV10_F)then
+if not Assigned(AtolV10_F) then
   begin
     Application.MessageBox('Касса не активна.Проверьте состояние кассы.','Внимание',MB_ICONSTOP+MB_OK);
     Exit;
   end;
   name:=DMod.Qry_CashMemoItems.FieldByName('NAME').AsString;
   price:=DMod.Qry_CashMemoItems.FieldByName('PRICE_SELL').AsFloat;
-  if KolRet_F.ShowModal = mrOk then
-   //AtolV10_F.PrintReturnCheck(name,StrToFloat(KolRet_F.Edit1.Text),price);
+  kol:=DMod.Qry_CashMemoItems.FieldByName('KOL').AsFloat;
+  //if KolRet_F.ShowModal = mrOk then
+  AtolV10_F.ReturnCheck(name,kol,price);
 end;
 
 procedure TPagesDlg.N2Click(Sender: TObject);
@@ -1582,7 +1583,8 @@ procedure TPagesDlg.A_CashPrintExecute(Sender: TObject);
 var
  Itogo :Currency;
  qry:TIbQuery;
- id,tp:Integer;
+ id:Integer;
+ money_type:Byte;
  s:string;
 begin
 
@@ -1602,11 +1604,9 @@ begin
 //   end;
 
 
-
-//  Itogo:=Grid_BillItems.Columns[3].Footers[0].SumValue;
 SelectTypePay_F.ShowModal;
-tp:=SelectTypePay_F.TypePay;
-if tp < 0  then
+money_type:=SelectTypePay_F.TypePay;
+if money_type < 0  then    //0-cash,1-card
   begin
     Application.MessageBox('Не выбран тип оплаты.Операция прервана.','Внимание',MB_OK+MB_ICONSTOP);
     Exit;
@@ -1632,7 +1632,7 @@ try
   qry.SQL.Add(s);
   qry.Params[0].AsInteger:=id;
   qry.Open;
-//  AtolV10_F.PrintCheck(qry, Itogo, tp);
+  AtolV10_F.PrintCheck(qry, Itogo, 0, money_type);
  finally
   qry.Free;
   (Sender as TAction).Enabled:=True;

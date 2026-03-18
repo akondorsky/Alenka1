@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Menus, System.Actions,
-  Vcl.ActnList,Vcl.OleAuto,System.DateUtils;
+  Vcl.ActnList,Vcl.OleAuto,System.DateUtils,IBX.IBQuery;
 
 type
   TAtolV10_F = class(TForm)
@@ -21,19 +21,26 @@ type
     N11: TMenuItem;
     ActionList1: TActionList;
     A_KkmConnect: TAction;
+    A_Condition: TAction;
+    N2: TMenuItem;
     procedure A_KkmConnectExecute(Sender: TObject);
     procedure ZReportButtonClick(Sender: TObject);
     procedure XReportButtonClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure A_ConditionExecute(Sender: TObject);
   private
     { Private declarations }
+    procedure ShiftCondition;
   public
     { Public declarations }
+    isOpened: Boolean;
+    function PrintCheck(qry:TIBQuery;Sum:Extended;Check_Type:Byte;Money_Type:Byte):Integer;//0-Sell,1-Return; 0-Cash,1-Card
+    function ReturnCheck(Name:String;Kol,Price:Extended):Integer;
   end;
 
 var
   AtolV10_F: TAtolV10_F;
   fptr: OleVariant;
-  isOpened: Boolean;
   errcode:Integer;
   errString:String;
   shiftstate:      Longint;
@@ -46,11 +53,137 @@ implementation
 {$R *.dfm}
 uses Main,Fptr10Lib_TLB;
 
-procedure TAtolV10_F.A_KkmConnectExecute(Sender: TObject);
+function TAtolV10_F.PrintCheck(qry:TIBQuery;Sum:Extended;Check_Type:Byte;Money_Type:Byte):Integer;//0-Sell,1-Return  ;
 var
-    state:      Longint;
-    number:     Longint;
-    dateTime:   TDateTime;
+ i:Integer;
+ p:Integer;
+ str:String;
+begin
+ Result:=1;
+ if Sum = 0  then Exit;
+ i:=1;
+
+  fptr.setParam(1021, 'Администратор');
+  fptr.operatorLogin;
+  case Check_Type of
+  0:fptr.setParam(fptr.LIBFPTR_PARAM_RECEIPT_TYPE, fptr.LIBFPTR_RT_SELL);
+  1:fptr.setParam(fptr.LIBFPTR_PARAM_RECEIPT_TYPE, fptr.LIBFPTR_RT_SELL_RETURN);
+  end;
+
+  fptr.openReceipt;
+
+qry.First;
+while not qry.Eof do
+begin
+// Регистрация товара или услуги
+//////шапка
+    str:= IntToStr(i)+'.';
+    fptr.setParam(fptr.LIBFPTR_PARAM_TEXT, str);
+    fptr.printText;
+//    if Length(qry.FieldByName('NAME').AsString) > 64 then
+//      begin
+//        str:= 'Полное наименование:';
+//        fptr.setParam(fptr.LIBFPTR_PARAM_TEXT, str);
+//        fptr.printText;
+//        str:=qry.FieldByName('NAME').AsString;
+//        fptr.setParam(fptr.LIBFPTR_PARAM_TEXT, str);
+//        fptr.setParam(fptr.LIBFPTR_PARAM_TEXT_WRAP,fptr.LIBFPTR_TW_WORDS);
+//        fptr.printText;
+//      end;
+
+
+    fptr.setParam(fptr.LIBFPTR_PARAM_COMMODITY_NAME, qry.FieldByName('NAME').AsString);
+    fptr.setParam(fptr.LIBFPTR_PARAM_PRICE, qry.FieldByName('STOIM').AsCurrency);
+    fptr.setParam(fptr.LIBFPTR_PARAM_QUANTITY, qry.FieldByName('KOL').AsFloat);
+    fptr.setParam(fptr.LIBFPTR_PARAM_TAX_TYPE, fptr.LIBFPTR_TAX_NO);
+    fptr.registration;
+
+    i:=i+1;
+    qry.Next;
+end;
+//    fptr.setParam(fptr.LIBFPTR_PARAM_TAX_TYPE, fptr.LIBFPTR_TAX_VAT5);
+//    fptr.setParam(fptr.LIBFPTR_PARAM_TAX_SUM, Sum*VatRate/105);
+//    fptr.receiptTax;
+
+    case Money_Type of
+      0: fptr.setParam(fptr.LIBFPTR_PARAM_PAYMENT_TYPE, fptr.LIBFPTR_PT_CASH);
+      1: fptr.setParam(fptr.LIBFPTR_PARAM_PAYMENT_TYPE, fptr.LIBFPTR_PT_ELECTRONICALLY);
+    end;
+
+    fptr.setParam(fptr.LIBFPTR_PARAM_PAYMENT_SUM, Sum);
+
+
+if fptr.payment <> 0 then
+ begin
+   showmessage('"' + IntToStr(fptr.errorCode) + ' [' + fptr.errorDescription + ']"');
+   fptr.cancelReceipt;
+   Exit;
+ end;
+
+   fptr.closeReceipt;
+// // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+Application.MessageBox('Все операции успешно выполнены.', PChar(Application.title), MB_ICONINFORMATION + MB_OK);
+Result:=0;
+
+end;
+
+
+function TAtolV10_F.ReturnCheck(Name: String; Kol, Price: Extended): Integer;
+var
+
+ p:Integer;
+ str:String;
+begin
+ Result:=1;
+ if Kol = 0  then Exit;
+
+  fptr.setParam(1021, 'Администратор');
+  fptr.operatorLogin;
+  fptr.setParam(fptr.LIBFPTR_PARAM_RECEIPT_TYPE, fptr.LIBFPTR_RT_SELL_RETURN);
+  fptr.openReceipt;
+
+
+// Регистрация товара или услуги
+
+
+    fptr.setParam(fptr.LIBFPTR_PARAM_COMMODITY_NAME, Name);
+    fptr.setParam(fptr.LIBFPTR_PARAM_QUANTITY, Kol);
+    fptr.setParam(fptr.LIBFPTR_PARAM_PRICE, Price);
+    fptr.setParam(fptr.LIBFPTR_PARAM_TAX_TYPE, fptr.LIBFPTR_TAX_NO);
+    fptr.registration;
+
+    fptr.setParam(fptr.LIBFPTR_PARAM_PAYMENT_SUM, Kol*Price);
+    fptr.setParam(fptr.LIBFPTR_PARAM_PAYMENT_TYPE, fptr.LIBFPTR_PT_CASH);
+
+if fptr.payment <> 0 then
+ begin
+   showmessage('"' + IntToStr(fptr.errorCode) + ' [' + fptr.errorDescription + ']"');
+   fptr.cancelReceipt;
+   Exit;
+ end;
+
+   fptr.closeReceipt;
+// // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+Application.MessageBox('Все операции успешно выполнены.', PChar(Application.title), MB_ICONINFORMATION + MB_OK);
+Result:=0;
+
+end;
+
+
+procedure TAtolV10_F.A_ConditionExecute(Sender: TObject);
+begin
+     if not VarIsEmpty(fptr) then
+        if fptr.isOpened then
+          begin
+           //ShowMessage('fptr Opened');
+           ShiftCondition;
+          end
+         else Application.MessageBox('Невозможно подключиться к кассе.Проверьте кассу.','Внимание!',MB_ICONERROR+MB_OK);
+end;
+
+procedure TAtolV10_F.A_KkmConnectExecute(Sender: TObject);
 begin
   try
      if VarIsEmpty(fptr) then fptr:= CreateOleObject('AddIn.Fptr10');
@@ -63,7 +196,7 @@ begin
      if fptr.open <> 0 then
         begin
           errcode:=fptr.errorCode;
-          errString:=fptr.ErrorDescription();
+          errString:=fptr.ErrorDescription;
         end
       else
         begin
@@ -73,7 +206,7 @@ begin
   except
      on E: Exception do
      begin
-      errString:=errString + 'Exception: ' + E.Message;
+      ShowMessage('Ошибка: ' + E.Message);
      end;
   end;
 
@@ -84,6 +217,33 @@ begin
     end
   else
     Lbl_Condition.Caption:='Соединение установлено';
+
+end;
+
+
+
+procedure TAtolV10_F.FormShow(Sender: TObject);
+var
+ s:string;
+begin
+ s:='';
+ //if VarIsEmpty(fptr) then ShowMessage('fptr Empty') else ShowMessage('fptr Not Empty');
+ //if VarIsNull(fptr) then ShowMessage('fptr Null') else ShowMessage('fptr Not Null') ;
+ if not VarIsEmpty(fptr) then
+    if fptr.isOpened then
+      begin
+       //ShowMessage('fptr Opened');
+       ShiftCondition;
+      end;
+
+end;
+
+procedure TAtolV10_F.ShiftCondition;
+var
+    state:      Longint;
+    number:     Longint;
+    dateTime:   TDateTime;
+begin
     fptr.setParam(fptr.LIBFPTR_PARAM_DATA_TYPE, fptr.LIBFPTR_DT_SHIFT_STATE);
     fptr.queryData;
     state       := fptr.getParamInt(fptr.LIBFPTR_PARAM_SHIFT_STATE);
@@ -100,7 +260,8 @@ begin
             fptr.openShift;
             Lbl_Shift.Caption:='Смена открыта.№ смены: '+IntToStr(number+1)+
                                 '.Дата истечения '+ DateTimeToStr(IncDay(Now,1));
-           end;
+           end
+          else Lbl_Shift.Caption:='Смена закрыта.';
       end;
       1:begin
         Lbl_Shift.Caption:='Смена открыта.№ смены: '+IntToStr(number)+
@@ -127,8 +288,6 @@ begin
     end;
 end;
 
-
-
 procedure TAtolV10_F.XReportButtonClick(Sender: TObject);
 begin
   if fptr.isOpened then
@@ -144,6 +303,7 @@ begin
     begin
       fptr.setParam(fptr.LIBFPTR_PARAM_REPORT_TYPE, fptr.LIBFPTR_RT_CLOSE_SHIFT);
       fptr.report;
+      Lbl_Shift.Caption:='Смена закрыта.';
     end;
 end;
 

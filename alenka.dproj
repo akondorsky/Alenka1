@@ -214,6 +214,10 @@
             <Form>AtolV10_F</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="SelectTypePay_U.pas">
+            <Form>SelectTypePay_F</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

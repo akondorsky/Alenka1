@@ -14,6 +14,7 @@ object AtolV10_F: TAtolV10_F
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -30,10 +31,11 @@ object AtolV10_F: TAtolV10_F
     ParentFont = False
   end
   object Lbl_Condition: TLabel
-    Left = 120
+    Left = 119
     Top = 3
-    Width = 5
+    Width = 161
     Height = 16
+    Caption = #1050#1072#1089#1089#1072' '#1085#1077' '#1087#1086#1076#1082#1083#1102#1095#1077#1085#1072
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -55,7 +57,7 @@ object AtolV10_F: TAtolV10_F
     ParentFont = False
   end
   object Lbl_Shift: TLabel
-    Left = 114
+    Left = 123
     Top = 25
     Width = 247
     Height = 64
@@ -102,14 +104,21 @@ object AtolV10_F: TAtolV10_F
       object N11: TMenuItem
         Action = A_KkmConnect
       end
+      object N2: TMenuItem
+        Action = A_Condition
+      end
     end
   end
   object ActionList1: TActionList
-    Left = 56
-    Top = 40
+    Left = 72
+    Top = 64
     object A_KkmConnect: TAction
       Caption = #1055#1086#1076#1082#1083#1102#1095#1080#1090#1100#1089#1103' '#1082' '#1082#1072#1089#1089#1077
       OnExecute = A_KkmConnectExecute
+    end
+    object A_Condition: TAction
+      Caption = #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1089#1086#1089#1090#1086#1103#1085#1080#1077', '#1086#1090#1082#1088#1099#1090#1100' '#1089#1084#1077#1085#1091
+      OnExecute = A_ConditionExecute
     end
   end
 end

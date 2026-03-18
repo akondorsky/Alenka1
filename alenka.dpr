@@ -44,7 +44,8 @@ uses
   Splash_U in 'Splash_U.pas' {SplashForm},
   Settings_U in 'Settings_U.pas' {Settings_F},
   Fptr10Lib_TLB in 'Fptr10Lib_TLB.pas',
-  AtolV10_U in 'AtolV10_U.pas' {AtolV10_F};
+  AtolV10_U in 'AtolV10_U.pas' {AtolV10_F},
+  SelectTypePay_U in 'SelectTypePay_U.pas' {SelectTypePay_F};
 
 {$R *.res}
 
@@ -73,6 +74,7 @@ begin
   SplashForm.Update;
   Application.CreateForm(TPagesDlg, PagesDlg);
   Application.CreateForm(TDMod, DMod);
+  Application.CreateForm(TSelectTypePay_F, SelectTypePay_F);
   //  if not _ConnectionFlag then
 //    begin
 //      Application.MessageBox('Подключение не удалось.Запуск программы невозможен.','Внимание',MB_ICONERROR + mb_Ok);
@@ -109,6 +111,7 @@ begin
   Application.CreateForm(TReportFm, ReportFm);
   Application.CreateForm(TFormLogin, FormLogin);
   Application.CreateForm(TSettings_F, Settings_F);
+  Application.CreateForm(TSelectTypePay_F, SelectTypePay_F);
   SplashForm.Sb1.Panels[0].Text:='Запуск приложения...';
   SplashForm.Update;
   while (GetTickCount - Start) < 2500 do
